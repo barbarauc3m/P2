@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Chat con Socket.io</title>
+</head>
+<body>
+    <h1>Chat en Tiempo Real</h1>
+    <input id="mensaje" type="text" placeholder="Escribe un mensaje">
+    <button onclick="enviarMensaje()">Enviar</button>
+    <ul id="mensajes"></ul>
+
+    <script src="/socket.io/socket.io.js"></script>
+    <script>
+        const socket = io();
+
+        function enviarMensaje() {
+            const input = document.getElementById("mensaje");
+            const mensaje = input.value;
+            socket.emit("mensaje", mensaje);
+            input.value = "";
+        }
+
+        socket.on("mensaje", (data) => {
+            const lista = document.getElementById("mensajes");
+            const item = document.createElement("li");
+            item.textContent = data;
+            lista.appendChild(item);
+        });
+    </script>
+</body>
+</html>
