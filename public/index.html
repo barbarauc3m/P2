@@ -1,15 +1,61 @@
 <!DOCTYPE html>
 <html lang="es">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Super Washer</title>
-    <link rel="stylesheet" href="index.css">
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Lavaloo</title>
+  <link rel="stylesheet" href="index.css"/>
 </head>
 <body>
-    <section id="Inicio">
-        <h1>LAVALOO</h1>
+  <header class="top-bar">
+    <img src="icon-lavadora.png" alt="Logo" class="icon"/>
+    <img src="icon-search.png" alt="Buscar" class="icon"/>
+  </header>
+
+  <main>
+    <h1 class="logo">LAVALOO</h1>
+    <p class="subtitle">Tu ropa limpia y feliz, sin dramas ni pelusas...</p>
+
+    <section class="lavado-box">
+      <div class="lavado-header">
+        <p>Lavado en proceso</p>
+        <div class="progress-circle">
+          <img src="icon-lavado.png" alt="Lavado"/>
+          <!--<span class="progress-text">70%</span>-->
+        </div>
+      </div>
+      <button class="lavado-button">Check It!</button>
     </section>
-  
+
+    <section class="categorias">
+      <div class="section-header">
+        <h2>Categorías</h2>
+        <a href="#">ver más</a>
+      </div>
+      <div class="categoria-list">
+        <div class="categoria"><img src="cat-1.png" alt="Categoría 1"/></div>
+        <div class="categoria"><img src="cat-2.png" alt="Categoría 2"/></div>
+        <div class="categoria"><img src="cat-3.png" alt="Categoría 3"/></div>
+      </div>
+    </section>
+
+    <section class="personalizar">
+      <div class="personalizar-box">
+        <img src="qr.png" alt="QR Code" class="qr"/>
+        <div class="info">
+          <h3>Personalizar Lavado</h3>
+          <p>Escanea tu ropa y<br/>crea un nuevo lavado</p>
+          <button class="lavado-button">Comienza</button>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <footer class="bottom-nav">
+    <img src="icon-home.png" alt="Home"/>
+    <img src="icon-game.png" alt="Game"/>
+    <img src="icon-profile.png" alt="Perfil"/>
+    <img src="icon-ropa.png" alt="Ropa"/>
+  </footer>
 </body>
 </html>
