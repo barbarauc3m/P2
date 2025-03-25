@@ -115,24 +115,34 @@
   .personalizar {
     margin: 2rem 1.5rem;
   }
-  
+
   .personalizar-box {
     background-color: #5f6e9c;
+    color: #fff;
     border-radius: 1rem;
     padding: 1rem;
     display: flex;
-    color: #fff;
+    align-items: center;
     gap: 1rem;
     align-items: center;
     box-shadow: 0 6px 0 #d0d6e6;
+    justify-content: space-between;
   }
   
-  .qr {
+  .qr-box {
+    flex: 1;
+    display: flex;
+    justify-content: center;
     width: 60px;
-    height: 60px;
+    height: auto;
   }
   
-  .info p {
+  .info {
+    flex: 2; /* Ocupa 2 partes del espacio (1:2 ratio) */
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
     font-size: 0.8rem;
     margin: 0.5rem 0;
   }
