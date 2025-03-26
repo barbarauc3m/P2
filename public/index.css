@@ -136,6 +136,11 @@
     width: 60px;
     height: auto;
   }
+
+  .qr{
+    width: 70px;
+    height: auto;
+  }
   
   .info {
     flex: 2; /* Ocupa 2 partes del espacio (1:2 ratio) */
