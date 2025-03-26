@@ -30,6 +30,10 @@
     margin: 0 1rem;
     color: #4a4a7d;
   }
+
+  .titulo-box{
+    margin: 2rem 1.5rem;
+  }
   
   .subtitle {
     margin: 0.5rem 1rem 1.5rem;
@@ -37,8 +41,9 @@
   }
   
   .lavado-box {
+    height: 13vh;
     background-color: #5f6e9c;
-    margin: 0 1.5rem;
+    margin: 3rem 1.5rem;
     border-radius: 1rem;
     padding: 1rem;
     color: #fff;
@@ -83,7 +88,7 @@
   }
   
   .categorias {
-    margin: 2rem 1.5rem;
+    margin: 3rem 1.5rem;
   }
   
   .section-header {
@@ -113,7 +118,7 @@
   }
   
   .personalizar {
-    margin: 2rem 1.5rem;
+    margin: 3rem 1.5rem;
   }
 
   .personalizar-box {
@@ -127,6 +132,8 @@
     align-items: center;
     box-shadow: 0 6px 0 #d0d6e6;
     justify-content: space-between;
+    height: 14vh;
+    margin: 5px 0px;
   }
   
   .qr-box {
