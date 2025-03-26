@@ -8,7 +8,7 @@
 </head>
 <body>
   <header class="top-bar">
-    <img src="icon-lavadora.png" alt="Logo" class="icon"/>
+    <img src="../images/lavadora_logo.svg" alt="Logo" class="icon"/>
     <img src="icon-search.png" alt="Buscar" class="icon"/>
   </header>
 
@@ -17,14 +17,20 @@
     <p class="subtitle">Tu ropa limpia y feliz, sin dramas ni pelusas...</p>
 
     <section class="lavado-box">
-      <div class="lavado-header">
-        <p>Lavado en proceso</p>
-        <div class="progress-circle">
-          <img src="icon-lavado.png" alt="Lavado"/>
-          <!--<span class="progress-text">70%</span>-->
+      <div class="lavado-sombra">
+        <div class="sombra sombra-50"></div>
+        <div class="sombra sombra-20"></div>
+        <div class="lavado">
+          <div class="lavado-header">
+            <p>Lavado en proceso</p>
+            <button class="lavado-button">Check It!</button>
+          </div>
+          <div class="progress-circle">
+            <img src="../images/tambor.svg" alt="Lavado"/>
+            <span class="progress-text" style='display: none'>70%</span>
+          </div>
         </div>
       </div>
-      <button class="lavado-button">Check It!</button>
     </section>
 
     <section class="categorias">
@@ -33,32 +39,72 @@
         <a href="#">ver más</a>
       </div>
       <div class="categoria-list">
-        <div class="categoria"><img src="cat-1.png" alt="Categoría 1"/></div>
-        <div class="categoria"><img src="cat-2.png" alt="Categoría 2"/></div>
-        <div class="categoria"><img src="cat-3.png" alt="Categoría 3"/></div>
+        <div class="categoria-frio"><img src="../images/frio.svg" alt="Categoría 1"/>
+          <div class="info-lavado-frio">
+            <p><strong>Lavado Frío</strong></p>
+            <p>Temperatura: 30ºC</p>
+            <p>Duración: 30 min</p>
+            <p>Centrifugado: 600 rpm</p>
+          </div>
+        </div>
+        <div class="categoria-caliente"><img src="../images/caliente.svg" alt="Categoría 2"/>
+          <div class="info-lavado-caliente">
+            <p><strong>Lavado Caliente</strong></p>
+            <p>Temperatura: 60ºC</p>
+            <p>Duración: 1h 15min</p>
+            <p>Centrifugado: 1200 rpm</p>
+          </div>
+        </div>
+        <div class="categoria-eco"><img src="../images/eco.svg" alt="Categoría 3"/>
+          <div class="info-lavado-eco">
+            <p><strong>Lavado Eco</strong></p>
+            <p>Temperatura: 40ºC</p>
+            <p>Duración: 1h</p>
+            <p>Centrifugado: 800rpm</p>
+          </div>
+        </div>
       </div>
     </section>
 
     <section class="personalizar">
-    <h2>Personalizar Lavado</h2>
+    <div class="section-header">
+      <h2>Personalizar Lavado</h2>
+    </div>  
       <div class="personalizar-box">
-        <div class="qr-box">
-            <img src="images/codigo-qr.png" alt="QR Code" class="qr"/>
-        </div>
-        <div class="info">
-          <h3>Personalizar Lavado</h3>
-          <p>Escanea tu ropa y<br/>crea un nuevo lavado</p>
-          <button class="lavado-button">Comienza</button>
+        <div class="personalizar-sombra">
+        <div class="sombra sombra-50"></div>
+        <div class="sombra sombra-20"></div>
+        <div class="personalizar-container">
+          <div class="qr-box">
+              <img src="../images/escaner.svg" alt="QR Code" class="qr"/>
+          </div>
+          <div class="info">
+            <div class="info-header">
+              <h3>Personalizar Lavado</h3>
+              <p>Escanea tu ropa y crea un nuevo lavado</p>
+            </div>
+
+            <button class="lavado-button">Comienza</button>
+          </div>
         </div>
       </div>
     </section>
   </main>
 
-  <footer class="bottom-nav">
-    <img src="icon-home.png" alt="Home"/>
-    <img src="icon-game.png" alt="Game"/>
-    <img src="icon-profile.png" alt="Perfil"/>
-    <img src="icon-ropa.png" alt="Ropa"/>
-  </footer>
+  <div class="button-container">
+    <button class="button">
+      <img src="../images/casa_blanca.svg" alt="Casa" class="icon-img" />
+    </button>
+    <button class="button">
+      <img src="../images/mando_claro.svg" alt="Mando" class="icon-img" />
+    </button>
+    <button class="button">
+      <img src="../images/persona_cla.svg" alt="Persona" class="icon-img" />
+    </button>
+    <button class="button">
+      <img src="../images/icon_cam_cla.svg" alt="Camara" class="icon-img" />
+    </button>
+  </div>
+  
 </body>
 </html>

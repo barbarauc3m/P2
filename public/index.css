@@ -1,3 +1,32 @@
+/*FUENTES*/
+
+@font-face {
+  font-family: 'Super Cottage';
+  src: url(../fonts/Super\ Cottage.ttf);
+  font-weight: normal;
+  font-style: normal;
+}
+
+@font-face {
+  font-family: 'Janda';
+  src: url(../fonts/JandaManateeSolid.ttf);
+  font-weight: normal;
+  font-style: normal;
+}
+
+h1{
+  font-family: 'Super Cottage', sans-serif;  
+}
+
+h2{
+  font-family: 'Janda', sans-serif;  
+}
+
+h3{
+  font-family: 'Super Cottage', sans-serif;  
+  margin-bottom: 0.5vh;
+}
+
 * {
     box-sizing: border-box;
     margin: 0;
@@ -11,6 +40,7 @@
     display: flex;
     flex-direction: column;
     min-height: 100vh;
+    padding-bottom: 6vh;
   }
   
   .top-bar {
@@ -25,7 +55,8 @@
   }
   
   .logo {
-    font-size: 2rem;
+    font-size: 7vh;
+    font-family: 'Super Cottage', sans-serif;
     font-weight: bold;
     margin: 0 1rem;
     color: #4a4a7d;
@@ -33,33 +64,101 @@
   
   .subtitle {
     margin: 0.5rem 1rem 1.5rem;
-    font-size: 0.9rem;
+    font-size: 1.5vh;
   }
-  
-  .lavado-box {
-    background-color: #5f6e9c;
-    margin: 0 1.5rem;
-    border-radius: 1rem;
-    padding: 1rem;
-    color: #fff;
-    position: relative;
-    box-shadow: 0 6px 0 #d0d6e6;
-  }
-  
-  .lavado-header {
+ 
+  .lavado-box{
+    margin: 2rem 1.5rem;
     display: flex;
+    justify-content: center;
+    align-items: center;
+  }
+
+  .lavado {
+    background-color: #5D6B8B;
+    border-radius: 1.5rem;
+    padding: 1.5rem;
+    display: flex;
+    width: 100%;
+    height: auto;
     justify-content: space-between;
     align-items: center;
+    color: white;
+    font-family: 'Segoe UI', sans-serif;
+    position: relative;
+  }
+  
+  .lavado-sombra {
+    position: relative;
+  }
+  
+  .sombra {
+    position: absolute;
+    height: 123px;
+    border-radius: 1.5rem;
+    top: 0;
+    left: 50%;
+    transform: translateX(-50%);
+    z-index: 0;
+  }
+  
+  .sombra-50 {
+    width: 95%;
+    height: 105%;
+    background-color: #5D6B8B;
+    opacity: 0.5;
+  }
+  
+  .sombra-20 {
+    width: 90%;
+    height: 110%;
+    background-color: #5D6B8B;
+    opacity: 0.2;
+  }
+  
+
+
+  .lavado-header {
+    display: flex;
+    flex-direction: column;
+    gap: 5vh;
+    margin-right: 4vw;
+  }
+  
+  .lavado-header p {
+    font-size: 2vh;
+    font-family: 'Super Cottage', sans-serif;
+    font-weight: bold;
+    margin: 0;
+ }
+  
+  .lavado-button {
+    background-color: #e6ebf7;
+    border: none;
+    border-radius: 1rem;
+    padding: 2vw;
+    width: 30vw;
+    color: #5b6689;
+    font-weight: bold;
+    font-size: 1rem;
+    box-shadow: 0 4px 0 #d0d6e6;
+    cursor: pointer;
+    transition: transform 0.2s ease;
+  }
+  
+  .lavado-button:hover {
+    transform: translateY(-2px);
   }
   
   .progress-circle {
     position: relative;
-    width: 60px;
-    height: 60px;
+    width: auto;
+    height: 14vh;
   }
   
   .progress-circle img {
     width: 100%;
+    height: 100%;
   }
   
   .progress-text {
@@ -67,19 +166,9 @@
     top: 50%;
     left: 50%;
     transform: translate(-50%, -50%);
+    color: white;
     font-weight: bold;
-    color: #fff;
-  }
-  
-  .lavado-button {
-    background-color: #f7f9fc;
-    color: #5f6e9c;
-    padding: 0.5rem 1rem;
-    border: none;
-    border-radius: 1rem;
-    margin-top: 1rem;
-    cursor: pointer;
-    font-weight: bold;
+    font-size: 1rem;
   }
   
   .categorias {
@@ -90,15 +179,29 @@
     display: flex;
     justify-content: space-between;
     align-items: center;
-    margin-bottom: 1rem;
+    margin-bottom: 3vh;
   }
-  
+
+  .section-header a {
+    text-decoration: underline;
+    color: #000000;
+    opacity: 0.5;
+    font-style: italic;
+    font-size: 1.5vh;
+  }
+
+  /*
   .categoria-list {
-    display: flex;
-    gap: 1rem;
+    display: grid;
+    grid-template-columns: repeat(3, auto);
+    gap: 8vw;
+    justify-content: center;
+    align-items: center;
   }
   
-  .categoria {
+  .categoria-frio, .categoria-calor, .categoria-eco {
+    width: 10vh;
+    height: 10vh;
     background-color: #e6ebf7;
     border-radius: 1rem;
     padding: 1rem;
@@ -107,26 +210,142 @@
     box-shadow: 0 4px 0 #d0d6e6;
   }
   
-  .categoria img {
-    width: 40px;
-    height: 40px;
+  .categoria-frio img, .categoria-calor img, .categoria-eco img {
+    width: 100%;
+    height: 100%;
   }
   
+  .info-lavado {
+    display: none;
+    flex-direction: column;
+    align-items: flex-start;
+    color: #5D6B8B;
+    font-size: 1.5vh;
+    gap: 0.5vh;
+    padding-left: 1rem;
+  }
+  
+  .categoria-frio:hover {
+    width: 28vh; 
+    justify-content: flex-start;
+    gap: 1rem;
+  }
+ 
+  
+  .categoria-frio:hover .info-lavado {
+    display: flex;
+  }
+  
+  .categoria-frio:hover ~ .categoria-calor {
+    transform: translateX(-2vh);
+  }
+*/
+
+.categoria-list {
+  display: flex;
+  grid-template-columns: repeat(3, auto);
+  gap: 8vw;
+  justify-content: center;
+  align-items: center;
+  overflow: hidden;
+}
+
+.categoria-frio, .categoria-caliente, .categoria-eco {
+  width: 10vh;
+  height: 10vh;
+  background-color: #e6ebf7;
+  border-radius: 1rem;
+  padding: 1rem;
+  box-shadow: 0 4px 0 #d0d6e6;
+  display: flex;
+  align-items: center;
+  transition: width 0.4s ease;
+  flex-shrink: 0;
+}
+
+.categoria-frio img,
+.categoria-caliente img,
+.categoria-eco img {
+  width: 10vh;
+  height: 100%;
+  max-width: 8vh;
+  max-height: 8vh;
+  z-index: 2;
+  transition: none;
+}
+
+.info-lavado-frio, .info-lavado-caliente, .info-lavado-eco {
+  opacity: 0;
+  margin-left: 1rem;
+  display: flex;
+  flex-direction: column;
+  color: #5D6B8B;
+  font-size: 1.3vh;
+  gap: 0.5vh;
+  white-space: nowrap;
+  transition: opacity 0.4s ease;
+}
+
+.categoria-frio:hover {
+  width: 28vh;
+  justify-content: flex-start;
+}
+
+.categoria-caliente:hover {
+  width: 28vh;
+  justify-content: flex-start;
+}
+
+.categoria-eco:hover {
+  width: 28vh;
+  justify-content: flex-start;
+}
+
+.categoria-frio:hover .info-lavado-frio {
+  opacity: 1;
+}
+
+.categoria-caliente:hover .info-lavado-caliente {
+  opacity: 1;
+}
+
+.categoria-eco:hover .info-lavado-eco {
+  opacity: 1;
+}
+
+/* mover los siguientes a la derecha si quieres */
+.categoria-frio:hover ~ .categoria-caliente,
+.categoria-frio:hover ~ .categoria-eco {
+  transform: translateX(3vh);
+  transition: transform 0.4s ease;
+}
+
+
   .personalizar {
     margin: 2rem 1.5rem;
   }
 
-  .personalizar-box {
-    background-color: #5f6e9c;
-    color: #fff;
-    border-radius: 1rem;
-    padding: 1rem;
+  .personalizar-sombra {
+    position: relative;
+  }
+  
+
+.personalizar-box{
     display: flex;
+    justify-content: center;
     align-items: center;
+    width: 100%;
+}
+  .personalizar-container {
+    background-color: #5D6B8B;
+    border-radius: 1.5rem;
+    height: 20vh;
+    padding: 1.5rem;
+    display: flex;
+    color: white;
+    font-family: 'Segoe UI', sans-serif;
     gap: 1rem;
-    align-items: center;
-    box-shadow: 0 6px 0 #d0d6e6;
-    justify-content: space-between;
+    position: relative;
   }
   
   .qr-box {
@@ -136,9 +355,13 @@
     width: 60px;
     height: auto;
   }
+
+  .qr{
+    width: 100%;
+  }
   
   .info {
-    flex: 2; /* Ocupa 2 partes del espacio (1:2 ratio) */
+    flex: 2; /* Ocupa  partes del espacio (1:2 ratio) */
     display: flex;
     flex-direction: column;
     align-items: center;
@@ -157,9 +380,55 @@
     width: 100%;
     bottom: 0;
   }
-  
-  .bottom-nav img {
-    width: 24px;
-    height: 24px;
+
+  .info-header{
+    margin-bottom: 2vh;
+  }
+
+  .info-header h3{
+    font-size: 2vh;
   }
   
+  .info-header p{
+    font-size: 1.5vh;
+  }
+
+  
+  /* From Uiverse.io by akshat-patel28 */ 
+  .button-container {
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    width: 100%;
+    background-color: #5D6B8B;
+    height: 6vh;
+    display: flex;
+    align-items: center;
+    justify-content: space-around;
+    z-index: 1000; /* Para que esté por encima de todo */
+  }
+  
+
+.button {
+  outline: 0 !important;
+  border: 0 !important;
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  background-color: transparent;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: #fff;
+  transition: all ease-in-out 0.3s;
+  cursor: pointer;
+}
+
+.button:hover {
+  transform: translateY(-3px);
+}
+
+.icon-img {
+  width: auto;
+  height: 2.5vh;
+}
