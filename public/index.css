@@ -61,6 +61,10 @@ h3{
     margin: 0 1rem;
     color: #4a4a7d;
   }
+
+  .titulo-box{
+    margin: 2rem 1.5rem;
+  }
   
   .subtitle {
     margin: 0.5rem 1rem 1.5rem;
@@ -172,7 +176,7 @@ h3{
   }
   
   .categorias {
-    margin: 2rem 1.5rem;
+    margin: 3rem 1.5rem;
   }
   
   .section-header {
@@ -322,7 +326,7 @@ h3{
 
 
   .personalizar {
-    margin: 2rem 1.5rem;
+    margin: 3rem 1.5rem;
   }
 
   .personalizar-sombra {
