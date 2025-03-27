@@ -432,7 +432,7 @@ h3{
     width: 100%;
   }
   
-  .info-qr {
+  .info {
     flex: 2; /* Ocupa  partes del espacio (1:2 ratio) */
     display: flex;
     flex-direction: column;
