@@ -353,7 +353,7 @@ h3{
   }
   
   .qr-box {
-    flex: 1;
+    flex: 1; /* Ocupa 1 parte del espacio (1:2 ratio) */
     display: flex;
     justify-content: center;
     width: 60px;
@@ -365,7 +365,7 @@ h3{
   }
   
   .info {
-    flex: 2; /* Ocupa  partes del espacio (1:2 ratio) */
+    flex: 2; /* Ocupa 2 partes del espacio (1:2 ratio) */
     display: flex;
     flex-direction: column;
     align-items: center;
