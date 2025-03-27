@@ -4,7 +4,7 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
   <title>Categorías de lavados</title>
-  <link rel="stylesheet" href="categorias-lavados.css" />
+  <link rel="stylesheet" href="styles/categorias-lavados.css" />
 </head>
 <body>
   <header class="top-bar">
@@ -13,74 +13,145 @@
   </header>
 
   <main class="content">
-    <section class="lavado-card">
-      <img src="icons/fast.png" class="icon" alt="Lavado Rápido">
-      <div class="info">
-        <h2>Lavado Rápido</h2>
-        <p>Ideal para ropa poco sucia o uso diario.</p>
-        <ul>
-          <li>Temperatura: 30ºC</li>
-          <li>Duración: 30 min</li>
-          <li>Centrifugado: 1200 rpm</li>
-          <li>Detergente: 50 ml</li>
-        </ul>
+    <section class="lavado">
+      <h2>Lavado Rápido</h2>
+      <div class="lavado-card">
+        <div class="lavado-imagen">
+          <img src="../images/rapido.svg" class="icon" alt="Lavado Rápido">
+        </div>
+        <div class="info">
+          <p>Ideal para ropa poco sucia o uso diario.</p>
+          <ul>
+            <li>Temperatura: 30ºC</li>
+            <li>Duración: 30 min</li>
+            <li>Centrifugado: 1200 rpm</li>
+            <li>Detergente: 50 ml</li>
+          </ul>
+        </div>
+        <img src="../images/corazon.svg" class="heart" alt="Favorito">
       </div>
-      <img src="icons/heart-filled.png" class="heart" alt="Favorito">
     </section>
 
-    <section class="lavado-card">
-      <img src="icons/cold.png" class="icon" alt="Lavado Frío">
-      <div class="info">
-        <h2>Lavado Frío</h2>
-        <p>Ideal para lana, seda, ropa interior, etc.</p>
-        <ul>
-          <li>Temperatura: 20ºC</li>
-          <li>Duración: 40 min</li>
-          <li>Centrifugado: 600 rpm</li>
-          <li>Detergente: 30 ml</li>
-        </ul>
+    <section class="lavado">
+      <h2>Lavado Frío</h2>
+      <div class="lavado-card">
+        <img src="../images/frio.svg" class="icon" alt="Lavado Frío">
+        <div class="info">
+          <p>Ideal para lana, seda, ropa interior, etc.</p>
+          <ul>
+            <li>Temperatura: 20ºC</li>
+            <li>Duración: 40 min</li>
+            <li>Centrifugado: 600 rpm</li>
+            <li>Detergente: 30 ml</li>
+          </ul>
+        </div>
+        <img src="../images/corazon.svg" class="heart" alt="No favorito">
       </div>
-      <img src="icons/heart-outline.png" class="heart" alt="No favorito">
     </section>
 
-    <section class="lavado-card">
-      <img src="icons/hot.png" class="icon" alt="Lavado Caliente">
-      <div class="info">
-        <h2>Lavado Caliente</h2>
-        <p>Ideal para ropa muy sucia o con manchas.</p>
-        <ul>
-          <li>Temperatura: 60ºC</li>
-          <li>Duración: 1h 15 min</li>
-          <li>Centrifugado: 1200 rpm</li>
-          <li>Detergente: 60 ml</li>
-        </ul>
+    <section class="lavado">
+      <h2>Lavado Caliente</h2>
+      <div class="lavado-card">
+        <img src="../images/caliente.svg" class="icon" alt="Lavado Caliente">
+        <div class="info">
+          <p>Ideal para ropa muy sucia o con manchas.</p>
+          <ul>
+            <li>Temperatura: 60ºC</li>
+            <li>Duración: 1h 15 min</li>
+            <li>Centrifugado: 1200 rpm</li>
+            <li>Detergente: 60 ml</li>
+          </ul>
+        </div>
+        <img src="../images/corazon.svg" class="heart" alt="Favorito">
       </div>
-      <img src="icons/heart-filled.png" class="heart" alt="Favorito">
     </section>
 
-    <section class="lavado-card">
-      <img src="icons/fast.png" class="icon" alt="Lavado Rápido">
-      <div class="info">
-        <h2>Lavado Rápido</h2>
-        <p>Ideal para ropa poco sucia o uso diario.</p>
-        <ul>
-          <li>Temperatura: 30ºC</li>
-          <li>Duración: 30 min</li>
-          <li>Centrifugado: 1200 rpm</li>
-          <li>Detergente: 50 ml</li>
-        </ul>
+    <section class="lavado">
+      <h2>Lavado Eco</h2>
+      <div class="lavado-card">
+        <img src="../images/eco.svg" class="icon" alt="Lavado Rápido">
+        <div class="info">
+          <p>Ideal para ahorrar energía y agua.</p>
+          <ul>
+            <li>Temperatura: 40ºC</li>
+            <li>Duración: 1h</li>
+            <li>Centrifugado: 800 rpm</li>
+            <li>Detergente: 35 ml</li>
+          </ul>
+        </div>
+        <img src="../images/corazon.svg" class="heart" alt="Favorito">
       </div>
-      <img src="icons/heart-filled.png" class="heart" alt="Favorito">
     </section>
 
-    <!-- Más lavados... -->
+    <section class="lavado">
+      <h2>Lavado Ropa Blanca</h2>
+      <div class="lavado-card">
+        <img src="../images/ropa_blanca.svg" class="icon" alt="Lavado Rápido">
+        <div class="info">
+          <p>Ideal para camisas, toallas, sábanas, ropa blanca, etc.</p>
+          <ul>
+            <li>Temperatura: 60ºC</li>
+            <li>Duración: 1h</li>
+            <li>Centrifugado: 1200 rpm</li>
+            <li>Detergente: 55 ml</li>
+          </ul>
+        </div>
+        <img src="../images/corazon.svg" class="heart" alt="Favorito">
+      </div>
+    </section>
+
+    <section class="lavado">
+      <h2>Lavado Ropa Oscura</h2>
+      <div class="lavado-card">
+        <div class="lavado-imagen">
+          <img src="../images/ropa_oscura.svg" class="icon" alt="Lavado Rápido">
+        </div>
+        <div class="info">
+          <p>Ideal para vaqueros, camisetas negras, sudaderas, etc.</p>
+          <ul>
+            <li>Temperatura: 40ºC</li>
+            <li>Duración: 1h</li>
+            <li>Centrifugado: 800 rpm</li>
+            <li>Detergente: 50 ml</li>
+          </ul>
+        </div>
+        <img src="../images/corazon.svg" class="heart" alt="Favorito">
+      </div>
+    </section>
+
+    <section class="lavado">
+      <h2>Lavado Deporte</h2>
+      <div class="lavado-card">
+        <img src="../images/ropa_deporte.svg" class="icon" alt="Lavado Rápido">
+        <div class="info">
+          <p>Ideal para ropa de deporte, poliester, lycra, etc.</p>
+          <ul>
+            <li>Temperatura: 40ºC</li>
+            <li>Duración: 50 min</li>
+            <li>Centrifugado: 800 rpm</li>
+            <li>Detergente: 50 ml</li>
+          </ul>
+        </div>
+        <img src="../images/corazon.svg" class="heart" alt="Favorito">
+      </div>
+    </section>
+
+    <div class="button-container">
+      <button class="button">
+        <img src="../images/casa_blanca.svg" alt="Casa" class="icon-img" />
+      </button>
+      <button class="button">
+        <img src="../images/mando_claro.svg" alt="Mando" class="icon-img" />
+      </button>
+      <button class="button">
+        <img src="../images/persona_cla.svg" alt="Persona" class="icon-img" />
+      </button>
+      <button class="button">
+        <img src="../images/icon_cam_cla.svg" alt="Camara" class="icon-img" />
+      </button>
+    </div>
+
   </main>
-
-  <footer class="bottom-nav">
-    <img src="../images/casa_blanca.svg" alt="Home"/>
-    <img src="../images/mando_claro.svg" alt="Game"/>
-    <img src="../images/persona_cla.svg" alt="Perfil"/>
-    <img src="../images/icon_cam_cla.svg" alt="Ropa"/>
-  </footer>
+  <script src="script/categorias-lavados.js"></script>
 </body>
 </html>
