@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Perfil</title>
+  <link rel="stylesheet" href="styles/perfil.css" />
+</head>
+<body>
+  <header>
+    <button class="back-btn">←</button>
+    <h1 class="username">kk</h1>
+    <img src="foto-usuario.webp" alt="Avatar" class="avatar" />
+  </header>
+
+  <section class="stats">
+    <p>⭐ Lavados completados: <span>54</span></p>
+    <p>❤️ Lavados favoritos: <span>4</span></p>
+  </section>
+
+  <section class="programas">
+    <div class="section-title">
+      <h2>Mis programas</h2>
+      <a href="#">ver más</a>
+    </div>
+    <div class="programa">
+      <span class="estrella">⭐</span>
+      <div>
+        <h3>Lavado Personalizado 1</h3>
+        <button class="empezar-btn">Empezar</button>
+      </div>
+    </div>
+  </section>
+
+  <section class="anteriores">
+    <div class="section-title">
+      <h2>Lavados anteriores</h2>
+      <a href="#">ver más</a>
+    </div>
+    <div class="iconos-anteriores">
+      <div class="icon-box">⏱️</div>
+      <div class="icon-box">⭐</div>
+      <div class="icon-box">🌲</div>
+    </div>
+  </section>
+
+  <section class="notificaciones">
+    <div class="section-title">
+      <h2>Editar alarmas, notificaciones</h2>
+      <button class="plus-btn">+</button>
+    </div>
+    <div class="notificacion-item">Lana <button>❯</button></div>
+    <div class="notificacion-item">Mezcla de distintos colores <button>❯</button></div>
+  </section>
+
+  <div class="button-container">
+    <button class="button" onclick="window.location.href='index.html'">
+      <img src="../../../images/casa_blanca.svg" alt="Casa" class="icon-img" />
+    </button>
+    <button class="button" onclick="window.location.href='juegos.html'">
+      <img src="../../../images/mando_claro.svg" alt="Mando" class="icon-img" />
+    </button>
+    <button class="button">
+      <img src="../../../images/persona_cla.svg" alt="Persona" class="icon-img" id="perfil-icono"/>
+    </button>
+    <button class="button" onclick="window.location.href='escaner.html'">
+      <img src="../../../images/icon_cam_cla.svg" alt="Camara" class="icon-img" />
+    </button>
+  </div>
+    <script src="scripts/perfil.js"></script>
+</body>
+</html>

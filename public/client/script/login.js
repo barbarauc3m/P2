@@ -2,7 +2,7 @@
 document.getElementById("perfil-icono").addEventListener("click", () => {
     const isLoggedIn = localStorage.getItem("isLoggedIn");
     if (isLoggedIn === "true") {
-      alert("Ya has iniciado sesión 🤙");
+      window.location.href = "perfil.html";
     } else {
       document.getElementById("popup-login").style.display = "flex";
     }

@@ -1,0 +1,164 @@
+
+@font-face {
+    font-family: 'Super Cottage';
+    src: url(../../../../fonts/Super\ Cottage.ttf);
+    font-weight: normal;
+    font-style: normal;
+  }
+  
+  @font-face {
+    font-family: 'Janda';
+    src: url(../../../../fonts/JandaManateeSolid.ttf);
+    font-weight: normal;
+    font-style: normal;
+  }
+  
+
+  body {
+    margin: 0;
+    font-family: 'Segoe UI', sans-serif;
+    background-color: #f4f7fa;
+    color: #333;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+  }
+  
+  header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    width: 90%;
+    padding: 1rem;
+  }
+  
+  .back-btn {
+    font-size: 1.5rem;
+    background: none;
+    border: none;
+  }
+  
+  .username {
+    font-size: 1.4rem;
+    color: #6b7ba2;
+  }
+  
+  .avatar {
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+  }
+  
+  .stats {
+    width: 90%;
+    font-size: 1rem;
+    margin-bottom: 1rem;
+  }
+  
+  .section-title {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    width: 90%;
+    margin: 0.5rem auto;
+  }
+  
+  .programa {
+    width: 90%;
+    background-color: white;
+    padding: 1rem;
+    margin-bottom: 1rem;
+    border-radius: 15px;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.05);
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+  }
+  
+  .estrella {
+    font-size: 1.5rem;
+  }
+  
+  .empezar-btn {
+    padding: 0.4rem 1rem;
+    background-color: #6b7ba2;
+    color: white;
+    border: none;
+    border-radius: 8px;
+    margin-top: 0.5rem;
+  }
+  
+  .iconos-anteriores {
+    display: flex;
+    justify-content: space-around;
+    width: 90%;
+    margin-bottom: 1rem;
+  }
+  
+  .icon-box {
+    background-color: #e8f0ff;
+    border-radius: 12px;
+    padding: 1rem;
+    font-size: 1.5rem;
+    box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+  }
+  
+  .notificaciones {
+    width: 90%;
+    margin-bottom: 2rem;
+  }
+  
+  .notificacion-item {
+    background-color: #e8f0ff;
+    border-radius: 12px;
+    padding: 0.8rem;
+    margin-top: 0.5rem;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
+  
+  .plus-btn {
+    font-size: 1.2rem;
+    background: none;
+    border: none;
+  }
+  
+/*NAV*/
+.button-container {
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    width: 100%;
+    background-color: #5D6B8B;
+    height: 6vh;
+    display: flex;
+    align-items: center;
+    justify-content: space-around;
+    z-index: 1000; /* Para que esté por encima de todo */
+  }
+  
+
+.button {
+  outline: 0 !important;
+  border: 0 !important;
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  background-color: transparent;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: #fff;
+  transition: all ease-in-out 0.3s;
+  cursor: pointer;
+}
+
+.button:hover {
+  transform: translateY(-3px);
+}
+
+.icon-img {
+  width: auto;
+  height: 2.5vh;
+}

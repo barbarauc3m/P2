@@ -1,14 +1,14 @@
 
 @font-face {
   font-family: 'Super Cottage';
-  src: url(../../fonts/Super\ Cottage.ttf);
+  src: url(../../../../fonts/Super\ Cottage.ttf);
   font-weight: normal;
   font-style: normal;
 }
 
 @font-face {
   font-family: 'Janda';
-  src: url(../../fonts/JandaManateeSolid.ttf);
+  src: url(../../../../fonts/JandaManateeSolid.ttf);
   font-weight: normal;
   font-style: normal;
 }
@@ -42,6 +42,8 @@ body {
   }
   
   .top-bar .back-button {
+    text-decoration: none;
+    color: #3c3c6e;
     background: none;
     border: none;
     font-size: 24px;

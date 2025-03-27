@@ -1,29 +1,20 @@
-const express = require("express");
-const http = require("http");
-const { Server } = require("socket.io");
-
+const express = require('express');
 const app = express();
-const server = http.createServer(app);
-const io = new Server(server);
+const http = require('http').createServer(app);
+const io = require('socket.io')(http);
 
-// Servir archivos estáticos desde "public"
-app.use(express.static("public"));
+app.use('/client', express.static('public/client'));
+app.use('/server', express.static('public/server'));
 
-// Manejar conexión de sockets
-io.on("connection", (socket) => {
-    console.log("Usuario conectado:", socket.id);
+io.on('connection', (socket) => {
+  console.log('Conectado:', socket.id);
 
-    socket.on("mensaje", (data) => {
-        console.log("Mensaje recibido:", data);
-        io.emit("mensaje", data); // Reenviar mensaje a todos los clientes
-    });
-
-    socket.on("disconnect", () => {
-        console.log("Usuario desconectado:", socket.id);
-    });
+  socket.on('mensaje-del-cliente', (data) => {
+    // Reenvía a todos los demás
+    socket.broadcast.emit('mensaje-para-servidor', data);
+  });
 });
 
-const PORT = 3000;
-server.listen(PORT, () => {
-    console.log(`Servidor corriendo en http://localhost:${PORT}`);
+http.listen(3000, () => {
+  console.log('Servidor listo en http://localhost:3000');
 });

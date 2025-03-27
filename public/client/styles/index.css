@@ -2,14 +2,14 @@
 
 @font-face {
   font-family: 'Super Cottage';
-  src: url(../../fonts/Super\ Cottage.ttf);
+  src: url(../../../../fonts/Super\ Cottage.ttf);
   font-weight: normal;
   font-style: normal;
 }
 
 @font-face {
   font-family: 'Janda';
-  src: url(../../fonts/JandaManateeSolid.ttf);
+  src: url(../../../../fonts/JandaManateeSolid.ttf);
   font-weight: normal;
   font-style: normal;
 }
@@ -243,96 +243,164 @@ h3{
   .categoria-frio:hover ~ .categoria-calor {
     transform: translateX(-2vh);
   }
-*/
+
 
 .categoria-list {
-  display: flex;
-  grid-template-columns: repeat(3, auto);
-  gap: 8vw;
-  justify-content: center;
-  align-items: center;
-  overflow: hidden;
+  display: grid;
+    grid-template-columns: repeat(3, auto);
+    gap: 8vw;
+    justify-content: center;
+    align-items: center;
 }
 
-.categoria-frio, .categoria-caliente, .categoria-eco {
-  width: 10vh;
-  height: 10vh;
+.categoria {
+  position: relative;
   background-color: #e6ebf7;
   border-radius: 1rem;
-  padding: 1rem;
   box-shadow: 0 4px 0 #d0d6e6;
-  display: flex;
-  align-items: center;
-  transition: width 0.4s ease;
-  flex-shrink: 0;
-}
-
-.categoria-frio img,
-.categoria-caliente img,
-.categoria-eco img {
   width: 10vh;
-  height: 100%;
-  max-width: 8vh;
-  max-height: 8vh;
-  z-index: 2;
-  transition: none;
+  height: 10vh;
+  overflow: visible;
+  flex-shrink: 0;
+  transition: transform 0.3s ease-in;
+  display: flex;
+  justify-content: center;
+
 }
 
-.info-lavado-frio, .info-lavado-caliente, .info-lavado-eco {
+.categoria img {
+  height: 100%;
+  display: block;
+  margin: auto;
+  padding: 1.5vh;
+  z-index: 1;
+}
+
+.categoria .info-left, .categoria .info-right {
+  position: absolute;
+  top: -10;
+  background-color: white;
+  border-radius: 1rem;
+  padding: 1vh;
+  box-shadow: 0 4px 12px rgba(0,0,0,0.1);
   opacity: 0;
-  margin-left: 1rem;
+  pointer-events: none;
+  transition: opacity 0.3s ease;
+  white-space: nowrap;
+  color: #5D6B8B;
+  font-size: 1.2vh;
   display: flex;
   flex-direction: column;
+  justify-content: center;
+  z-index: 5;
+  height: 10vh;
+}
+
+.info-right{
+  right: 100%;
+}
+
+.info-left{
+  left: 100%;
+}
+
+.categoria:hover .info-right, .categoria:hover .info-left {
+  opacity: 1;
+  pointer-events: auto;
+}
+
+.categoria:hover ~ .categoria {
+  transform: translateX(16vh);
+}
+
+*/
+
+/*ESTE ES EL BUENO ALBA!!!!!!!!!!!!!!!!!!!!!!!!*/
+
+.categoria-list {
+  display: grid;
+  grid-template-columns: repeat(3, auto);
+  gap: 9.5vw;
+  align-items: center;
+  position: relative;
+}
+
+.categoria {
+  background-color: #e6ebf7;
+  border-radius: 1rem;
+  box-shadow: 0 4px 0 #d0d6e6;
+  height: 10vh;
+  width: 10vh;
+  overflow: hidden;
+  display: flex;
+  align-items: center;
+  padding: 0 1vh;
+  flex-shrink: 0;
+  transition: width 0.3s ease-in-out, margin 0.3s ease-in-out, transform 0.3s ease-in-out;}
+
+.categoria img {
+  height: 8vh;
+  width: 8vh;
+  flex-shrink: 0;
+  margin-right: 1vh;
+}
+
+.categoria .info {
+  opacity: 0;
+  transition: opacity 0.3s ease-in-out;
+  font-size: 1.2vh;
   color: #5D6B8B;
-  font-size: 1.3vh;
-  gap: 0.5vh;
+  display: flex;
+  flex-direction: column;
+  gap: 0.3vh;
   white-space: nowrap;
-  transition: opacity 0.4s ease;
 }
 
-.categoria-frio:hover {
-  width: 28vh;
-  justify-content: flex-start;
+
+.categoria:hover {
+  width: 26vh;
 }
 
-.categoria-caliente:hover {
-  width: 28vh;
-  justify-content: flex-start;
-}
-
-.categoria-eco:hover {
-  width: 28vh;
-  justify-content: flex-start;
-}
-
-.categoria-frio:hover .info-lavado-frio {
+.categoria:hover .info {
   opacity: 1;
 }
 
-.categoria-caliente:hover .info-lavado-caliente {
+.categoria:hover ~ .categoria {
+  transition: margin 0.3s ease-in-out;
+}
+
+
+.categoria.eco {
+  flex-direction: row-reverse; /* Icono a la derecha */
+  text-align: right;
+}
+
+.categoria.eco img {
+  margin: 0 0 0 1vh; /* separación entre texto e imagen */
+}
+
+.categoria.eco:hover {
+  width: 26vh;
+  margin-left: -16vh; /* truco: se mueve ella hacia la izquierda */
+}
+
+.categoria.eco:hover .info {
   opacity: 1;
 }
 
-.categoria-eco:hover .info-lavado-eco {
-  opacity: 1;
-}
-
-/* mover los siguientes a la derecha si quieres */
-.categoria-frio:hover ~ .categoria-caliente,
-.categoria-frio:hover ~ .categoria-eco {
-  transform: translateX(3vh);
-  transition: transform 0.4s ease;
+.categoria.mover-izquierda {
+  transform: translateX(-16vh);
+  transition: transform 0.3s ease-in-out;
 }
 
 
-  .personalizar {
-    margin: 3rem 1.5rem;
-  }
+.personalizar {
+  margin: 3rem 1.5rem;
+}
 
-  .personalizar-sombra {
-    position: relative;
-  }
-  
+.personalizar-sombra {
+  position: relative;
+}
 
 .personalizar-box{
     display: flex;
@@ -364,7 +432,7 @@ h3{
     width: 100%;
   }
   
-  .info {
+  .info-qr {
     flex: 2; /* Ocupa  partes del espacio (1:2 ratio) */
     display: flex;
     flex-direction: column;

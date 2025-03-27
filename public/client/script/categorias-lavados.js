@@ -16,7 +16,7 @@ if (usuarioActual && usuarios[usuarioActual]) {
 
     // Si ya es favorito, pintamos el corazón lleno
     if (userData.favoritos.includes(nombreLavado)) {
-      corazon.src = '../images/cora_relleno.svg';
+      corazon.src = '../../../images/cora_relleno.svg';
       corazon.classList.add('activo');
     }
 
@@ -26,11 +26,11 @@ if (usuarioActual && usuarios[usuarioActual]) {
 
       if (corazon.classList.contains('activo')) {
         corazon.classList.remove('activo');
-        corazon.src = '../images/corazon.svg';
+        corazon.src = '../../../images/corazon.svg';
         userData.favoritos = favoritos.filter(nombre => nombre !== nombreLavado);
       } else {
         corazon.classList.add('activo');
-        corazon.src = '../images/cora_relleno.svg';
+        corazon.src = '../../../images/cora_relleno.svg';
         userData.favoritos.push(nombreLavado);
       }
 
