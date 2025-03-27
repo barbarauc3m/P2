@@ -48,7 +48,7 @@ document.getElementById("abrir-registro").addEventListener("click", function (e)
       username,
       email,
       password,
-      foto: "../images/persona_cla.svg", // Por defecto
+      foto: "../../../images/persona_cla.svg", // Por defecto
       favoritos: [],
     };
 
