@@ -421,7 +421,7 @@ h3{
   }
   
   .qr-box {
-    flex: 1;
+    flex: 1; /* Ocupa 1 parte del espacio (1:2 ratio) */
     display: flex;
     justify-content: center;
     width: 60px;
