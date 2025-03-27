@@ -54,7 +54,7 @@ body {
     padding: 0 16px 80px;
     overflow-y: auto;
   }
-  
+
   .lavado-card {
     background-color: #f1f6ff;
     border-radius: 16px;
@@ -65,38 +65,103 @@ body {
     display: flex;
     align-items: flex-start;
     position: relative;
-  }
-  
-  .lavado-imagen{
-    height: 15vh;
-    display: flex;
-    justify-content: center;
-    align-items: center;
+    overflow: hidden;
+    max-height:  15vh;
+    transition: max-height 0.4s ease-in-out;
   }
 
-  .lavado-card .icon {
-    width: 10vh;
-    margin-right: 12px;
-    margin-top: 6px;
-  }
-
-  
-  .lavado-card .info {
-    flex-grow: 1;
-  }
-
-  
   .lavado-card p {
     font-size: 1.5vh;
     margin: 0 0 6px;
   }
-  
+
   .lavado-card ul {
     list-style: disc;
     padding-left: 18px;
     margin: 0;
     font-size: 1.5vh;
   }
+
+  .lavado-card:hover {
+    max-height: 45vh; 
+  }
+  
+  .lavado-button {
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity 0.4s ease-in-out;
+    margin-top: 1vh;
+  }
+  
+  .lavado-card:hover .lavado-button {
+    opacity: 1;
+    pointer-events: auto;
+  }
+  
+  .lavado-card .icon {
+    width: 10vh;
+    margin-bottom: 1vh;
+  }
+  
+  .lavado-card .info {
+    display: flex;
+    flex-direction: column;
+  }
+  
+
+
+
+  .lavado-button{
+    display: flex;
+    justify-content: center;
+    align-self: center;
+    padding-top: 2vh;
+  }
+
+  .button {
+  cursor: pointer;
+  position: relative;
+  padding: 1vh 2vh;
+  font-size: 1.5vh;
+  color: #5D6B8B;
+  border: 2px solid #5D6B8B;
+  border-radius: 34px;
+  background-color: transparent;
+  font-weight: 600;
+  transition: all 0.3s cubic-bezier(0.23, 1, 0.320, 1);
+  overflow: hidden;
+}
+
+.button::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  margin: auto;
+  width: 50px;
+  height: 50px;
+  border-radius: inherit;
+  scale: 0;
+  z-index: -1;
+  background-color: #5D6B8B;
+  transition: all 0.6s cubic-bezier(0.23, 1, 0.320, 1);
+}
+
+.button:hover::before {
+  scale: 3;
+}
+
+.button:hover {
+  color: #EDF2FB;
+  scale: 1.1;
+  box-shadow: 0 0px 20px rgba(193, 163, 98,0.4);
+}
+
+.button:active {
+  scale: 1;
+}
+
+
+
   
   .lavado-card .heart {
     width: 20px;
@@ -132,7 +197,7 @@ body {
   
 
   /*NAVEGADOR MOVIL*/
-.button {
+.button-nav {
   outline: 0 !important;
   border: 0 !important;
   width: 40px;
@@ -147,7 +212,7 @@ body {
   cursor: pointer;
 }
 
-.button:hover {
+.button-nav:hover {
   transform: translateY(-3px);
 }
 

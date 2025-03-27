@@ -139,7 +139,7 @@
   }
   
 
-.button {
+.button-nav {
   outline: 0 !important;
   border: 0 !important;
   width: 40px;
@@ -154,7 +154,7 @@
   cursor: pointer;
 }
 
-.button:hover {
+.button-nav:hover {
   transform: translateY(-3px);
 }
 
