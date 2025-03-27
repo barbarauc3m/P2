@@ -40,3 +40,36 @@ if (usuarioActual && usuarios[usuarioActual]) {
     });
   });
 }
+
+
+// Selecciona todos los botones "EMPEZAR"
+const botones = document.querySelectorAll(".lavado-button .button");
+
+botones.forEach((boton) => {
+  boton.addEventListener("click", () => {
+    // Encuentra el contenedor del lavado
+    const card = boton.closest(".lavado-card");
+    const section = boton.closest(".lavado");
+
+    const nombre = section.querySelector("h2").textContent.trim();
+    const descripcion = card.querySelector("p")?.textContent.trim() || "";
+    const items = card.querySelectorAll("ul li");
+
+    const lavado = {
+      nombre,
+      descripcion,
+      temperatura: items[0]?.textContent.split(":")[1]?.trim() || "",
+      duracion: items[1]?.textContent.split(":")[1]?.trim() || "",
+      centrifugado: items[2]?.textContent.split(":")[1]?.trim() || "",
+      detergente: items[3]?.textContent.split(":")[1]?.trim() || "",
+      fechaInicio: new Date().toLocaleString("es-ES", {
+        dateStyle: "short",
+        timeStyle: "short"
+      })
+    };
+
+    // Guardar en localStorage y redirigir
+    localStorage.setItem("lavadoSeleccionado", JSON.stringify(lavado));
+    window.location.href = "empezar-lavado.html";
+  });
+});

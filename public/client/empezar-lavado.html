@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Empezar Lavado</title>
+  <link rel="stylesheet" href="styles/empezar-lavado.css" />
+
+</head>
+<body>
+    <header class="top-bar">
+        <a class="back-button" href="index.html">←</a>
+        <h1 id="lavado-nombre">Lavado seleccionado</h1>
+    </header>
+    <p class="lavado-hora-fin" id="lavado-hora-fin"></p>
+  
+    <div class="configuracion-toggle">
+      <h2 id="config-title">Configuración<img src="../../images/drop_flecha.svg" alt="configuración" class="config-img" /> </h2>
+      <div class="configuracion" id="configuracion-box">
+        <div class="configuracion-content" id="configuracion-detalles">
+          <!-- Configuración interna -->
+        </div>
+      </div>
+    </div>
+
+  <div class="scan-section">
+    <h2>Escanear ropa</h2>
+    <div class="scan-box">
+        <div class="scan-info">
+            <img src="../../images/escaner.svg" alt="Escaner" class="scan-img" />
+            <p>¿Lavado seguro? Escanea tus prendas antes de empezar.</p>
+        </div>
+        <div class="scan-button">
+            <button onclick="window.location.href='escaner.html'">Escanear Prendas</button>
+        </div>
+    </div>
+  </div>
+
+
+  <div class="boton-iniciar">
+    <button class="cssbuttons-io-button">
+        Get started
+        <div class="icon">
+        <svg
+            xmlns="http://www.w3.org/2000/svg"
+            viewBox="0 0 24 24"
+            width="24"
+            height="24"
+        >
+            <path fill="none" d="M0 0h24v24H0z"></path>
+            <path
+            fill="currentColor"
+            d="M16.172 11l-5.364-5.364 1.414-1.414L20 12l-7.778 7.778-1.414-1.414L16.172 13H4v-2z"
+            ></path>
+        </svg>
+        </div>
+    </button>
+    </div>
+    
+  <script src="script/empezar-lavado.js"></script>
+
+
+
+</body>
+</html>

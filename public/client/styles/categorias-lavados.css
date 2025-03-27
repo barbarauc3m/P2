@@ -109,8 +109,6 @@ body {
   }
   
 
-
-
   .lavado-button{
     display: flex;
     justify-content: center;
@@ -153,7 +151,7 @@ body {
 .button:hover {
   color: #EDF2FB;
   scale: 1.1;
-  box-shadow: 0 0px 20px rgba(193, 163, 98,0.4);
+  box-shadow: 0 0px 20px #4A556F ;
 }
 
 .button:active {

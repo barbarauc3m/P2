@@ -1,0 +1,287 @@
+/*FUENTES*/
+
+@font-face {
+    font-family: 'Super Cottage';
+    src: url(../../../../fonts/Super\ Cottage.ttf);
+    font-weight: normal;
+    font-style: normal;
+  }
+  
+  @font-face {
+    font-family: 'Janda';
+    src: url(../../../../fonts/JandaManateeSolid.ttf);
+    font-weight: normal;
+    font-style: normal;
+  }
+body {
+    background-color: #f4f7fa;
+    margin: 0;
+    padding: 2vh;
+    color: #EDF2FB;
+    background-color: #5D6B8B;
+  }
+
+  h1 {
+    color: #EDF2FB;
+    font-size: 4vh;
+    margin-left: 2vh;
+    font-family: 'Super Cottage', sans-serif;
+  }
+
+  h2{
+    font-size: 2.5vh;
+    font-family: 'Super Cottage', sans-serif;
+  }
+
+
+  .top-bar {
+    display: flex;
+    align-items: center;
+    padding: 16px;
+    font-weight: bold;
+    color: #EDF2FB;
+    font-size: 20px;
+  }
+  
+  .top-bar .back-button {
+    text-decoration: none;
+    color: #EDF2FB;
+    background: none;
+    border: none;
+    font-size: 24px;
+    cursor: pointer;
+    margin-right: 12px;
+  }
+
+  .lavado-hora-fin {
+    font-size: 1.8vh;
+    color: #EDF2FB;
+    margin-top: -1vh;
+    margin-bottom: 7vh;
+    margin-left: 2vh;
+    transition: opacity 0.4s ease-in-out;
+  }
+
+  .configuracion {
+    border-radius: 1rem;
+    margin-bottom: 3vh;
+    overflow: hidden;
+    transition: max-height 0.5s ease-in-out, opacity 0.4s ease-in-out;
+    max-height: 0;
+    opacity: 0;
+  }
+
+  .configuracion.visible {
+    max-height: 500px;
+    opacity: 1;
+  }
+
+  .configuracion-content {
+    padding: 2vh;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+  }
+
+  #config-title{
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    width: 90%;
+    margin: 0 2vh;
+  }
+
+  .configuracion h2 {
+    cursor: pointer;
+    font-size: 2vh;
+    color: #EDF2FB;
+  }
+
+  .config-img{
+    width: 2vh;
+    margin-right: 1vh;
+  }
+
+  .lavado-info{
+    display: inline-flex;
+    align-items: center;
+    width: 60vw;
+    background-color: #d2d4de66;
+    padding: 2vh;
+    border-radius: 1rem;
+    color: #EDF2FB;
+    font-size: 1.5vh;
+    box-shadow: 0 6px 12px #2429363f;
+
+  }
+
+  .info-img {
+    width: auto;
+    height: 3vh;
+    margin-right: 2vh;
+  }
+
+  
+  .scan-section {
+    margin: 4vh 2vh;
+  }
+
+  .scan-box{
+    background-color: #d2d4de66;
+    padding: 2vh;
+    border-radius: 1rem;
+    box-shadow: 0 6px 12px #2429363f;
+}
+
+  .scan-box img{
+    height: 10vh;
+  }
+
+  .scan-info{
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 4vh;
+    padding: 2vh;
+  }
+
+  .scan-info p{
+    font-size: 1.5vh;
+  }
+
+  .scan-button{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
+
+
+  .scan-button button{
+    cursor: pointer;
+    position: relative;
+    padding: 1vh 2vh;
+    font-size: 1.5vh;
+    color: #EDF2FB;
+    border: 2px solid #EDF2FB;
+    border-radius: 34px;
+    background-color: transparent;
+    font-weight: 600;
+    transition: all 0.3s cubic-bezier(0.23, 1, 0.320, 1);
+    overflow: hidden;
+  }
+  
+  .scan-button button::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    margin: auto;
+    width: 50px;
+    height: 50px;
+    border-radius: inherit;
+    scale: 0;
+    z-index: -1;
+    background-color: #EDF2FB;
+    transition: all 0.6s cubic-bezier(0.23, 1, 0.320, 1);
+  }
+  
+  .scan-button button:hover::before {
+    scale: 3;
+  }
+  
+  .scan-button button:hover {
+    color: #5D6B8B;
+    scale: 1.1;
+    box-shadow: 0 0px 20px #4A556F;
+  }
+  
+  .scan-button button:active {
+    scale: 1;
+  }
+
+  .boton-iniciar{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin-top: 20vh;
+  }
+
+  .cssbuttons-io-button {
+    background: #ffffff;
+    color: #5d6b8b;
+    font-family: inherit;
+    padding: 0.35em 1.2em 0.35em 1.2em;
+    font-size: 17px;
+    font-weight: 500;
+    border-radius: 0.9em;
+    border: none;
+    letter-spacing: 0.05em;
+    display: flex;
+    align-items: center;
+    box-shadow: inset 0 0 1.6em -0.6em #5d6b8b;
+    overflow: hidden;
+    position: relative;
+    height: 2.8em;
+    padding-right: 3.3em;
+    cursor: pointer;
+  }
+
+  .cssbuttons-io-button .icon {
+    background: #5d6b8b;
+    margin-left: 1em;
+    position: absolute;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    height: 2.2em;
+    width: 2.2em;
+    border-radius: 0.7em;
+    box-shadow: 0.1em 0.1em 0.6em 0.2em #5d6b8b;
+    right: 0.3em;
+    transition: all 0.3s;
+  }
+
+  .cssbuttons-io-button:hover .icon {
+    width: calc(100% - 0.6em);
+  }
+
+  .cssbuttons-io-button .icon svg {
+    width: 1.1em;
+    transition: transform 0.3s;
+    color: #ffffff;
+  }
+
+  .cssbuttons-io-button:hover .icon svg {
+    transform: translateX(0.1em);
+  }
+
+  .cssbuttons-io-button:active .icon {
+    transform: scale(0.95);
+  }
+
+
+    /*NAVEGADOR MOVIL*/
+    .button-nav {
+        outline: 0 !important;
+        border: 0 !important;
+        width: 40px;
+        height: 40px;
+        border-radius: 50%;
+        background-color: transparent;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        color: #fff;
+        transition: all ease-in-out 0.3s;
+        cursor: pointer;
+      }
+      
+      .button-nav:hover {
+        transform: translateY(-3px);
+      }
+      
+      .icon-img {
+        width: auto;
+        height: 2.5vh;
+      }
+      
