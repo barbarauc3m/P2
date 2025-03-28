@@ -1,0 +1,130 @@
+@font-face {
+    font-family: 'Super Cottage';
+    src: url(../../../../fonts/Super\ Cottage.ttf);
+    font-weight: normal;
+    font-style: normal;
+}
+
+@font-face {
+  font-family: 'Janda';
+  src: url(../../../../fonts/JandaManateeSolid.ttf);
+  font-weight: normal;
+  font-style: normal;
+}
+
+
+h1{
+  font-family: 'Super Cottage', sans-serif;  
+  font-size: 3vh;
+}
+
+h2{
+  margin-left: 2vh;
+  font-size: 2.5vh;
+  font-family: 'Super Cottage', sans-serif;  
+}
+
+body {
+    margin: 0;
+    padding: 0;
+    font-family: sans-serif;
+    background-color: #f9fbff;
+}
+
+.top-bar {
+  display: flex;
+  align-items: center;
+  padding: 16px;
+  font-weight: bold;
+  color: #3c3c6e;
+  font-size: 20px;
+}
+
+.top-bar .back-button {
+  text-decoration: none;
+  color: #3c3c6e;
+  background: none;
+  border: none;
+  font-size: 24px;
+  cursor: pointer;
+  margin-right: 12px;
+}
+
+.texto-header {
+  color: #3c3c6e;
+  text-align: center;
+  margin-top: 2vw;
+}
+
+.texto-header p {
+  color: rgb(0, 0, 0);
+}
+
+.juegos-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+}
+
+.juegos-container p {
+  font-family: sans-serif;
+  font-weight: bold;
+  font-size: 2vh;
+  color: #3c3c6e;
+  margin-top: 2vw;
+}
+
+.juego {
+  margin-bottom: 5vw;
+  align-items: center;
+  text-align: center;
+}
+
+.juego img {
+  width: 50vw; /* Ajusta según tu diseño */
+  height: 50vw; /* Ajusta según tu diseño */
+  object-fit: cover; /* Asegura que la imagen se recorte para llenar el espacio */
+  border-radius: 10px;
+  box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1);
+}
+
+
+.button-container {
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  width: 100%;
+  background-color: #5D6B8B;
+  height: 6vh;
+  display: flex;
+  align-items: center;
+  justify-content: space-around;
+  z-index: 1000; /* Para que esté por encima de todo */
+}
+
+
+/*NAVEGADOR MOVIL*/
+.button-nav {
+  outline: 0 !important;
+  border: 0 !important;
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  background-color: transparent;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: #fff;
+  transition: all ease-in-out 0.3s;
+  cursor: pointer;
+}
+
+.button-nav:hover {
+  transform: translateY(-3px);
+}
+
+.icon-img {
+  width: auto;
+  height: 2.5vh;
+}

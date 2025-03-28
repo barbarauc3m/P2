@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Juegos</title>
+  <link rel="stylesheet" href="styles/juegos.css" />
+</head>
+<body>
+  <header class="top-bar">
+    <a class="back-button" href="index.html">←</a>
+    <div class="texto-header">
+        <h1>Juegazos</h1>
+        <p>Si la ropa se entretiene, por qué tú no...</p>
+    </div>
+
+  </header>
+
+  <main class="main-content">
+
+    <div class="juegos-container">
+      <div class="juego" onclick="loadGame('Atrapa la ropa', '¡Corre y atrapa la ropa antes de que se caiga!')">
+        <p>Atrapa la ropa !!</p>
+        <img src="/images/CarÃ¡tula_de_PokÃ©mon_Azul.jpg" alt="Juego 1" />
+      </div>
+      <div class="juego" onclick="loadGame('Duelo de doblado', '¡Compite doblando la ropa más rápido!')">
+        <p>Duelo de doblado</p>
+        <img src="/images/0_Cars2_PS3__ESP_2D.jpg" alt="Juego 2" />
+      </div>
+      <div class="juego" onclick="loadGame('El rey del tendedero', '¡Cuelga toda la ropa antes de que llueva!')">
+        <p>El rey del tendedero</p>
+        <img src="/images/inazuma_eleven-1707816.png" alt="Juego 3" />
+      </div>
+      <div class="juego" onclick="loadGame('Combo de manchas', '¡Elimina todas las manchas en el menor tiempo posible!')">
+        <p>Combo de manchas</p>
+        <img src="/images/images.jpeg" alt="Juego 4" />
+      </div>
+
+    <div class="button-container">
+      <button class="button-nav" onclick="window.location.href='index.html'">
+        <img src="../../../images/casa_blanca.svg" alt="Casa" class="icon-img" />
+      </button>
+      <button class="button-nav" onclick="window.location.href='juegos.html'">
+        <img src="../../../images/mando_claro.svg" alt="Mando" class="icon-img" />
+      </button>
+      <button class="button-nav">
+        <img src="../../../images/persona_cla.svg" alt="Persona" class="icon-img" />
+      </button>
+      <button class="button-nav" onclick="window.location.href='escaner.html'">
+        <img src="../../../images/icon_cam_cla.svg" alt="Camara" class="icon-img" />
+      </button>
+    </div>
+  </main>
+  <script src="/public/client/script/juegos.js"></script>
+</body>
+</html>

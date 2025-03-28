@@ -1,0 +1,64 @@
+@import url('//fonts.googleapis.com/css2?family=Montserrat:ital,wght@1,800&display=swap');
+
+body {
+    background-color: #5d6b8b;
+    margin: 0;
+    overflow: hidden;
+}
+
+.pantalla-carga {   
+    display: grid;
+    place-content: center;
+    height: 100vh;
+    position: fixed;
+    width: 100%;
+    background-color: #5d6b8b;
+    z-index: 9999;
+    transition: opacity 0.5s ease-out, transform 0.5s ease-out;
+}
+
+.imagen-carga {
+    width: 20vw;
+    height: 20vw;
+    margin: 10vw auto;
+}
+
+.cargando {
+    width: 100px;
+    height: 20px;
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-end;
+    margin: 0 auto; 
+}
+
+.pelotas {
+    width: 20px;
+    height: 20px;
+    background-color: white;
+    animation: salto 0.5s alternate infinite;
+    border-radius: 50%;
+}
+
+.pelotas:nth-child(2) {
+    animation-delay: 0.18s;
+}
+
+.pelotas:nth-child(3) {
+    animation-delay: 0.37s;
+}
+
+@keyframes salto {
+    from {
+        transform: scaleX(1.1);
+    }
+    to {
+        transform: translateY(-20px) scaleX(1);
+    }
+}
+
+.pantalla-carga.hidden {
+    opacity: 0;
+    transform: scale(1.1);
+    pointer-events: none;
+}
