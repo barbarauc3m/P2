@@ -1,8 +1,19 @@
 const express = require('express');
 const path = require('path');
+const https = require('https');
 const fs = require('fs');
 const app = express();
 const PORT = 6969;
+const { Server } = require('socket.io');
+
+// Carga de certificados
+const server = https.createServer({
+  key: fs.readFileSync('key.pem'),
+  cert: fs.readFileSync('cert.pem')
+}, app);
+
+// Inicializa Socket.IO sobre HTTPS
+const io = new Server(server);
 
 app.use(express.json());
 
@@ -53,30 +64,102 @@ app.get('/lavado-personalizado.html', (req, res) => {
 // Ruta POST para guardar lavado
 app.post('/guardar-lavado', (req, res) => {
   const nuevoLavado = req.body;
+  const usuario = nuevoLavado.usuario;
 
-  fs.readFile(path.join(__dirname, 'lavados.json'), 'utf8', (err, data) => {
-    if (err) return res.status(500).send('Error al leer archivo');
+  if (!usuario) return res.status(400).send('Falta el nombre del usuario');
 
-    let lavados = JSON.parse(data);
-    lavados.unshift(nuevoLavado);
-    lavados = lavados.slice(0, 20);
+  const filePath = path.join(__dirname, 'lavados-usuarios.json');
 
-    fs.writeFile(path.join(__dirname, 'lavados.json'), JSON.stringify(lavados, null, 2), (err) => {
-      if (err) return res.status(500).send('Error al guardar');
+  fs.readFile(filePath, 'utf8', (err, data) => {
+    let dataUsuarios = {};
+    if (!err && data) {
+      try {
+        dataUsuarios = JSON.parse(data);
+      } catch (e) {
+        return res.status(500).send('Error al parsear JSON de lavados-usuarios');
+      }
+    }
+
+    // Si no hay lavados previos para el usuario, lo inicializamos
+    if (!dataUsuarios[usuario]) dataUsuarios[usuario] = [];
+
+    // Guardamos el nuevo lavado al principio y limitamos a 20
+    dataUsuarios[usuario].unshift(nuevoLavado);
+    dataUsuarios[usuario] = dataUsuarios[usuario].slice(0, 20);
+
+    fs.writeFile(filePath, JSON.stringify(dataUsuarios, null, 2), err => {
+      if (err) return res.status(500).send('Error al guardar el lavado');
       res.send('Lavado guardado correctamente');
     });
   });
 });
 
-// Ruta GET para mostrar los últimos lavados
-app.get('/ultimos-lavados', (req, res) => {
-  fs.readFile(path.join(__dirname, 'lavados.json'), 'utf8', (err, data) => {
-    if (err) return res.status(500).send('Error al leer archivo');
-    const lavados = JSON.parse(data).slice(0, 3);
-    res.json(lavados);
+// ✅ Nueva ruta para obtener lavados de un usuario
+app.get('/lavados/:usuario', (req, res) => {
+  const usuario = req.params.usuario;
+  const filePath = path.join(__dirname, 'lavados-usuarios.json');
+
+  fs.readFile(filePath, 'utf8', (err, data) => {
+    if (err || !data) return res.json([]);
+    try {
+      const json = JSON.parse(data);
+      res.json(json[usuario] || []);
+    } catch (e) {
+      res.status(500).send('Error al parsear lavados');
+    }
   });
 });
 
-app.listen(PORT, () => {
-  console.log(`Servidor corriendo en http://localhost:${PORT}`);
+
+// Ruta GET para obtener favoritos
+app.get('/favoritos', (req, res) => {
+  fs.readFile('lavados-favs.json', 'utf8', (err, data) => {
+    if (err) return res.json({});
+    res.json(JSON.parse(data));
+  });
+});
+
+// Ruta POST para guardar favoritos
+app.post('/guardar-favoritos', (req, res) => {
+  const { usuario, favoritos } = req.body;
+
+  fs.readFile('lavados-favs.json', 'utf8', (err, data) => {
+    let allFavs = {};
+    if (!err && data) {
+      try {
+        allFavs = JSON.parse(data);
+      } catch (e) {
+        return res.status(500).send('❌ Error parsing JSON');
+      }
+    }
+
+    allFavs[usuario] = favoritos;
+
+    fs.writeFile('lavados-favs.json', JSON.stringify(allFavs, null, 2), err => {
+      if (err) return res.status(500).send('❌ Error al guardar favoritos');
+      res.send('✅ Favoritos guardados correctamente');
+    });
+  });
+});
+
+
+
+
+// Lógica de socket
+io.on('connection', (socket) => {
+  console.log('Usuario conectado');
+
+  socket.on('mensaje', (data) => {
+    console.log('Mensaje recibido:', data);
+    socket.broadcast.emit('mensaje', data);
+  });
+
+  socket.on('disconnect', () => {
+    console.log('Usuario desconectado');
+  });
+});
+
+
+server.listen(PORT, () => {
+  console.log(`Servidor HTTPS con Socket.IO en https://localhost:${PORT}`);
 });

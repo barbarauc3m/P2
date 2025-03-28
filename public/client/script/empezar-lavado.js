@@ -51,18 +51,26 @@ const lavado = JSON.parse(localStorage.getItem('lavadoSeleccionado'));
 
       document.querySelector(".cssbuttons-io-button").addEventListener("click", () => {
         const lavado = JSON.parse(localStorage.getItem('lavadoSeleccionado'));
-        if (!lavado) return;
-      
+        const usuario = localStorage.getItem('loggedInUser');
+        if (!lavado || !usuario) {
+          alert("Debes estar registrado para guardar el lavado.");
+          return;
+        }
+
+        // Añadir usuario al objeto que se envía
+        lavado.usuario = usuario;
+
         fetch('/guardar-lavado', {
           method: 'POST',
           headers: { 'Content-Type': 'application/json' },
           body: JSON.stringify(lavado)
         })
+
           .then(res => res.text())
           .then(msg => {
             console.log(msg);
             alert("Lavado iniciado y guardado correctamente 🧼");
-            // aquí podrías redirigir o animar
+            window.location.href = "/index.html";
           })
           .catch(err => {
             console.error(err);

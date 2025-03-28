@@ -1,0 +1,31 @@
+{
+  "albatello": [
+    {
+      "nombre": "Lavado Ropa Blanca",
+      "descripcion": "Ideal para camisas, toallas, sábanas, ropa blanca, etc.",
+      "temperatura": "60ºC",
+      "duracion": "1h",
+      "centrifugado": "1200 rpm",
+      "detergente": "55 ml",
+      "imagen": "../../../images/ropa_blanca.svg"
+    },
+    {
+      "nombre": "Lavado Caliente",
+      "descripcion": "Ideal para ropa muy sucia o con manchas.",
+      "temperatura": "60ºC",
+      "duracion": "1h 15 min",
+      "centrifugado": "1200 rpm",
+      "detergente": "60 ml",
+      "imagen": "../../../images/caliente.svg"
+    },
+    {
+      "nombre": "Lavado Rápido",
+      "descripcion": "Ideal para ropa poco sucia o uso diario.",
+      "temperatura": "30ºC",
+      "duracion": "30 min",
+      "centrifugado": "1200 rpm",
+      "detergente": "50 ml",
+      "imagen": "../../../images/rapido.svg"
+    }
+  ]
+}

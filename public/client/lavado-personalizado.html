@@ -5,7 +5,6 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Lavado Personalizado</title>
     <link rel="stylesheet" href="styles/lavado-personalizado.css">
-    <script src="https://kit.fontawesome.com/a076d05399.js" crossorigin="anonymous"></script>
 </head>
 <body>
     <button class="close-btn">&times;</button>
@@ -22,16 +21,14 @@
                 <p class="title">Nivel de suciedad</p>
                 <div class="barrita-elige-valor">
                     <p class="subtitle">Elige un valor</p>
-                    <button class="button-dropdown">
-                        <img src="../../images/drop_flecha.svg" alt="Flecha">
-                    </button>
+                    <img src="../../images/drop_flecha.svg" alt="Flecha ">
                 </div>
             </div>
             </div> 
             <div class="dropdown-menu">
-                <label><input type="checkbox"> Bajo: ropa a penas usada</label>
-                <label><input type="checkbox"> Medio: uso diario</label>
-                <label><input type="checkbox"> Alto: manchas visibles</label>
+                <label><input type="checkbox"> Ropa a penas usada</label>
+                <label><input type="checkbox"> Ropa de uso diario</label>
+                <label><input type="checkbox"> Manchas visibles</label>
             </div>
         </div>
 
@@ -39,19 +36,18 @@
             <div class="option-box">
                 <img src="../../images/temperatura.svg" alt="Temperatura">
                 <div class="text">
-                    <p class="title">Nivel de suciedad</p>
+                    <p class="title">Temperatura</p>
                     <div class="barrita-elige-valor">
                         <p class="subtitle">Elige un valor</p>
-                        <button class="button-dropdown">
-                            <img src="../../images/drop_flecha.svg" alt="Flecha">
-                        </button>
+                        <img src="../../images/drop_flecha.svg" alt="Flecha ">
                     </div>
                 </div>
                 </div> 
                 <div class="dropdown-menu">
-                    <label><input type="checkbox"> Bajo: ropa a penas usada</label>
-                    <label><input type="checkbox"> Medio: uso diario</label>
-                    <label><input type="checkbox"> Alto: manchas visibles</label>
+                    <div class="slider-box">
+                        <label for="temperatura">Temperatura: <span id="tempValue">30</span>°C</label>
+                        <input type="range" id="temperatura" min="20" max="90" step="5" value="30">
+                      </div>
                 </div>
             </div>
 
@@ -67,9 +63,9 @@
             </div>
             </div> 
             <div class="dropdown-menu">
-                <label><input type="checkbox"> Bajo: ropa a penas usada</label>
-                <label><input type="checkbox"> Medio: uso diario</label>
-                <label><input type="checkbox"> Alto: manchas visibles</label>
+                <label><input type="checkbox"> Bajo: 600 rpm</label>
+                <label><input type="checkbox"> Medio: 800 rpm</label>
+                <label><input type="checkbox"> Alto: 1200 rpm</label>
             </div>
         </div>
 
@@ -85,9 +81,10 @@
             </div>
             </div> 
             <div class="dropdown-menu">
-                <label><input type="checkbox"> Bajo: ropa a penas usada</label>
-                <label><input type="checkbox"> Medio: uso diario</label>
-                <label><input type="checkbox"> Alto: manchas visibles</label>
+                <div class="slider-box">
+                    <label for="duracion">Duración: <span id="durValue">30</span> min</label>
+                    <input type="range" id="duracion" min="15" max="120" step="5" value="30">
+                  </div>
             </div>
         </div>
 
@@ -103,9 +100,10 @@
             </div>
             </div> 
             <div class="dropdown-menu">
-                <label><input type="checkbox"> Bajo: ropa a penas usada</label>
-                <label><input type="checkbox"> Medio: uso diario</label>
-                <label><input type="checkbox"> Alto: manchas visibles</label>
+                <div class="slider-box">
+                    <label for="detergente">Detergente: <span id="detValue">50</span> ml</label>
+                    <input type="range" id="detergente" min="10" max="100" step="5" value="50">
+                  </div>
             </div>
         </div>
 
@@ -121,13 +119,27 @@
             </div>
             </div> 
             <div class="dropdown-menu">
-                <label><input type="checkbox"> Bajo: ropa a penas usada</label>
-                <label><input type="checkbox"> Medio: uso diario</label>
-                <label><input type="checkbox"> Alto: manchas visibles</label>
+                <label><input type="checkbox"> Algodón</label>
+                <label><input type="checkbox"> Sintético</label>
+                <label><input type="checkbox"> Lana</label>
+                <label><input type="checkbox"> Mezcla</label>
+                <label><input type="checkbox"> Blanco</label>
+                <label><input type="checkbox"> Color</label>
             </div>
         </div>
-    <script src="script/dropdown.js"></script>   
+        <div class="favs">        
+            <img src="../../../images/cora_blanco.svg" class="heart" alt="Favorito">
+            Guardalo en favoritos
+        </div>
+        <script src="script/dropdown.js"></script>   
+    
+        <div class="button-save-box">
+            <button class="button-save">GUARDAR</button>
+        </div>
+
     </div>
+
+    
     <div class="button-container">
         <button class="button-nav" onclick="window.location.href='index.html'">
           <img src="../../../images/casa_blanca.svg" alt="Casa" class="icon-img" />
@@ -138,9 +150,11 @@
         <button class="button-nav">
           <img src="../../../images/persona_cla.svg" alt="Persona" class="icon-img" id="perfil-icono"/>
         </button>
-        <button class="button-nav" onclick="window.location.href='escaner.html'">
+        <button class="button-nav" onclick="window.location.href='lavado-personalizado.html'">
           <img src="../../../images/icon_cam_cla.svg" alt="Camara" class="icon-img" />
         </button>
       </div>
+      <script src="script/login.js"></script>
+      <script src="script/register.js"></script>
 </body>
 </html>

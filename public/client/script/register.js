@@ -41,6 +41,11 @@ document.getElementById("abrir-registro").addEventListener("click", function (e)
         alert("Ya existe una cuenta con ese correo.");
         return;
       }
+
+      if (usuarios[key].username === username) {
+        alert("Ya existe una cuenta con ese username.");
+        return;
+      }
     }
 
     // Guardar nuevo usuario
