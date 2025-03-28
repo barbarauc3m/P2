@@ -10,12 +10,18 @@
   <header>
     <button class="back-btn">←</button>
     <h1 class="username">kk</h1>
-    <img src="foto-usuario.webp" alt="Avatar" class="avatar" />
   </header>
 
   <section class="stats">
-    <p>⭐ Lavados completados: <span>54</span></p>
-    <p>❤️ Lavados favoritos: <span>4</span></p>
+    <div class="stats-box">
+      <div class="stats-info">
+        <p>⭐ Lavados completados: <span>54</span></p>
+        <p>❤️ Lavados favoritos: <span>4</span></p>
+      </div>
+      <div>
+        <img src="../../images/persona_os.svg" alt="Avatar" class="avatar" />
+      </div>
+    </div>
   </section>
 
   <section class="programas">
@@ -23,30 +29,38 @@
       <h2>Mis programas</h2>
       <a href="#">ver más</a>
     </div>
-    <div class="programa">
-      <span class="estrella">⭐</span>
-      <div>
-        <h3>Lavado Personalizado 1</h3>
-        <button class="empezar-btn">Empezar</button>
+    <section class="lavado-box-none">
+      <div class="lavado-sombra">
+        <div class="sombra sombra-50"></div>
+        <div class="sombra sombra-20"></div>
+        <div class="lavado">
+          <div class="lavado-header">
+            <p class="lavado-text">Comienza a registrar tus lavados favoritos</p>
+            <div class="lavado-button">
+              <button class="button-lav">Registralos</button>
+            </div>
+          </div>
+        </div>
       </div>
-    </div>
+    </section>
+    <section class="lavado-box">
+      <!-- Aquí se generará el úñtimo lavado guardado, ya sea en like o personalizado creado-->
+    </section>
   </section>
 
-  <section class="anteriores">
-    <div class="section-title">
+  <section class="categorias">
+    <div class="section-header">
       <h2>Lavados anteriores</h2>
-      <a href="#">ver más</a>
+      <a href="historial.html">ver más</a>
     </div>
-    <div class="iconos-anteriores">
-      <div class="icon-box">⏱️</div>
-      <div class="icon-box">⭐</div>
-      <div class="icon-box">🌲</div>
+    <div class="categoria-list">
+      <!-- Aquí van los lavados anteriores -->
     </div>
   </section>
 
   <section class="notificaciones">
     <div class="section-title">
-      <h2>Editar alarmas, notificaciones</h2>
+      <h2>Editar alarmas</h2>
       <button class="plus-btn">+</button>
     </div>
     <div class="notificacion-item">Lana <button>❯</button></div>
@@ -63,10 +77,12 @@
     <button class="button-nav">
       <img src="../../../images/persona_cla.svg" alt="Persona" class="icon-img" id="perfil-icono"/>
     </button>
-    <button class="button-nav" onclick="window.location.href='escaner.html'">
+    <button class="button-nav" onclick="window.location.href='lavado-personalizado.html'">
       <img src="../../../images/icon_cam_cla.svg" alt="Camara" class="icon-img" />
     </button>
   </div>
-    <script src="scripts/perfil.js"></script>
+    <script src="script/perfil.js"></script>
+    <script src="script/login.js"></script>
+    <script src="script/register.js"></script>
 </body>
 </html>

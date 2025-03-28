@@ -48,3 +48,33 @@ const lavado = JSON.parse(localStorage.getItem('lavadoSeleccionado'));
         return new Date(añoReal, mes - 1, dia, horas, minutos);
       }
       
+
+      document.querySelector(".cssbuttons-io-button").addEventListener("click", () => {
+        const lavado = JSON.parse(localStorage.getItem('lavadoSeleccionado'));
+        const usuario = localStorage.getItem('loggedInUser');
+        if (!lavado || !usuario) {
+          alert("Debes estar registrado para guardar el lavado.");
+          return;
+        }
+
+        // Añadir usuario al objeto que se envía
+        lavado.usuario = usuario;
+
+        fetch('/guardar-lavado', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify(lavado)
+        })
+
+          .then(res => res.text())
+          .then(msg => {
+            console.log(msg);
+            alert("Lavado iniciado y guardado correctamente 🧼");
+            window.location.href = "/index.html";
+          })
+          .catch(err => {
+            console.error(err);
+            alert("Error al guardar el lavado.");
+          });
+      });
+      

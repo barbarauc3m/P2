@@ -19,7 +19,7 @@ h1{
 }
 
 h2{
-  font-family: 'Janda', sans-serif;  
+  font-family: 'Super Cottage', sans-serif;  
 }
 
 h3{
@@ -293,18 +293,21 @@ h3{
     font-family: 'Segoe UI', sans-serif;
     gap: 1rem;
     position: relative;
+    display: inline-flex;
+    justify-content: space-between;
+    gap: 2vh;
   }
   
   .qr-box {
     flex: 1; /* Ocupa 1 parte del espacio (1:2 ratio) */
     display: flex;
     justify-content: center;
-    width: 60px;
     height: auto;
   }
 
-  .qr{
-    width: 100%;
+  .qr-box img{
+    height: 90%;
+    width: auto;
   }
   
   .info {

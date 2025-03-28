@@ -1,5 +1,3 @@
-Para ejecutar: 
-1) abrís la carpeta en la terminal
-2) node server.js
-3) abres la dirección que te sale en el navegador
-4) onichan
+1) abrir la carpeta en la terminal
+2) ejecutar EN LOCAL CADA UNO "openssl req -x509 -newkey rsa:4096 -keyout key.pem -out cert.pem -days 365 -nodes" para obtener certificados SSL (key.pem y cert.pem).
+3) npm start

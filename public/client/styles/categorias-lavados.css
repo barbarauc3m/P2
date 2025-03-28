@@ -180,6 +180,7 @@ body {
     justify-content: space-around;
     z-index: 1000; /* Para que esté por encima de todo */
   }
+
   
   .heart {
     width: 24px;

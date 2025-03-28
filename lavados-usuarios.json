@@ -1,0 +1,37 @@
+{
+  "albatello": [
+    {
+      "nombre": "Lavado Ropa Blanca",
+      "descripcion": "Ideal para camisas, toallas, sábanas, ropa blanca, etc.",
+      "temperatura": "60ºC",
+      "duracion": "1h",
+      "centrifugado": "1200 rpm",
+      "detergente": "55 ml",
+      "fechaInicio": "28/3/25, 16:48",
+      "imagen": "../../../images/ropa_blanca.svg",
+      "usuario": "albatello"
+    },
+    {
+      "nombre": "Lavado Rápido",
+      "descripcion": "Ideal para ropa poco sucia o uso diario.",
+      "temperatura": "30ºC",
+      "duracion": "30 min",
+      "centrifugado": "1200 rpm",
+      "detergente": "50 ml",
+      "fechaInicio": "28/3/25, 16:23",
+      "imagen": "../../../images/rapido.svg",
+      "usuario": "albatello"
+    },
+    {
+      "nombre": "Lavado Rápido",
+      "descripcion": "Ideal para ropa poco sucia o uso diario.",
+      "temperatura": "30ºC",
+      "duracion": "30 min",
+      "centrifugado": "1200 rpm",
+      "detergente": "50 ml",
+      "fechaInicio": "28/3/25, 16:09",
+      "imagen": "../../../images/rapido.svg",
+      "usuario": "albatello"
+    }
+  ]
+}
