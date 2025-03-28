@@ -54,6 +54,7 @@ botones.forEach((boton) => {
     const nombre = section.querySelector("h2").textContent.trim();
     const descripcion = card.querySelector("p")?.textContent.trim() || "";
     const items = card.querySelectorAll("ul li");
+    const imagen = card.querySelector("img.icon")?.getAttribute("src") || "";
 
     const lavado = {
       nombre,
@@ -65,7 +66,8 @@ botones.forEach((boton) => {
       fechaInicio: new Date().toLocaleString("es-ES", {
         dateStyle: "short",
         timeStyle: "short"
-      })
+      }),
+      imagen
     };
 
     // Guardar en localStorage y redirigir

@@ -48,3 +48,25 @@ const lavado = JSON.parse(localStorage.getItem('lavadoSeleccionado'));
         return new Date(añoReal, mes - 1, dia, horas, minutos);
       }
       
+
+      document.querySelector(".cssbuttons-io-button").addEventListener("click", () => {
+        const lavado = JSON.parse(localStorage.getItem('lavadoSeleccionado'));
+        if (!lavado) return;
+      
+        fetch('/guardar-lavado', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify(lavado)
+        })
+          .then(res => res.text())
+          .then(msg => {
+            console.log(msg);
+            alert("Lavado iniciado y guardado correctamente 🧼");
+            // aquí podrías redirigir o animar
+          })
+          .catch(err => {
+            console.error(err);
+            alert("Error al guardar el lavado.");
+          });
+      });
+      

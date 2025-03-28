@@ -1,0 +1,31 @@
+[
+  {
+    "nombre": "Lavado Eco",
+    "descripcion": "Ideal para ahorrar energía y agua.",
+    "temperatura": "40ºC",
+    "duracion": "1h",
+    "centrifugado": "800 rpm",
+    "detergente": "35 ml",
+    "fechaInicio": "28/3/25, 12:35",
+    "imagen": "../../../images/eco.svg"
+  },
+  {
+    "nombre": "Lavado Rápido",
+    "descripcion": "Ideal para ropa poco sucia o uso diario.",
+    "temperatura": "30ºC",
+    "duracion": "30 min",
+    "centrifugado": "1200 rpm",
+    "detergente": "50 ml",
+    "fechaInicio": "28/3/25, 12:22",
+    "imagen": "../../../images/rapido.svg"
+  },
+  {
+    "nombre": "Lavado Rápido",
+    "descripcion": "Ideal para ropa poco sucia o uso diario.",
+    "temperatura": "30ºC",
+    "duracion": "30 min",
+    "centrifugado": "1200 rpm",
+    "detergente": "50 ml",
+    "fechaInicio": "28/3/25, 12:07"
+  }
+]
