@@ -1,20 +1,23 @@
-
-html, body {
-    width: 100%;
+* {
     margin: 0;
     padding: 0;
+    box-sizing: border-box;
+}
+
+html, body {
     font-family: 'Poppins', sans-serif;
     background-color: #5d6b8b;
     color: white;
     text-align: center;
-    box-sizing: border-box;
+    overflow-y: auto; /* Permite scroll vertical si el contenido excede la pantalla */
 }
 
 /* Contenedor principal */
 .container {
-    background-color: purple;
     width: 100%;
     position: relative;
+    padding-inline: 70px;
+    margin-bottom: 80px; /* NUEVOOOOOOOOOOO*/
 }
 
 /* Botón de cerrar */
@@ -67,9 +70,10 @@ h2 {
     justify-content: space-between;
     background: #d2d4de66;
     padding: 12px;
+    padding-top: 20px;
+    padding-bottom: 20px;
     border-radius: 10px;
     margin: 0 auto 20px auto ;
-    width: 90%;
     box-sizing: border-box;
 }
 
