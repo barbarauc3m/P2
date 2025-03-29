@@ -524,3 +524,26 @@ h3{
   width: auto;
   height: 2.5vh;
 }
+
+
+/* TRANSICION. TENGO QUE CAMBIARLA */
+.page-transition {
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 10px;  /* Tamaño inicial pequeño (círculo visible) */
+  height: 10px;
+  background-color: black;
+  border-radius: 50%;  /* Forma de círculo */
+  z-index: 9999;
+  opacity: 0.9;
+  pointer-events: none;
+  transition: all 0.8s ease-out;  /* Animación suave */
+  scale: 1;  /* Para navegadores modernos */
+}
+
+.page-transition.expand {
+  width: 200vh; /* Cubre toda la pantalla */
+  height: 200vh;
+}
