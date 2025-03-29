@@ -60,6 +60,23 @@ app.get('/lavado-personalizado.html', (req, res) => {
   res.sendFile(path.join(__dirname, 'public/client/lavado-personalizado.html'));
 });
 
+app.get('/jugando.html', (req, res) => {
+  res.sendFile(path.join(__dirname, 'public/client/jugando.html'));
+});
+
+app.get('/pantalla-carga.html', (req, res) => {
+  res.sendFile(path.join(__dirname, 'public/client/pantalla-carga.html'));
+});
+
+app.get('/jugando.html', (req, res) => {
+  res.sendFile(path.join(__dirname, 'public/client/jugando.html'));
+});
+
+app.get('/juegos.html', (req, res) => {
+  res.sendFile(path.join(__dirname, 'public/client/juegos.html'));
+});
+
+
 
 // Ruta POST para guardar lavado
 app.post('/guardar-lavado', (req, res) => {
@@ -94,7 +111,7 @@ app.post('/guardar-lavado', (req, res) => {
   });
 });
 
-// ✅ Nueva ruta para obtener lavados de un usuario
+// Nueva ruta para obtener lavados de un usuario
 app.get('/lavados/:usuario', (req, res) => {
   const usuario = req.params.usuario;
   const filePath = path.join(__dirname, 'lavados-usuarios.json');
