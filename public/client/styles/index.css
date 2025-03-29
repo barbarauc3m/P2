@@ -273,6 +273,11 @@ h3{
   transition: transform 0.3s ease-in-out;
 }
 
+.selected{
+  background-color: red !important;
+
+}
+
 
 .personalizar {
   margin: 3rem 1.5rem;
