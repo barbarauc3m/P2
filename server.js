@@ -76,6 +76,10 @@ app.get('/juegos.html', (req, res) => {
   res.sendFile(path.join(__dirname, 'public/client/juegos.html'));
 });
 
+app.get('/mapa.html', (req, res) => {
+  res.sendFile(path.join(__dirname, 'public/client/mapa.html'));
+});
+
 
 
 // Ruta POST para guardar lavado

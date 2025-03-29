@@ -197,12 +197,10 @@ h3{
 
 .categoria-list {
   display: grid;
-  grid-template-columns: repeat(3, 10vh);  gap: 9.5vw;
+  grid-template-columns: repeat(3, auto);
   gap: 9.5vw;
   align-items: center;
-  justify-self: center;
   position: relative;
-  overflow: hidden;
 }
 
 .categoria {
@@ -245,6 +243,8 @@ h3{
   opacity: 1;
 }
 
+
+
 .categoria.eco {
   flex-direction: row-reverse; /* Icono a la derecha */
   text-align: right;
@@ -263,13 +263,8 @@ h3{
   opacity: 1;
 }
 
-.mover-izquierda {
-  transform: translateX(-14.5vh);
-  transition: transform 0.3s ease-in-out;
-}
-
-.mover-derecha {
-  transform: translateX(14.5vh);
+.categoria.mover-izquierda {
+  transform: translateX(-16vh);
   transition: transform 0.3s ease-in-out;
 }
 
@@ -323,57 +318,6 @@ h3{
     text-align: center;
     font-size: 0.8rem;
     margin: 0.5rem 0;
-  }
-
-
-
-.mapa {
-  margin: 3rem 1.5rem;
-}
-
-.mapa-sombra {
-  position: relative;
-}
-
-.mapa-box{
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    width: 100%;
-}
-  .mapa-container {
-    background-image: url("../../images/mapa.png");
-    border-radius: 1.5rem;
-    height: 20vh;
-    width: 100%;
-    /*padding: 7rem;*/
-    padding-inline: 7rem;
-    display: flex;
-    color: white;
-    font-family: 'Segoe UI', sans-serif;
-    position: relative;
-    display: inline-flex;
-    justify-content: space-between;
-  }
-
-  .mapa-button {
-    background-color: #e6ebf7;
-    border: none;
-    border-radius: 1rem;
-    padding: 2vw;
-    width: 30vw;
-    height: 5vh;
-    color: #5b6689;
-    font-weight: bold;
-    font-size: 1rem;
-    box-shadow: 0 4px 0 #d0d6e6;
-    cursor: pointer;
-    transition: transform 0.2s ease;
-    margin: auto;  
-  }
-  
-  .mapa-button:hover {
-    transform: translateY(-2px);
   }
   
   .bottom-nav {
