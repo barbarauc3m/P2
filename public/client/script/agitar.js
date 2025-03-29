@@ -1,3 +1,4 @@
+/*no hay que usar una api?*/ 
 let logCounter = 0;
 
 // Umbral de agitación
@@ -8,29 +9,16 @@ let x2 = 0, y2 = 0, z2 = 0;
 
 console.log("Script de detección de agitación iniciado. Umbral:", SHAKE_THRESHOLD);
 
-// Animación de transición
-function playTransitionEffect() {
-    let circle = document.createElement("div");
-    circle.classList.add("page-transition");
-    document.body.appendChild(circle);
-
-    // Forzar reflujo para activar la animación
-    requestAnimationFrame(() => {
-        circle.classList.add("expand");
-    });
-
-    // Redirigir después de la animación
-    setTimeout(() => {
-        window.location.href = "../empezar-lavado.html";
-    }, 800); // Duración debe coincidir con la transición CSS (0.8s)
-}
-
 // Función que se ejecuta al detectar movimiento
 function handleShake() {
     console.log("¡Agitación detectada! Redirigiendo...");
-    /*window.location.href = "../empezar-lavado.html"; // Redirige*/
-    playTransitionEffect();
-}
+    const overlay = document.getElementById("transition-overlay");
+    overlay.style.transform = "scale(100)";
+
+    setTimeout(() => {
+        window.location.href = "../empezar-lavado.html";
+    }, 200);  // tiene que coincidir con el css 0.8s 
+};
 
 // Captura el evento de movimiento
 window.addEventListener('devicemotion', (e) => {

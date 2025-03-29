@@ -525,25 +525,17 @@ h3{
   height: 2.5vh;
 }
 
-
-/* TRANSICION. TENGO QUE CAMBIARLA */
-.page-transition {
+/* TRANSICION SI AGITAS EL MÓVIL A EMPEZAR-LAVADO */
+#transition-overlay {
   position: fixed;
-  top: 50%;
-  left: 50%;
-  transform: translate(-50%, -50%);
-  width: 10px;  /* Tamaño inicial pequeño (círculo visible) */
-  height: 10px;
-  background-color: black;
-  border-radius: 50%;  /* Forma de círculo */
-  z-index: 9999;
-  opacity: 0.9;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  background-color: #5D6B8B;
+  border-radius: 50%;
+  transform: scale(0);
+  transition: transform 1.8s ease;
   pointer-events: none;
-  transition: all 0.8s ease-out;  /* Animación suave */
-  scale: 1;  /* Para navegadores modernos */
-}
-
-.page-transition.expand {
-  width: 200vh; /* Cubre toda la pantalla */
-  height: 200vh;
+  z-index: 1000;
 }
