@@ -7,8 +7,55 @@ L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
     maxZoom: 19
 }).addTo(mymap);
 
+//MARCADOR UC3M LEGANÉS 
+const uc3mMarker = L.marker([40.329415, -3.7638942], {
+    icon: new L.Icon({
+        iconUrl: 'https://raw.githubusercontent.com/pointhi/leaflet-color-markers/master/img/marker-icon-red.png',
+        iconSize: [25, 41],
+        iconAnchor: [12, 41],
+        popupAnchor: [1, -34]
+    })
+}).addTo(mymap);
+
+uc3mMarker.bindPopup("<b>Residencia UC3M</b><br>Leganés").openPopup();
+
+//MARCADOR COSLADA
+const cosladaCity = L.marker([40.4296052, -3.5410666], {
+    icon: new L.Icon({
+        iconUrl: 'https://raw.githubusercontent.com/pointhi/leaflet-color-markers/master/img/marker-icon-red.png',
+        iconSize: [25, 41],
+        iconAnchor: [12, 41],
+        popupAnchor: [1, -34]
+    })
+}).addTo(mymap);
+cosladaCity.bindPopup("<b>Bloomest</b><br>Coslada").openPopup();
+
+//MARCADOR TOLEDO
+const toledANO = L.marker([39.8664968, -4.0294517], {
+    icon: new L.Icon({
+        iconUrl: 'https://raw.githubusercontent.com/pointhi/leaflet-color-markers/master/img/marker-icon-red.png',
+        iconSize: [25, 41],
+        iconAnchor: [12, 41],
+        popupAnchor: [1, -34]
+    })
+}).addTo(mymap);
+toledANO.bindPopup("<b>Lavandería de Santa Teresa</b><br>Toledo").openPopup();
+
+//MARCADOR ILLESCAS
+const illescacas = L.marker([40.1243023, -3.8469376], {
+    icon: new L.Icon({
+        iconUrl: 'https://raw.githubusercontent.com/pointhi/leaflet-color-markers/master/img/marker-icon-red.png',
+        iconSize: [25, 41],
+        iconAnchor: [12, 41],
+        popupAnchor: [1, -34]
+    })
+}).addTo(mymap);
+illescacas.bindPopup("<b>La Colada</b><br>Illescas").openPopup();
+
 // Marcador para la ubicación del usuario
 let userMarker = null;
+
+
 
 // Icono personalizado para el marcador (opcional)
 const userIcon = L.icon({
@@ -42,7 +89,7 @@ function locateUser() {
                     color: '#0078A8',
                     fillColor: '#0078A8',
                     fillOpacity: 0.2,
-                    radius: position.coords.accuracy / 2
+                    radius: position.coords.accuracy / 1
                 }).addTo(mymap);
             },
             (error) => {
