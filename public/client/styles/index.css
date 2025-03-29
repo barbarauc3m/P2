@@ -236,6 +236,13 @@ h3{
   white-space: nowrap;
 }
 
+.categoria.hover-simulado {
+  width: 26vh !important;
+}
+
+.categoria.hover-simulado .info {
+  opacity: 1 !important;
+}
 
 .categoria:hover {
   width: 26vh;
@@ -278,6 +285,10 @@ h3{
 
 }
 
+.clickeado {
+  background-color: limegreen !important;
+  transition: background-color 0.3s;
+}
 
 .personalizar {
   margin: 3rem 1.5rem;
