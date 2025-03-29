@@ -177,6 +177,6 @@ io.on('connection', (socket) => {
 });
 
 
-server.listen(PORT, () => {
-  console.log(`Servidor HTTPS con Socket.IO en https://localhost:${PORT}`);
+app.listen(PORT, () => {
+  console.log(`Servidor HTTPS con Socket.IO en http://localhost:${PORT}`);
 });

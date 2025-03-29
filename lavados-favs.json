@@ -26,6 +26,51 @@
       "centrifugado": "1200 rpm",
       "detergente": "50 ml",
       "imagen": "../../../images/rapido.svg"
+    },
+    {
+      "nombre": "Lavado personalizado 1",
+      "descripcion": "Ropa de uso diario",
+      "temperatura": "50 °C",
+      "duracion": "105 min",
+      "centrifugado": "Bajo: 600 rpm",
+      "detergente": "10 ml",
+      "imagen": "../../images/icono-personalizado.svg"
+    },
+    {
+      "nombre": "Lavado personalizado 2",
+      "descripcion": "Ropa de uso diario",
+      "temperatura": "50 °C",
+      "duracion": "105 min",
+      "centrifugado": "Bajo: 600 rpm",
+      "detergente": "10 ml",
+      "imagen": "../../images/icono-personalizado.svg"
+    },
+    {
+      "nombre": "Lavado personalizado 3",
+      "descripcion": "Ropa de uso diario",
+      "temperatura": "50 °C",
+      "duracion": "105 min",
+      "centrifugado": "Bajo: 600 rpm",
+      "detergente": "10 ml",
+      "imagen": "../../images/icono-personalizado.svg"
+    },
+    {
+      "nombre": "Lavado personalizado 4",
+      "descripcion": "Ropa de uso diario",
+      "temperatura": "50 °C",
+      "duracion": "105 min",
+      "centrifugado": "Bajo: 600 rpm",
+      "detergente": "10 ml",
+      "imagen": "../../images/icono-personalizado.svg"
+    },
+    {
+      "nombre": "Lavado personalizado 5",
+      "descripcion": "Ropa de uso diario",
+      "temperatura": "50 °C",
+      "duracion": "105 min",
+      "centrifugado": "Bajo: 600 rpm",
+      "detergente": "10 ml",
+      "imagen": "../../images/icono-personalizado.svg"
     }
   ]
 }

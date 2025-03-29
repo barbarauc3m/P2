@@ -13,10 +13,15 @@
     font-style: normal;
   }
   
+  * {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+    font-family: 'Segoe UI', sans-serif;
+  }
 
   body {
     margin: 0;
-    font-family: 'Segoe UI', sans-serif;
     background-color: #F6F9FD;
     color: #333;
     display: flex;
@@ -263,10 +268,10 @@
 
 .categoria-list {
   display: grid;
-  grid-template-columns: repeat(3, auto);
-  gap: 9.5vw;
+  grid-template-columns: repeat(3, 10vh);  gap: 9.5vw;
   align-items: center;
   position: relative;
+  overflow: hidden;
 }
 
 .categoria {
@@ -297,34 +302,17 @@
   display: flex;
   flex-direction: column;
   gap: 0.3vh;
-  width: auto;
-  max-width: 14vh;
-  overflow: hidden;
-  text-overflow: ellipsis;
   white-space: nowrap;
 }
 
 
 .categoria:hover {
   width: 26vh;
-  z-index: 2;
-}
-
-/* Mover solo los hermanos */
-.categoria-list .categoria:not(:hover) {
-  transform: translateX(-8vh);
-  transition: transform 0.3s ease-in-out;
-}
-
-.categoria-list .categoria.eco:not(:hover) {
-  transform: translateX(8vh);
 }
 
 .categoria:hover .info {
   opacity: 1;
 }
-
-
 
 .categoria.eco {
   flex-direction: row-reverse; /* Icono a la derecha */
@@ -344,11 +332,16 @@
   opacity: 1;
 }
 
-.categoria.mover-izquierda {
-  transform: translateX(-16vh);
+
+.mover-izquierda {
+  transform: translateX(-14.5vh);
   transition: transform 0.3s ease-in-out;
 }
 
+.mover-derecha {
+  transform: translateX(14.5vh);
+  transition: transform 0.3s ease-in-out;
+}
 
 
   
