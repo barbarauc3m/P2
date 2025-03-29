@@ -240,7 +240,7 @@ body {
     right: 0.3em;
     transition: all 0.3s;
   }
-
+  
   .cssbuttons-io-button:hover .icon {
     width: calc(100% - 0.6em);
   }
