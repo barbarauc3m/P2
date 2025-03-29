@@ -12,6 +12,14 @@ console.log("Script de detección de agitación iniciado. Umbral:", SHAKE_THRESH
 // Función que se ejecuta al detectar movimiento
 function handleShake() {
     console.log("¡Agitación detectada! Redirigiendo...");
+
+    if ("vibrate" in navigator) {
+        navigator.vibrate(0); // Detiene cualquier vibración actual
+        navigator.vibrate(200);
+    } else {
+        console.error("La API de vibración no es compatible con este dispositivo.");
+    }
+
     const overlay = document.getElementById("transition-overlay");
     overlay.style.transform = "scale(100)";
 
