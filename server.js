@@ -27,6 +27,10 @@ app.use('/script', express.static(path.join(__dirname, 'public', 'client', 'scri
 
 app.use('/styles', express.static(path.join(__dirname, 'public', 'client', 'styles')));
 
+app.get('/', (req, res) => {
+  res.sendFile(path.join(__dirname, 'public/client/index.html'));
+}
+);
 
 app.get('/index.html', (req, res) => {
   res.sendFile(path.join(__dirname, 'public/client/index.html'));
