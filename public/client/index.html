@@ -4,7 +4,7 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
   <title>Lavaloo</title>
-  <link rel="stylesheet" href="client/styles/index.css"/>
+  <link rel="stylesheet" href="/public/client/styles/index.css"/>
 </head>
 <body>
   <header class="top-bar">
@@ -125,8 +125,8 @@
     <button class="button-nav" onclick="window.location.href='pantalla-carga.html'">
       <img src="../../../images/mando_claro.svg" alt="Mando" class="icon-img" />
     </button>
-    <button class="button-nav">
-      <img src="../../../images/persona_cla.svg" alt="Persona" class="icon-img" id="perfil-icono"/>
+    <button class="button-nav" id="perfil-boton">
+      <img src="../../../images/persona_cla.svg" alt="Persona" class="icon-img"/>
     </button>
     <button class="button-nav" onclick="window.location.href='lavado-personalizado.html'">
       <img src="../../../images/icon_cam_cla.svg" alt="Camara" class="icon-img" />
@@ -145,24 +145,24 @@
       </form>
     </div>
   </div>
-  <script src="script/login.js"></script>
+  <script src="/public/client/script/login.js"></script>
 
-     <!-- POPUP DE REGISTRO -->
-     <div id="popup-register" class="popup-overlay">
-      <div class="container popup-animado">
-        <div class="heading">Registrate</div>
-        <form id="register-form" class="form">
-          <input required class="input" type="name" id="nameRegister" placeholder="Username">
-          <input required class="input" type="email" id="emailRegister" placeholder="E-mail">
-          <input required class="input" type="password" id="passwordRegister" placeholder="Contraseña">
-          <span class="forgot-password">
-            <a href="#" id="abrir-login">¿Ya tienes cuenta?</a>
-          </span>          
-          <input class="login-button" type="submit" value="Registrate">
-        </form>
-      </div>
-    </div>
-    <script src="script/register.js"></script>
+  <!-- POPUP DE REGISTRO -->
+  <div id="popup-register" class="popup-overlay">
+  <div class="container popup-animado">
+    <div class="heading">Registrate</div>
+    <form id="register-form" class="form">
+      <input required class="input" type="name" id="nameRegister" placeholder="Username">
+      <input required class="input" type="email" id="emailRegister" placeholder="E-mail">
+      <input required class="input" type="password" id="passwordRegister" placeholder="Contraseña">
+      <span class="forgot-password">
+        <a href="#" id="abrir-login">¿Ya tienes cuenta?</a>
+      </span>          
+      <input class="login-button" type="submit" value="Registrate">
+    </form>
+  </div>
+</div>
+<script src="/public/client/script/register.js"></script>
     
 </body>
 </html>
