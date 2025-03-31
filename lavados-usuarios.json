@@ -1,6 +1,17 @@
 {
   "albatello": [
     {
+      "nombre": "Lavado Eco",
+      "descripcion": "Ideal para ahorrar energía y agua.",
+      "temperatura": "40ºC",
+      "duracion": "1h",
+      "centrifugado": "800 rpm",
+      "detergente": "35 ml",
+      "fechaInicio": "31/3/25, 18:02",
+      "imagen": "../../../images/eco.svg",
+      "usuario": "albatello"
+    },
+    {
       "nombre": "Lavado Frío",
       "descripcion": "Ideal para lana, seda, ropa interior, etc.",
       "temperatura": "20ºC",

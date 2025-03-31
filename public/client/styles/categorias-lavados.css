@@ -6,8 +6,15 @@
 }
 
 @font-face {
-  font-family: 'Janda';
-  src: url(../../../../fonts/JandaManateeSolid.ttf);
+  font-family: 'Super Lobster';
+  src: url(../../../../fonts/Super\ Lobster.ttf);
+  font-weight: normal;
+  font-style: normal;
+}
+
+@font-face {
+  font-family: 'Super Peace';
+  src: url(../../../../fonts/Super\ Peace.ttf);
   font-weight: normal;
   font-style: normal;
 }
@@ -21,7 +28,7 @@ h1{
 h2{
   margin-left: 2vh;
   font-size: 2.5vh;
-  font-family: 'Super Cottage', sans-serif;  
+  font-family: 'Super Peace', sans-serif;  
 }
 
 body {
@@ -102,10 +109,16 @@ body {
     width: 10vh;
     margin-bottom: 1vh;
   }
+
+  .info{
+    width: 100%;
+  }
   
   .lavado-card .info {
     display: flex;
     flex-direction: column;
+    justify-content: center;
+    align-items: center;
   }
   
 
@@ -120,12 +133,12 @@ body {
   cursor: pointer;
   position: relative;
   padding: 1vh 2vh;
-  font-size: 1.5vh;
+  font-size: 2vh;
   color: #5D6B8B;
   border: 2px solid #5D6B8B;
+  font-family: 'Super Lobster', sans-serif;
   border-radius: 34px;
   background-color: transparent;
-  font-weight: 600;
   transition: all 0.3s cubic-bezier(0.23, 1, 0.320, 1);
   overflow: hidden;
 }
@@ -194,6 +207,20 @@ body {
     opacity: 0.9;
   }
   
+  .hist-title{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-family: 'Super Lobster', sans-serif;
+    font-size: 2vh;
+  }
+
+  .hist-hour{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-size: 2vh;
+  }
 
   /*NAVEGADOR MOVIL*/
 .button-nav {

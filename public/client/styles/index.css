@@ -8,8 +8,15 @@
 }
 
 @font-face {
-  font-family: 'Janda';
-  src: url(../../../../fonts/JandaManateeSolid.ttf);
+  font-family: 'Super Lobster';
+  src: url(../../../../fonts/Super\ Lobster.ttf);
+  font-weight: normal;
+  font-style: normal;
+}
+
+@font-face {
+  font-family: 'Super Peace';
+  src: url(../../../../fonts/Super\ Peace.ttf);
   font-weight: normal;
   font-style: normal;
 }
@@ -131,8 +138,7 @@ h3{
   
   .lavado-header p {
     font-size: 2vh;
-    font-family: 'Super Cottage', sans-serif;
-    font-weight: bold;
+    font-family: 'Super Peace', sans-serif;
     margin: 0;
  }
   
@@ -143,7 +149,7 @@ h3{
     padding: 2vw;
     width: 30vw;
     color: #5b6689;
-    font-weight: bold;
+    font-family: 'Super Peace', sans-serif;
     font-size: 1rem;
     box-shadow: 0 4px 0 #d0d6e6;
     cursor: pointer;
@@ -341,6 +347,11 @@ h3{
     margin: 0.5rem 0;
   }
 
+  .info strong{
+    font-size: 1.5vh;
+    font-family: 'Super Peace', sans-serif;  
+}
+
 
 
 .mapa {
@@ -380,7 +391,7 @@ h3{
     width: 30vw;
     height: 5vh;
     color: #5b6689;
-    font-weight: bold;
+    font-family: 'Super Lobster', sans-serif;
     font-size: 1rem;
     box-shadow: 0 4px 0 #d0d6e6;
     cursor: pointer;
@@ -408,6 +419,7 @@ h3{
   }
 
   .info-header h3{
+    font-family: 'Super Peace', sans-serif;  
     font-size: 2vh;
   }
   

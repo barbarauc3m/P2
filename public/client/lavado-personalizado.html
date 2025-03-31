@@ -149,15 +149,45 @@
         <button class="button-nav" onclick="window.location.href='juegos.html'">
           <img src="../../../images/mando_claro.svg" alt="Mando" class="icon-img" />
         </button>
-        <button class="button-nav">
+        <button class="button-nav" id="perfil-boton">
           <img src="../../../images/persona_cla.svg" alt="Persona" class="icon-img" id="perfil-icono"/>
         </button>
         <button class="button-nav" onclick="window.location.href='lavado-personalizado.html'">
           <img src="../../../images/icon_cam_cla.svg" alt="Camara" class="icon-img" />
         </button>
       </div>
-      <script src="script/login.js"></script>
-      <script src="script/register.js"></script>
       <script src="script/lavado-personalizado.js"></script>
+
+         <!-- POPUP DE INICIO DE SESIÓN -->
+  <div id="popup-login" class="popup-overlay">
+    <div class="container popup-animado">
+      <div class="heading">Inicia Sesión</div>
+      <form id="login-form-nuevo" class="form">
+        <input required class="input" type="email" name="email" id="emailLoginNuevo" placeholder="E-mail">
+        <input required class="input" type="password" name="password" id="passwordLoginNuevo" placeholder="Contraseña">
+        <span class="forgot-password"><a href="#"  id="abrir-registro" >¿No tienes cuenta?</a></span>
+        <input class="login-button" type="submit" value="Inicia Sesión">
+      </form>
+    </div>
+  </div>
+  <script src="script/login.js"></script>
+
+  <!-- POPUP DE REGISTRO -->
+  <div id="popup-register" class="popup-overlay">
+  <div class="container popup-animado">
+    <div class="heading">Registrate</div>
+    <form id="register-form" class="form">
+      <input required class="input" type="name" id="nameRegister" placeholder="Username">
+      <input required class="input" type="email" id="emailRegister" placeholder="E-mail">
+      <input required class="input" type="password" id="passwordRegister" placeholder="Contraseña">
+      <span class="forgot-password">
+        <a href="#" id="abrir-login">¿Ya tienes cuenta?</a>
+      </span>          
+      <input class="login-button" type="submit" value="Registrate">
+    </form>
+  </div>
+</div>
+<script src="script/register.js"></script>
+    
 </body>
 </html>

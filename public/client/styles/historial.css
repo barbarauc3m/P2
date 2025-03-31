@@ -6,12 +6,18 @@
   }
   
   @font-face {
-    font-family: 'Janda';
-    src: url(../../fonts/JandaManateeSolid.ttf);
+    font-family: 'Super Lobster';
+    src: url(../../../../fonts/Super\ Lobster.ttf);
     font-weight: normal;
     font-style: normal;
   }
   
+  @font-face {
+    font-family: 'Super Peace';
+    src: url(../../../../fonts/Super\ Peace.ttf);
+    font-weight: normal;
+    font-style: normal;
+  }
   
   h1{
     font-family: 'Super Cottage', sans-serif;  
