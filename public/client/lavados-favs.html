@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Mis favoritos</title>
+  <link rel="stylesheet" href="styles/categorias-lavados.css" />
+</head>
+<body>
+  <header class="top-bar">
+    <a class="back-button" href="perfil.html">←</a>
+    <h1>Mis favoritos</h1>
+  </header>
+
+  <main class="content">
+    <section class="lavados-favoritos">
+      <h2>Lavados favoritos</h2>
+      <div id="favoritos-container"></div>
+    </section>
+
+    <section class="lavados-personalizados">
+      <h2>Lavados personalizados</h2>
+      <div id="personalizados-container"></div>
+    </section>
+  </main>
+
+  <div class="button-container">
+    <button class="button-nav" onclick="window.location.href='index.html'">
+      <img src="../../../images/casa_blanca.svg" alt="Casa" class="icon-img" />
+    </button>
+    <button class="button-nav" onclick="window.location.href='juegos.html'">
+      <img src="../../../images/mando_claro.svg" alt="Mando" class="icon-img" />
+    </button>
+    <button class="button-nav" onclick="window.location.href='perfil.html'">
+      <img src="../../../images/persona_cla.svg" alt="Persona" class="icon-img" />
+    </button>
+    <button class="button-nav" onclick="window.location.href='lavado-personalizado.html'">
+      <img src="../../../images/icon_cam_cla.svg" alt="Camara" class="icon-img" />
+    </button>
+  </div>
+
+  <script src="script/lavados-favs.js"></script>
+</body>
+</html>

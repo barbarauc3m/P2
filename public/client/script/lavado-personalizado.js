@@ -60,7 +60,6 @@ document.addEventListener("DOMContentLoaded", function () {
           
           const lavadoPersonalizado = {
             usuario, 
-            nombre: `Lavado personalizado ${Date.now()}`,
             nivelSuciedad: nivelSuciedad[0],
             temperatura: `${temperatura}°C`,
             centrifugado: centrifugado[0],

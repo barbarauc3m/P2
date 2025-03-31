@@ -2,16 +2,31 @@
   "albatello": [
     {
       "usuario": "albatello",
-      "nombre": "Lavado personalizado 1743441723439",
       "nivelSuciedad": "Ropa a penas usada",
-      "temperatura": "55°C",
+      "temperatura": "50°C",
       "centrifugado": "Bajo: 600 rpm",
-      "duracion": "110 min",
-      "detergente": "95 ml",
+      "duracion": "100 min",
+      "detergente": "20 ml",
       "tejido": [
-        "Mezcla"
+        "Color"
       ],
-      "favorito": false
+      "favorito": false,
+      "nombre": "Lavado personalizado 2",
+      "index": 2
+    },
+    {
+      "usuario": "albatello",
+      "nivelSuciedad": "Ropa a penas usada",
+      "temperatura": "50°C",
+      "centrifugado": "Bajo: 600 rpm",
+      "duracion": "60 min",
+      "detergente": "75 ml",
+      "tejido": [
+        "Algodón"
+      ],
+      "favorito": false,
+      "nombre": "Lavado personalizado 1",
+      "index": 1
     }
   ]
 }

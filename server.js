@@ -83,6 +83,9 @@ app.get('/mapa.html', (req, res) => {
   res.sendFile(path.join(__dirname, 'public/client/mapa.html'));
 });
 
+app.get('/lavados-favs.html', (req, res) => {
+  res.sendFile(path.join(__dirname, 'public/client/lavados-favs.html'));
+});
 
 
 // Ruta POST para guardar lavado
@@ -177,16 +180,15 @@ app.post('/guardar-lavado-personalizado', (req, res) => {
   }
 
   const camposRequeridos = [
-    'nombre', 'temperatura', 'duracion', 'centrifugado', 'detergente'
+    'temperatura', 'duracion', 'centrifugado', 'detergente'
   ];
 
   const faltaCampo = camposRequeridos.some(campo => !lavado[campo]);
-
   if (faltaCampo) {
     return res.status(400).send('Faltan parámetros obligatorios del lavado personalizado');
   }
 
-  const filePath = path.join(__dirname, 'lavados-personalizados.json'); // ✅ FALTABA ESTO
+  const filePath = path.join(__dirname, 'lavados-personalizados.json');
 
   fs.readFile(filePath, 'utf8', (err, data) => {
     let dataUsuarios = {};
@@ -200,6 +202,12 @@ app.post('/guardar-lavado-personalizado', (req, res) => {
 
     if (!dataUsuarios[usuario]) dataUsuarios[usuario] = [];
 
+    // Calcular el nuevo índice
+    const nuevoIndex = dataUsuarios[usuario].length + 1;
+    lavado.nombre = `Lavado personalizado ${nuevoIndex}`;
+    lavado.index = nuevoIndex;
+
+    // Guardar al principio
     dataUsuarios[usuario].unshift(lavado);
     dataUsuarios[usuario] = dataUsuarios[usuario].slice(0, 20);
 
@@ -212,7 +220,20 @@ app.post('/guardar-lavado-personalizado', (req, res) => {
 
 
 
+app.get('/lavados-personalizados/:usuario', (req, res) => {
+  const usuario = req.params.usuario;
+  const filePath = path.join(__dirname, 'lavados-personalizados.json');
 
+  fs.readFile(filePath, 'utf8', (err, data) => {
+    if (err || !data) return res.json([]);
+    try {
+      const json = JSON.parse(data);
+      res.json(json[usuario] || []);
+    } catch (e) {
+      res.status(500).send('Error al parsear lavados personalizados');
+    }
+  });
+});
 
 
 // Lógica de socket

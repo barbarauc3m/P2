@@ -222,6 +222,28 @@ body {
     font-size: 2vh;
   }
 
+  .hist-subtitle{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 80%
+  }
+
+  .fav-title{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-family: 'Super Cottage', sans-serif;
+    font-size: 2vh !important;
+  }
+
+  .fav-subtitle{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 80%;
+  }
+
   /*NAVEGADOR MOVIL*/
 .button-nav {
   outline: 0 !important;

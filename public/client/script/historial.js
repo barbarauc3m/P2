@@ -27,6 +27,7 @@ document.addEventListener("DOMContentLoaded", () => {
             <img src="${lavado.imagen}" class="icon" alt="${lavado.nombre}" />
             <div class="info">
               <h3 class="hist-title">${lavado.nombre}</h3>
+              <p class="hist-subtitle">${lavado.descripcion}</p>
               <p class="hist-hour">${horaInicio} - ${horaFin}</p>
               <div class="lavado-button">
                 <button class="button">EMPEZAR</button>
