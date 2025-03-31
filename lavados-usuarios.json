@@ -1,6 +1,17 @@
 {
   "albatello": [
     {
+      "nombre": "Lavado Frío",
+      "descripcion": "Ideal para lana, seda, ropa interior, etc.",
+      "temperatura": "20ºC",
+      "duracion": "40 min",
+      "centrifugado": "600 rpm",
+      "detergente": "30 ml",
+      "fechaInicio": "31/3/25, 11:33",
+      "imagen": "../../../images/frio.svg",
+      "usuario": "albatello"
+    },
+    {
       "nombre": "Lavado Ropa Blanca",
       "descripcion": "Ideal para camisas, toallas, sábanas, ropa blanca, etc.",
       "temperatura": "60ºC",

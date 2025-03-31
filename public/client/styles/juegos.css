@@ -69,8 +69,8 @@ body {
 
 .card-container {
   position: relative;
-  width: 190px;
-  height: 254px;
+  width: 150px;
+  height: 200px;
   perspective: 1000px;
   cursor: pointer;
 }
@@ -82,7 +82,6 @@ body {
   border-radius: 20px;
   transition: transform 0.3s ease, filter 0.3s ease;
   transform-style: preserve-3d;
-  background: linear-gradient(43deg, rgb(65, 88, 208) 0%, rgb(200, 80, 192) 46%, rgb(255, 204, 112) 100%);
 }
 
 .card::before {
@@ -98,16 +97,16 @@ body {
 }
 
 #card1::before {
-  background-image: url(/images/CarÃ¡tula_de_PokÃ©mon_Azul.jpg);
+  background-image: url(/images/atrapa-la-ropa.png);
 }
 #card2::before {
-  background-image: url(/images/inazuma_eleven-1707816.png);
+  background-image: url(/images/duelo-de-doblado.png);
 }
 #card3::before {
-  background-image: url(/images/0_Cars2_PS3__ESP_2D.jpg);
+  background-image: url(/images/el-rey-del-tendedero.png);
 }
 #card4::before {
-  background-image: url(/images/images.jpeg);
+  background-image: url(/images/combo-de-manchas.png);
 }
 
 .card-container {
