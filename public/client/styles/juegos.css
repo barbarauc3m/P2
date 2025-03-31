@@ -91,7 +91,7 @@ body {
   height: 100%;
   border-radius: 20px;
   background-size: cover;
-  background-position: center;
+  background-position: center 1%;
   background-repeat: no-repeat;
   opacity: 0.8;
 }
