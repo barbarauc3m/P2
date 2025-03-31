@@ -71,6 +71,33 @@
       "centrifugado": "Bajo: 600 rpm",
       "detergente": "10 ml",
       "imagen": "../../images/icono-personalizado.svg"
+    },
+    {
+      "nombre": "Lavado personalizado 6",
+      "descripcion": "Manchas visibles",
+      "temperatura": "90 °C",
+      "duracion": "65 min",
+      "centrifugado": "Medio: 800 rpm",
+      "detergente": "10 ml",
+      "imagen": "../../images/icono-personalizado.svg"
+    },
+    {
+      "nombre": "Lavado Frío",
+      "descripcion": "Ideal para lana, seda, ropa interior, etc.",
+      "temperatura": "20ºC",
+      "duracion": "40 min",
+      "centrifugado": "600 rpm",
+      "detergente": "30 ml",
+      "imagen": "../../../images/frio.svg"
+    },
+    {
+      "nombre": "Lavado Ropa Oscura",
+      "descripcion": "Ideal para vaqueros, camisetas negras, sudaderas, etc.",
+      "temperatura": "40ºC",
+      "duracion": "1h",
+      "centrifugado": "800 rpm",
+      "detergente": "50 ml",
+      "imagen": "../../../images/ropa_oscura.svg"
     }
   ]
 }

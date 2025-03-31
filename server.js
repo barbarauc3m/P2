@@ -7,6 +7,9 @@ const PORT = 6969;
 const { Server } = require('socket.io');
 
 // Carga de certificados
+// GENERA CERTIFICADOS CON EL SIGUIENTE COMANDO:
+// openssl req -nodes -new -x509 -keyout key.pem -out cert.pem -days 365
+
 const server = https.createServer({
   key: fs.readFileSync('key.pem'),
   cert: fs.readFileSync('cert.pem')
@@ -181,6 +184,6 @@ io.on('connection', (socket) => {
 });
 
 
-app.listen(PORT, () => {
-  console.log(`Servidor HTTPS con Socket.IO en http://localhost:${PORT}`);
+server.listen(PORT, () => {
+  console.log(`Servidor HTTPS con Socket.IO en https://localhost:${PORT}`);
 });
