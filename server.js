@@ -167,6 +167,52 @@ app.post('/guardar-favoritos', (req, res) => {
 });
 
 
+// Ruta para guardar lavado personalizado
+app.post('/guardar-lavado-personalizado', (req, res) => {
+  const lavado = req.body;
+  const usuario = lavado.usuario;
+
+  if (!usuario) {
+    return res.status(400).send('Falta el nombre del usuario');
+  }
+
+  const camposRequeridos = [
+    'nombre', 'temperatura', 'duracion', 'centrifugado', 'detergente'
+  ];
+
+  const faltaCampo = camposRequeridos.some(campo => !lavado[campo]);
+
+  if (faltaCampo) {
+    return res.status(400).send('Faltan parámetros obligatorios del lavado personalizado');
+  }
+
+  const filePath = path.join(__dirname, 'lavados-personalizados.json'); // ✅ FALTABA ESTO
+
+  fs.readFile(filePath, 'utf8', (err, data) => {
+    let dataUsuarios = {};
+    if (!err && data) {
+      try {
+        dataUsuarios = JSON.parse(data);
+      } catch (e) {
+        return res.status(500).send('Error al parsear JSON de lavados-personalizados');
+      }
+    }
+
+    if (!dataUsuarios[usuario]) dataUsuarios[usuario] = [];
+
+    dataUsuarios[usuario].unshift(lavado);
+    dataUsuarios[usuario] = dataUsuarios[usuario].slice(0, 20);
+
+    fs.writeFile(filePath, JSON.stringify(dataUsuarios, null, 2), err => {
+      if (err) return res.status(500).send('Error al guardar el lavado personalizado');
+      res.send('Lavado personalizado guardado correctamente');
+    });
+  });
+});
+
+
+
+
 
 
 // Lógica de socket
@@ -187,3 +233,10 @@ io.on('connection', (socket) => {
 server.listen(PORT, () => {
   console.log(`Servidor HTTPS con Socket.IO en https://localhost:${PORT}`);
 });
+
+
+// MATAR UN PROCESO PARA VOLVER A CORRER EL SERVER
+// lsof -i :6969
+//COMMAND    PID          USER   FD   TYPE  DEVICE SIZE/OFF NODE NAME
+//node    ****247897**** alba   23u  IPv6 1742693      0t0  TCP *:6969 (LISTEN)
+// kill -9 PID

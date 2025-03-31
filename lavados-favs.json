@@ -26,6 +26,33 @@
       "centrifugado": "600 rpm",
       "detergente": "30 ml",
       "imagen": "../../../images/frio.svg"
+    },
+    {
+      "nombre": "Lavado personalizado 1",
+      "descripcion": "Ropa de uso diario",
+      "temperatura": "75 °C",
+      "duracion": "65 min",
+      "centrifugado": "Alto: 1200 rpm",
+      "detergente": "25 ml",
+      "imagen": "../../images/icono-personalizado.svg"
+    },
+    {
+      "nombre": "Lavado personalizado 2",
+      "descripcion": "Ropa de uso diario",
+      "temperatura": "75 °C",
+      "duracion": "65 min",
+      "centrifugado": "Alto: 1200 rpm",
+      "detergente": "25 ml",
+      "imagen": "../../images/icono-personalizado.svg"
+    },
+    {
+      "nombre": "Lavado personalizado 3",
+      "descripcion": "Ropa de uso diario",
+      "temperatura": "75 °C",
+      "duracion": "65 min",
+      "centrifugado": "Alto: 1200 rpm",
+      "detergente": "25 ml",
+      "imagen": "../../images/icono-personalizado.svg"
     }
   ]
 }

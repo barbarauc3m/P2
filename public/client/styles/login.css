@@ -1,0 +1,164 @@
+
+@font-face {
+    font-family: 'Super Cottage';
+    src: url(../../../../fonts/Super\ Cottage.ttf);
+    font-weight: normal;
+    font-style: normal;
+  }
+  
+  @font-face {
+    font-family: 'Super Lobster';
+    src: url(../../../../fonts/Super\ Lobster.ttf);
+    font-weight: normal;
+    font-style: normal;
+  }
+  
+  @font-face {
+    font-family: 'Super Peace';
+    src: url(../../../../fonts/Super\ Peace.ttf);
+    font-weight: normal;
+    font-style: normal;
+  }
+  
+/*POPUP INICIO SESIÓN*/
+.popup-overlay {
+    display: none;
+    position: fixed;
+    inset: 0;
+    background: rgba(0, 0, 0, 0.4);
+    backdrop-filter: blur(4px);
+    z-index: 1000;
+    justify-content: center;
+    align-items: center;
+  }
+  
+  /* Animación suave */
+  .popup-animado {
+    animation: aparecer 0.4s ease-out;
+  }
+  
+  @keyframes aparecer {
+    from {
+      transform: translateY(-20px);
+      opacity: 0;
+    }
+    to {
+      transform: translateY(0);
+      opacity: 1;
+    }
+  }
+  
+  /*POPUP REGISTRO*/
+    /*POPUP INICIO SESIÓN*/
+    .popup-register-overlay {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      backdrop-filter: blur(4px);
+      background-color: rgba(0, 0, 0, 0.4);
+      display: none;
+      justify-content: center;
+      align-items: center;
+      z-index: 999;
+    }
+    
+    /* Animación al mostrar */
+    .popup-animado {
+      animation: aparecerPopup 0.4s ease forwards;
+    }
+    
+    @keyframes aparecerPopup {
+      from {
+        transform: scale(0.7);
+        opacity: 0;
+      }
+      to {
+        transform: scale(1);
+        opacity: 1;
+      }
+    }
+  
+    .container {
+      max-width: 350px;
+      background: #F8F9FD;
+      background: linear-gradient(0deg, #F6F9FD 0%, #EDF2FB 100%);
+      border-radius: 40px;
+      padding: 25px 35px;
+      box-shadow: #373F523f 0px 30px 30px -20px;
+      margin: 20px;
+    }
+    
+    .heading {
+      text-align: center;
+      font-weight: 900;
+      font-size: 30px;
+      color: #5D6B8B;
+      font-family: 'Super Cottage', sans-serif;
+    }
+    
+    .form {
+      margin-top: 20px;
+    }
+    
+    .form .input {
+      width: 100%;
+      background: #F6F9FD;
+      border: none;
+      padding: 15px 20px;
+      border-radius: 20px;
+      margin-top: 15px;
+      box-shadow:  #373F523f 0px 10px 10px -5px;
+      border-inline: 2px solid transparent;
+    }
+    
+    .form .input::-moz-placeholder {
+      color: rgb(170, 170, 170);
+    }
+    
+    .form .input::placeholder {
+      color: rgb(170, 170, 170);
+    }
+    
+    .form .input:focus {
+      outline: none;
+      border-inline: 2px solid #5D6B8B;
+    }
+    
+    .form .forgot-password {
+      display: block;
+      margin-top: 10px;
+      margin-left: 10px;
+    }
+    
+    .form .forgot-password a {
+      font-size: 11px;
+      color: #5D6B8B;
+      text-decoration: none;
+    }
+    
+    .form .login-button {
+      display: block;
+      width: 100%;
+      font-weight: bold;
+      background: linear-gradient(45deg, #8599C7 0%, #5E6C8C 100%);
+      color: white;
+      padding-block: 15px;
+      margin: 20px auto;
+      border-radius: 20px;
+      box-shadow:  #373F523f 0px 20px 10px -15px;
+      border: none;
+      transition: all 0.2s ease-in-out;
+    }
+    
+    .form .login-button:hover {
+      transform: scale(1.03);
+      box-shadow:  #373F523f 0px 23px 10px -20px;
+    }
+    
+    .form .login-button:active {
+      transform: scale(0.95);
+      box-shadow:  #373F523f 0px 15px 10px -10px;
+    }
+    

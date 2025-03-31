@@ -1,0 +1,17 @@
+{
+  "albatello": [
+    {
+      "usuario": "albatello",
+      "nombre": "Lavado personalizado 1743441723439",
+      "nivelSuciedad": "Ropa a penas usada",
+      "temperatura": "55°C",
+      "centrifugado": "Bajo: 600 rpm",
+      "duracion": "110 min",
+      "detergente": "95 ml",
+      "tejido": [
+        "Mezcla"
+      ],
+      "favorito": false
+    }
+  ]
+}

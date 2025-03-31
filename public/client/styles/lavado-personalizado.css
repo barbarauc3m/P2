@@ -27,7 +27,7 @@ html, body {
 }
 
 /* Contenedor principal */
-.container {
+.container-personalizado {
     width: 100%;
     position: relative;
     padding-inline: 15vw;
