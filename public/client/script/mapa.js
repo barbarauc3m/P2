@@ -16,8 +16,11 @@ const uc3mMarker = L.marker([40.329415, -3.7638942], {
         popupAnchor: [1, -34]
     })
 }).addTo(mymap);
-
-uc3mMarker.bindPopup("<b>Residencia UC3M</b><br>Leganés").openPopup();
+uc3mMarker.bindPopup(`
+    <b>Residencia UC3M</b><br>
+    Leganés<br>
+    <a href="https://maps.app.goo.gl/3XTjnCYn4J6nKyhF6" target="_blank" style="color: blue; text-decoration: underline;">Abrir en Google Maps</a>
+`).openPopup();
 
 //MARCADOR COSLADA
 const cosladaCity = L.marker([40.4296052, -3.5410666], {
@@ -28,7 +31,11 @@ const cosladaCity = L.marker([40.4296052, -3.5410666], {
         popupAnchor: [1, -34]
     })
 }).addTo(mymap);
-cosladaCity.bindPopup("<b>Bloomest</b><br>Coslada").openPopup();
+cosladaCity.bindPopup(`
+    <b>Bloomest</b><br>
+    Coslada<br>
+    <a href="https://maps.app.goo.gl/zmvXvMYkR5tzf6FN8" target="_blank" style="color: blue; text-decoration: underline;">Abrir en Google Maps</a>
+`).openPopup();
 
 //MARCADOR TOLEDO
 const toledANO = L.marker([39.8664968, -4.0294517], {
@@ -39,7 +46,11 @@ const toledANO = L.marker([39.8664968, -4.0294517], {
         popupAnchor: [1, -34]
     })
 }).addTo(mymap);
-toledANO.bindPopup("<b>Lavandería de Santa Teresa</b><br>Toledo").openPopup();
+toledANO.bindPopup(`
+    <b>Lavandería de Santa Teresa</b><br>
+    Toledo<br>
+    <a href="https://maps.app.goo.gl/g7EKRfCgQQPs3bcU8" target="_blank" style="color: blue; text-decoration: underline;">Abrir en Google Maps</a>
+`).openPopup();
 
 //MARCADOR ILLESCAS
 const illescacas = L.marker([40.1243023, -3.8469376], {
@@ -50,7 +61,11 @@ const illescacas = L.marker([40.1243023, -3.8469376], {
         popupAnchor: [1, -34]
     })
 }).addTo(mymap);
-illescacas.bindPopup("<b>La Colada</b><br>Illescas").openPopup();
+illescacas.bindPopup(`
+    <b>La Colada</b><br>
+    Illescas<br>
+    <a href="https://maps.app.goo.gl/nBA3fiWFFhZgGyyy7" target="_blank" style="color: blue; text-decoration: underline;">Abrir en Google Maps</a>
+`).openPopup();
 
 // Marcador para la ubicación del usuario
 let userMarker = null;
