@@ -41,6 +41,8 @@ body {
   .top-bar {
     display: flex;
     align-items: center;
+    justify-content: space-between;
+    margin: 0 2vh;
     padding: 16px;
     font-weight: bold;
     color: #3c3c6e;

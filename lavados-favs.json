@@ -10,15 +10,6 @@
       "imagen": "../../../images/caliente.svg"
     },
     {
-      "nombre": "Lavado personalizado 1",
-      "descripcion": "Ropa de uso diario",
-      "temperatura": "75 °C",
-      "duracion": "65 min",
-      "centrifugado": "Alto: 1200 rpm",
-      "detergente": "25 ml",
-      "imagen": "../../images/personalizado.svg"
-    },
-    {
       "nombre": "Lavado Rápido",
       "descripcion": "Ideal para ropa poco sucia o uso diario.",
       "temperatura": "30ºC",
