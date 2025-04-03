@@ -1,0 +1,77 @@
+@font-face {
+    font-family: 'Super Cottage';
+    src: url(../../../../fonts/Super\ Cottage.ttf);
+    font-weight: normal;
+    font-style: normal;
+  }
+  
+  @font-face {
+    font-family: 'Super Lobster';
+    src: url(../../../../fonts/Super\ Lobster.ttf);
+    font-weight: normal;
+    font-style: normal;
+  }
+  
+  @font-face {
+    font-family: 'Super Peace';
+    src: url(../../../../fonts/Super\ Peace.ttf);
+    font-weight: normal;
+    font-style: normal;
+  }
+
+
+body {
+    background-color: #5d6b8b;
+    margin: 0;
+    text-align: center;
+    color: #f7f9fc;
+}
+.inicio {
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    padding-bottom: 100px; /* Espacio para los botones */
+}
+.inicio img {
+    width: 200px;
+    height: auto;
+}
+.inicio h1 {
+    font-size: 3em;
+    font-family: 'Super Peace', sans-serif;;
+    
+}
+
+/* Estilo base para los botones de juego */
+.game-buttons {
+  position: fixed;
+  bottom: 20px;
+  left: 0;
+  right: 0;
+  display: flex;
+  justify-content: center;
+  gap: 50px;
+  padding: 0 20px;
+}
+
+.game-btn {
+  text-decoration: none;
+  background-color: rgb(219, 219, 38);
+  color: white;
+  border: none;
+  border-radius: 50px;
+  padding: 12px 0;
+  width: 150px;
+  font-family: 'Super Peace', sans-serif;
+  font-size: 16px;
+  cursor: pointer;
+  box-shadow: 0 4px 8px rgba(0,0,0,0.2);
+  transition: all 0.3s ease;
+}
+
+.game-btn:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 6px 12px rgba(0,0,0,0.3);
+}

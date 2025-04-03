@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <title>Atrapa la Ropa - Lavaloo</title>
+    <link rel="stylesheet" href="styles/juego1.css">
+</head>
+<body>
+    <div id="game-container">
+        <canvas id="game-canvas"></canvas>
+        <div id="score-display">Puntos: 0</div>
+        <div id="timer-display">Tiempo: 60</div>
+        <div id="game-over">¡Juego Terminado!</div>
+    </div>
+
+    <script src="script/juego1.js"></script>
+    <script>
+        // Iniciar automáticamente al cargar la página
+        window.addEventListener('load', () => {
+            // Pequeño retardo para asegurar que todo está cargado
+            setTimeout(() => {
+                if (typeof startGame === 'function') {
+                    startGame();
+                }
+            }, 100);
+        });
+    </script>
+</body>
+</html>
