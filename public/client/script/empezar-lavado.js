@@ -78,3 +78,36 @@ const lavado = JSON.parse(localStorage.getItem('lavadoSeleccionado'));
           });
       });
       
+      // Cierra el popup si el usuario hace clic fuera del contenido
+document.addEventListener("click", function (event) {
+  const popup = document.getElementById("popup-escaner");
+  const container = popup.querySelector(".container");
+
+  if (
+    popup.style.display === "flex" &&
+    !container.contains(event.target) &&
+    !event.target.closest(".scan-button") // para evitar cerrar si hacen clic en el botón original
+  ) {
+    cerrarPopupEscaner();
+  }
+});
+
+
+  function abrirPopupEscaner() {
+    document.getElementById("popup-escaner").style.display = "flex";
+  }
+  
+  function cerrarPopupEscaner() {
+    document.getElementById("popup-escaner").style.display = "none";
+  }
+  
+  function iniciarEscaneoEtiqueta() {
+    cerrarPopupEscaner();
+    window.location.href = "escaner-etiqueta.html";
+  }
+  
+  function iniciarEscaneoColor() {
+    cerrarPopupEscaner();
+    window.location.href = "escaner-color.html";
+  }
+  
