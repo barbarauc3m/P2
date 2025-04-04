@@ -78,6 +78,33 @@ const lavado = JSON.parse(localStorage.getItem('lavadoSeleccionado'));
           });
       });
       
+      const opciones = document.querySelectorAll(".form-option");
+
+      function handleHover(indexHovered) {
+        opciones.forEach((el, idx) => {
+          el.classList.remove("mover-izquierda", "mover-derecha");
+      
+          if (idx === indexHovered) return;
+      
+          if (idx < indexHovered) {
+            el.classList.add("mover-izquierda");
+          } else {
+            el.classList.add("mover-derecha");
+          }
+        });
+      }
+      
+      function handleLeave() {
+        opciones.forEach(el => {
+          el.classList.remove("mover-izquierda", "mover-derecha");
+        });
+      }
+      
+      opciones.forEach((opcion, index) => {
+        opcion.addEventListener("mouseenter", () => handleHover(index));
+        opcion.addEventListener("mouseleave", handleLeave);
+      });
+      
       // Cierra el popup si el usuario hace clic fuera del contenido
 document.addEventListener("click", function (event) {
   const popup = document.getElementById("popup-escaner");
