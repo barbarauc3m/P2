@@ -45,19 +45,30 @@
       Elige el método que prefieras para identificar el lavado ideal:
     </p>
 
-    <div class="form ">
-      <div class="form-option">
-        <p>Analiza los símbolos de lavado de la etiqueta para recomendaciones precisas.</p>
-        <button class="login-button" onclick="iniciarEscaneoEtiqueta()">Escanear Etiqueta</button>
+    <div class="form">
+      <div class="form-option form-etiqueta">
+        <button class="login-button" onclick="iniciarEscaneoEtiqueta()">
+          <div class="boton-contenido">
+            <img class="icono" src="../../images/etiqueta.svg" />
+            <p class="texto-explicativo">Analiza los símbolos de lavado de la etiqueta para recomendaciones precisas.</p>
+          </div>
+        </button>
       </div>
-      <div class="form-option">
-        <p>Haz una foto de la prenda para sugerencias basadas en su color y textura.</p>
-        <button class="login-button" onclick="iniciarEscaneoColor()">Escaneo Rápido</button>
+    
+      <div class="form-option form-color">
+        <button class="login-button" onclick="iniciarEscaneoColor()">
+          <div class="boton-contenido">
+            <img class="icono" src="../../images/color.svg" />
+            <p class="texto-explicativo">Haz una foto de la prenda para sugerencias basadas en su color y textura.</p>
+          </div>
+        </button>
       </div>
     </div>
+    
+    
   </div>
 </div>
- 
+
 
 
   <div class="boton-iniciar">

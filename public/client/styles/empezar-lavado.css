@@ -293,14 +293,15 @@ body {
     .form {
       margin-top: 20px;
       display: flex;
-      flex-direction: column;
+      flex-direction: row;
       justify-content: center;
       align-items: center;
-      gap: 2vh;
+      gap: 5vh;
     }
 
     .form-option{
       color: #4A556F;
+      width: 15vh;
     }
     
     .form .login-button {
@@ -326,8 +327,47 @@ body {
       transform: scale(0.95);
       box-shadow:  #373F523f 0px 15px 10px -10px;
     }
+
+    .boton-contenido {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      height: 8vh;
+      width: 100%;
+      position: relative;
+    }
     
-  
+    .icono, .texto-explicativo {
+      position: absolute;
+      transition: opacity 0.3s ease;
+    }
+    
+    .icono {
+      width: 8vh;
+      opacity: 1;
+    }
+    
+    .texto-explicativo {
+      color: white;
+      text-justify: justify;
+      font-size: 1.3vh;
+      opacity: 0;
+      padding: 0 1vh;
+    }
+    
+    /* Hover: ocultar imagen y mostrar texto EN EL MISMO LUGAR */
+    .login-button:hover .icono {
+      opacity: 0;
+    }
+    
+    .login-button:hover .texto-explicativo {
+      opacity: 1;
+    }
+    
+    
+  .login-button img{
+    width: 8vh;
+  }
 
   .cssbuttons-io-button {
     background: #ffffff;
