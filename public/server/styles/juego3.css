@@ -182,10 +182,11 @@ body {
 
 .tendedero {
     width: 200%; /* Doble del ancho para el efecto de bucle */
+    height: 70px;
     position: fixed;
-    top: -0px;
+    top: 170px;
     left: 0;
-    animation: moverTendedero 8s linear infinite; /* Animación */
+    animation: moverTendedero 12s linear infinite; /* Animación */
     z-index: 100;
 }
 

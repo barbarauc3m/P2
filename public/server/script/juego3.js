@@ -6,7 +6,7 @@ document.addEventListener("DOMContentLoaded", function() {
         document.querySelector(".game-container").style.display = "block";
 
         // Asegúrate de usar 'url("ruta")' para la imagen de fondo
-        document.body.style.backgroundImage = 'url("../../../images/garden2.jpg")';
+        document.body.style.backgroundImage = 'url("../../../images/garden.jpg")';
 
         // Opcional: Ajustes adicionales para que la imagen se vea bien
         document.body.style.backgroundSize = "cover"; // Cubre todo el fondo
