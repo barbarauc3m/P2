@@ -12,7 +12,7 @@ document.addEventListener("DOMContentLoaded", function() {
     });
 
     const gameContainer = document.querySelector('.game-container');
-    const alturaMaxima = 260;
+    const alturaMaxima = 285;
     const velocidad = 8;
     let prendas = [];
     let prendaActual = null;
@@ -89,7 +89,7 @@ document.addEventListener("DOMContentLoaded", function() {
 
     // Función para la animación final
     function iniciarAnimacionFinal(prenda) {
-        prenda.style.animation = 'moverRopa 8.8s linear 1 forwards';
+        prenda.style.animation = 'moverRopa 8.2s linear 1 forwards';
         
         prenda.addEventListener('animationend', function handler() {
             prenda.removeEventListener('animationend', handler);

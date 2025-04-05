@@ -168,11 +168,11 @@ body {
 
 .tendedero {
     width: 200%; /* Doble del ancho para el efecto de bucle */
-    height: 80px;
+    height: 130px;
     position: fixed;
     top: 170px;
     left: 0;
-    animation: moverTendedero 12s linear infinite; /* Animación */
+    animation: moverTendedero 11s linear infinite; /* Animación */
     z-index: 100;
 }
 
@@ -187,8 +187,8 @@ body {
 
 .ropa-container {
     position: fixed;
-    width: 80px;
-    height: 80px;
+    width: 120px;
+    height: 120px;
     top: 900px;
     z-index: 100;
     left: 50%;         /* Lo coloca a la mitad del ancho del viewport */
