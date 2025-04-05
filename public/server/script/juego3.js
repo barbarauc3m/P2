@@ -17,10 +17,13 @@ document.addEventListener("DOMContentLoaded", function() {
     let prendas = [];
     let prendaActual = null;
     let puedeLanzar = true;
+    const tiposPrenda = ['camiseta', 'pantalones', 'calcetines'];
+    indicePrenda = Math.floor(Math.random() * tiposPrenda.length);
 
     // Crear la primera prenda
     function crearPrendaInicial() {
         const prenda = document.querySelector('.ropa-container');
+        actualizarImagenPrenda(prenda);
         prenda.style.top = '900px';
         prenda.style.left = '50%';
         prenda.style.transform = 'translate(-50%, -50%)';
@@ -29,11 +32,22 @@ document.addEventListener("DOMContentLoaded", function() {
         prendaActual = prenda;
     }
 
-    crearPrendaInicial();
+    // Función para actualizar la imagen de la prenda
+    function actualizarImagenPrenda(prendaContainer) {
+        const img = prendaContainer.querySelector('img');
+        const tipo = tiposPrenda[indicePrenda];
+        img.src = `../../images/${tipo}.png`;
+        img.alt = tipo;
+        img.className = tipo; // Actualizamos la clase CSS
+        
+        // Rotamos al siguiente tipo de prenda 
+        indicePrenda = Math.floor(Math.random() * tiposPrenda.length);
+    }
 
     // Función para crear una nueva prenda
     function crearNuevaPrenda() {
         const nuevaPrenda = prendaActual.cloneNode(true);
+        actualizarImagenPrenda(nuevaPrenda);
         nuevaPrenda.style.animation = 'none';
         nuevaPrenda.style.top = '900px';
         nuevaPrenda.style.left = '50%';
@@ -47,14 +61,16 @@ document.addEventListener("DOMContentLoaded", function() {
     // Función para mover la prenda
     function moverPrenda() {
         if (!puedeLanzar || !prendaActual) return;
-
+    
         puedeLanzar = false;
         
-        // Crear nueva prenda inmediatamente al lanzar
-        crearNuevaPrenda();
-        
-        // Animar la prenda que se está lanzando
+        // Animar la prenda actual primero
         animarPrenda(prendaActual);
+        
+        // Luego crear nueva prenda (esto se moverá en el callback de animación)
+        setTimeout(() => {
+            crearNuevaPrenda();
+        }, 100); // Pequeño retraso para asegurar que la animación comience
     }
 
     // Función para animar la prenda
@@ -88,4 +104,6 @@ document.addEventListener("DOMContentLoaded", function() {
             moverPrenda();
         }
     });
+
+    crearPrendaInicial();
 });
