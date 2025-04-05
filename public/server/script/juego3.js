@@ -73,19 +73,51 @@ document.addEventListener("DOMContentLoaded", function() {
         }, 100); // Pequeño retraso para asegurar que la animación comience
     }
 
+    function detectarColision(prenda) {
+        const rect1 = prenda.getBoundingClientRect();
+    
+        for (let i = 0; i < prendas.length - 1; i++) {
+            const otraPrenda = prendas[i];
+            if (otraPrenda === prenda) continue;
+    
+            const rect2 = otraPrenda.getBoundingClientRect();
+    
+            const colisiona = !(
+                rect1.right < rect2.left ||
+                rect1.left > rect2.right ||
+                rect1.bottom < rect2.top ||
+                rect1.top > rect2.bottom
+            );
+    
+            if (colisiona) {
+                gameOver();
+                return;
+            }
+        }
+    }
+    
+
+    function gameOver() {
+        document.querySelector(".game-container").style.display = "none";
+        document.querySelector(".game-over-container").style.display = "block";
+    }
+    
+
     // Función para animar la prenda
     function animarPrenda(prenda) {
         const currentTop = parseInt(prenda.style.top);
         const nuevaPosicion = currentTop - velocidad;
-
+    
         if (nuevaPosicion <= alturaMaxima) {
-            prenda.style.top = `${alturaMaxima-60}px`;
+            prenda.style.top = `${alturaMaxima - 60}px`;
             iniciarAnimacionFinal(prenda);
         } else {
             prenda.style.top = `${nuevaPosicion}px`;
+            detectarColision(prenda); // Detectar colisión mientras sube
             requestAnimationFrame(() => animarPrenda(prenda));
         }
     }
+    
 
     // Función para la animación final
     function iniciarAnimacionFinal(prenda) {
@@ -106,4 +138,42 @@ document.addEventListener("DOMContentLoaded", function() {
     });
 
     crearPrendaInicial();
+
+    // Función para reiniciar el juego
+function reiniciarJuego() {
+    // 1. Restablece el estado del juego
+    prendas = [];
+    puedeLanzar = true;
+    
+    // 2. Oculta el contenedor de Game Over
+    document.querySelector(".game-over-container").style.display = "none";
+    
+    // 3. Muestra el contenedor del juego
+    document.querySelector(".game-container").style.display = "block";
+    
+    // 4. Elimina todas las prendas del DOM excepto la primera
+    const todasLasPrendas = document.querySelectorAll('.ropa-container');
+    todasLasPrendas.forEach((prenda, index) => {
+        if (index > 0) {
+            prenda.remove();
+        }
+    });
+    
+    // 5. Reinicia la posición de la primera prenda
+    const prendaInicial = document.querySelector('.ropa-container');
+    prendaInicial.style.top = '900px';
+    prendaInicial.style.left = '50%';
+    prendaInicial.style.transform = 'translate(-50%, -50%)';
+    prendaInicial.style.animation = 'none';
+    
+    // 6. Actualiza la imagen de la prenda inicial
+    actualizarImagenPrenda(prendaInicial);
+    
+    // 7. Restablece el array de prendas y la prenda actual
+    prendas = [prendaInicial];
+    prendaActual = prendaInicial;
+}
+
+// Asigna el evento al botón "VOLVER A JUGAR"
+document.getElementById("restart-button").addEventListener("click", reiniciarJuego);
 });

@@ -222,3 +222,42 @@ body {
         transform: translateX(-50%);
     }
 }
+
+.puntos-container{
+    position: fixed;
+    top: 0;
+    left: 10px;
+}
+.contador-container{
+    position: fixed;
+    top: 0;
+    right: 10px;
+}
+
+
+.game-over-container{
+    position: fixed;
+    background-color: rgba(14, 54, 6, 0.9); /* Fondo semitransparente */
+    border-radius: 20px;
+    padding: 80px;
+    box-shadow: 
+        0 10px 30px rgba(0, 0, 0, 0.4),
+        inset 0 0 20px rgba(255, 255, 255, 0.1);
+    position: relative;
+    z-index: 1;
+    backdrop-filter: blur(5px);
+    display: flex; /* Añade esto */
+    flex-direction: column; /* Añade esto */
+    align-items: center; /* Añade esto */
+}
+
+.game-over-container h2{
+    color: rgb(255, 255, 255);
+}
+
+.game-over-container button{
+    display: block;
+    margin-bottom: 10px;
+    color: rgb(3, 88, 17);
+    width: 290px;
+}
