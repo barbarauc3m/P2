@@ -30,6 +30,9 @@ app.use('/script', express.static(path.join(__dirname, 'public', 'client', 'scri
 
 app.use('/styles', express.static(path.join(__dirname, 'public', 'client', 'styles')));
 
+app.use('/client', express.static(path.join(__dirname, 'public', 'client')));
+
+
 app.get('/', (req, res) => {
   res.sendFile(path.join(__dirname, 'public/client/index.html'));
 }
@@ -87,6 +90,14 @@ app.get('/lavados-favs.html', (req, res) => {
   res.sendFile(path.join(__dirname, 'public/client/lavados-favs.html'));
 });
 
+app.get('/escaner-etiqueta.html', (req, res) => {
+  res.sendFile(path.join(__dirname, 'public/client/escaner-etiqueta.html'));
+});
+
+
+app.get('/escaner-color.html', (req, res) => {
+  res.sendFile(path.join(__dirname, 'public/client/escaner-color.html'));
+});
 
 // Ruta POST para guardar lavado
 app.post('/guardar-lavado', (req, res) => {

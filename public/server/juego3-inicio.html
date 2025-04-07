@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <title>Atrapa la Ropa - Lavaloo</title>
+    <link rel="stylesheet" href="styles/juego3.css"/>
+</head>
+<body>
+    <h1 class="game-title">REY DEL TENDEDERO</h1>
+    
+    <div class="game-start-container">
+        <div class="game-rules">
+            <h2>¡Cómo jugar!</h2>
+            <ul>
+                <li>Cuelga toda la ropa en el tendedero</li>
+                <li>La cuerda del tendedero se mueve</li>
+                <li>¡No toques la ropa ya colgada!</li>
+                <li>30 segundos para colgar toda la ropa</li>
+                <li>Gana puntos extra por rachas</li>
+            </ul>
+        </div>
+        
+        <button class="start-button">¡JUGAR!</button>
+    </div>
+
+    <div class="game-container" style="display: none;"> 
+        <img src="../../images/cuerda.png" alt="cuerda" class="tendedero"/>
+        <div class="ropa-container">
+            <img src="../../images/camiseta.png" alt="camiseta" class="camiseta"/>
+        </div>
+
+        <div class="puntos-container">
+            <p>Puntos: </p>
+        </div>
+        <div class="contador-container">
+            <p>Prendas por colgar: </p>
+        </div>
+    </div>
+
+    
+    
+    <div class="game-over-container" style="display: none;">
+        <div class="game-rules">
+            <h2>¡GAME OVER!</h2>
+            <p>TOCASTE LA ROPA TENDIDA...</p>
+        </div>
+        
+        <button class="start-button" id="restart-button">VOLVER A JUGAR</button>
+        <button class="start-button" onclick="window.location.href='./'">MENÚ</button>
+    </div>
+
+    <script src="script/juego3.js"></script>
+</body>
+</html>
