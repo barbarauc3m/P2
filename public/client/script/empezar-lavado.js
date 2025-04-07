@@ -104,7 +104,7 @@ const lavado = JSON.parse(localStorage.getItem('lavadoSeleccionado'));
         opcion.addEventListener("mouseenter", () => handleHover(index));
         opcion.addEventListener("mouseleave", handleLeave);
       });
-      
+
       // Cierra el popup si el usuario hace clic fuera del contenido
 document.addEventListener("click", function (event) {
   const popup = document.getElementById("popup-escaner");
@@ -130,7 +130,7 @@ document.addEventListener("click", function (event) {
   
   function iniciarEscaneoEtiqueta() {
     cerrarPopupEscaner();
-    window.location.href = "escaner-etiqueta.html";
+    window.location.href = "../escaner-etiqueta.html";
   }
   
   function iniciarEscaneoColor() {

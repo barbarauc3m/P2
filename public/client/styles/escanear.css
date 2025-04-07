@@ -94,3 +94,25 @@ h1 {
       top: 100%;
     }
   } 
+
+
+  #video {
+    width: 100%;
+    height: auto;
+    border-radius: 10px;
+    background-color: black;
+  }
+  
+  .scanner-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+  }
+  
+  .scanner-box {
+    position: relative;
+    width: 80%; /* Ajusta según el tamaño deseado */
+    margin: 20px;
+  }
+  
