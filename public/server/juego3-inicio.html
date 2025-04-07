@@ -12,10 +12,10 @@
         <div class="game-rules">
             <h2>¡Cómo jugar!</h2>
             <ul>
-                <li>¡Busca hueco para colgar ropa en el tendedero!</li>
-                <li>La cuerda del tendedero se mueve!</li>
-                <li>No solapes una prenda sobre otra (-1 punto)</li>
-                <li>Tienes 60 segundos para colgar toda la ropa</li>
+                <li>Cuelga toda la ropa en el tendedero</li>
+                <li>La cuerda del tendedero se mueve</li>
+                <li>¡No toques la ropa ya colgada!</li>
+                <li>30 segundos para colgar toda la ropa</li>
                 <li>Gana puntos extra por rachas</li>
             </ul>
         </div>
@@ -23,8 +23,30 @@
         <button class="start-button">¡JUGAR!</button>
     </div>
 
-    <div class="game-container" style="display: none;">
-        <img src="../../images/tendedero-feo.png" alt="Tendedero" class="tendedero"/>
+    <div class="game-container" style="display: none;"> 
+        <img src="../../images/cuerda.png" alt="cuerda" class="tendedero"/>
+        <div class="ropa-container">
+            <img src="../../images/camiseta.png" alt="camiseta" class="camiseta"/>
+        </div>
+
+        <div class="puntos-container">
+            <p>Puntos: </p>
+        </div>
+        <div class="contador-container">
+            <p>Prendas por colgar: </p>
+        </div>
+    </div>
+
+    
+    
+    <div class="game-over-container" style="display: none;">
+        <div class="game-rules">
+            <h2>¡GAME OVER!</h2>
+            <p>TOCASTE LA ROPA TENDIDA...</p>
+        </div>
+        
+        <button class="start-button" id="restart-button">VOLVER A JUGAR</button>
+        <button class="start-button" onclick="window.location.href='./'">MENÚ</button>
     </div>
 
     <script src="script/juego3.js"></script>
