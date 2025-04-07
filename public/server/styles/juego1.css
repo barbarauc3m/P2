@@ -1,47 +1,230 @@
+@font-face {
+    font-family: 'Super Cottage';
+    src: url(../../../../fonts/Super\ Cottage.ttf);
+    font-weight: normal;
+    font-style: normal;
+  }
+  
+  @font-face {
+    font-family: 'Super Lobster';
+    src: url(../../../../fonts/Super\ Lobster.ttf);
+    font-weight: normal;
+    font-style: normal;
+  }
+  
+  @font-face {
+    font-family: 'Super Peace';
+    src: url(../../../../fonts/Super\ Peace.ttf);
+    font-weight: normal;
+    font-style: normal;
+  }
+
+
 body {
     margin: 0;
     overflow: hidden;
-    background-color: #5d6b8b;
     font-family: 'Super Peace', sans-serif;
+    background-color: #EDF2FB;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
 }
-#game-container {
+
+
+.game-title {
+    font-size: 4em;
+    margin-bottom: 20px;
     position: relative;
-    width: 100vw;
-    height: 100vh;
+    z-index: 2;
+    color: #5D6B8B; /* Amarillo dorado complementario */
+    text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.3);
+}
+
+.game-start-container {
+    text-align: center;
+    width: 80%;
+    max-width: 700px;
+    background-color: rgba(93, 107, 139, 0.9); /* Fondo semitransparente */
+    border-radius: 20px;
+    padding: 30px;
+    box-shadow: 
+        0 10px 30px rgba(0, 0, 0, 0.4),
+        inset 0 0 20px rgba(255, 255, 255, 0.1);
+    position: relative;
+    z-index: 1;
+    backdrop-filter: blur(5px);
+}
+
+.game-start-container::before {
+    content: '';
+    position: absolute;
+    top: -2px;
+    left: -2px;
+    right: -2px;
+    bottom: -2px;
+    background: linear-gradient(135deg, 
+              rgba(255,209,102,0.1) 0%, 
+              rgba(106,168,79,0.1) 100%);
+    border-radius: 22px;
+    z-index: -1;
+    filter: blur(5px);
+}
+
+.game-rules {
+    font-size: 1.3em;
+    margin-bottom: 40px;
+    text-align: left;
+    padding: 0 20px;
+    color: #F8F9FA;
+    line-height: 1.6;
+}
+
+.game-rules h2 {
+    text-align: center;
+    color: #F8F9FA;
+    font-size: 1.8em;
+    margin-bottom: 20px;
+    text-shadow: 1px 1px 3px rgba(0,0,0,0.3);
+    font-family: 'Super Lobster', sans-serif;
+}
+
+.game-rules ul {
+    list-style-type: none;
+    padding: 0;
+}
+
+.game-rules li {
+    margin-bottom: 15px;
+    position: relative;
+    padding-left: 30px;
+}
+
+.game-rules li::before {
+    content: '»';
+    color: #6AA84F; /* Verde complementario */
+    font-size: 1.5em;
+    position: absolute;
+    left: 0;
+    top: -3px;
+}
+
+.boton-iniciar{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
+
+.cssbuttons-io-button {
+  background: #ffffff;
+  color: #5d6b8b;
+  font-family: inherit;
+  padding: 0.35em 1.2em 0.35em 1.2em;
+  font-size: 20px;
+  font-weight: 500;
+  border-radius: 0.9em;
+  border: none;
+  letter-spacing: 0.05em;
+  display: flex;
+  align-items: center;
+  box-shadow: inset 0 0 1.6em -0.6em #5d6b8b;
+  overflow: hidden;
+  position: relative;
+  height: 3em;
+  padding-right: 3.3em;
+  cursor: pointer;
+}
+
+.cssbuttons-io-button .icon {
+  background: #5d6b8b;
+  margin-left: 1em;
+  position: absolute;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 2.2em;
+  width: 2.2em;
+  border-radius: 0.7em;
+  box-shadow: 0.1em 0.1em 0.6em 0.2em #5d6b8b;
+  right: 0.3em;
+  transition: all 0.3s;
+}
+
+.cssbuttons-io-button:hover .icon {
+  width: calc(100% - 0.6em);
+}
+
+.cssbuttons-io-button .icon svg {
+  width: 1.1em;
+  transition: transform 0.3s;
+  color: #ffffff;
+}
+
+.cssbuttons-io-button:hover .icon svg {
+  transform: translateX(0.1em);
+}
+
+.cssbuttons-io-button:active .icon {
+  transform: scale(0.95);
+}
+
+
+#game-container {
+  background-color: #a8c0d6;
+  position: relative;
+  width: 100vw;
+  height: 100vh;
 }
 #game-canvas {
-    display: block;
-    background-color: #a8c0d6;
+  display: block;
+  background-color: #a8c0d6;
 }
 #score-display {
-    position: absolute;
-    top: 20px;
-    right: 20px;
-    font-size: 24px;
-    color: white;
-    background-color: rgba(0, 0, 0, 0.5);
-    padding: 10px 20px;
-    border-radius: 10px;
+  display: none;
+  position: absolute;
+  top: 20px;
+  right: 20px;
+  font-size: 24px;
+  color: white;
+  padding: 10px 20px;
+  border-radius: 10px;
 }
 #timer-display {
-    position: absolute;
-    top: 20px;
-    left: 20px;
-    font-size: 24px;
-    color: white;
-    background-color: rgba(0, 0, 0, 0.5);
-    padding: 10px 20px;
-    border-radius: 10px;
+  display: none;
+  position: absolute;
+  top: 20px;
+  left: 20px;
+  font-size: 24px;
+  color: white;
+  padding: 10px 20px;
+  border-radius: 10px;
 }
 #game-over {
-    position: absolute;
-    top: 50%;
-    left: 50%;
-    transform: translate(-50%, -50%);
-    font-size: 48px;
-    color: white;
-    background-color: rgba(0, 0, 0, 0.8);
-    padding: 20px 40px;
-    border-radius: 20px;
-    display: none;
+  display: none;
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  font-size: 48px;
+  color: white;
+  background-color: rgba(0, 0, 0, 0.8);
+  padding: 20px 40px;
+  border-radius: 20px;
+  display: none;
+}
+
+#carrito-img {
+  position: absolute;
+  bottom: 20px;
+  left: 50%;
+  transform: translateX(-50%) scaleX(1); /* scaleX(1) es normal */
+  width: 10vw;
+  height: auto;
+  z-index: 10;
+  transition: transform 0.2s ease-in-out; /* suavidad al girar */
+}
+
+.objeto {
+  transition: top 0.05s linear;
+  pointer-events: none;
 }

@@ -6,24 +6,51 @@
     <link rel="stylesheet" href="styles/juego1.css">
 </head>
 <body>
-    <div id="game-container">
+
+    <h1 class="game-title">ATRAPA LA ROPA</h1>
+    
+    <div class="game-start-container">
+        <div class="game-rules">
+            <h2>¡Cómo jugar!</h2>
+            <ul>
+                <li>Usa las flechas ← → para mover el carrito</li>
+                <li>Atrapa las prendas de ropa que caen (+1 punto)</li>
+                <li>¡Cuidado con las bombas! (-1 punto)</li>
+                <li>Tienes 60 segundos para conseguir la máxima puntuación</li>
+                <li>Gana puntos extra por rachas de prendas atrapadas</li>
+            </ul>
+        </div>
+        
+        <div class="boton-iniciar" onclick="startGame()">
+            <button class="cssbuttons-io-button">
+                JUGAR
+                <div class="icon">
+                <svg
+                    xmlns="http://www.w3.org/2000/svg"
+                    viewBox="0 0 24 24"
+                    width="24"
+                    height="24"
+                >
+                    <path fill="none" d="M0 0h24v24H0z"></path>
+                    <path
+                    fill="currentColor"
+                    d="M16.172 11l-5.364-5.364 1.414-1.414L20 12l-7.778 7.778-1.414-1.414L16.172 13H4v-2z"
+                    ></path>
+                </svg>
+                </div>
+            </button>
+            </div>
+    </div>
+    <div id="game-container" style="display: none;">
         <canvas id="game-canvas"></canvas>
         <div id="score-display">Puntos: 0</div>
         <div id="timer-display">Tiempo: 60</div>
         <div id="game-over">¡Juego Terminado!</div>
     </div>
 
+    <img id="carrito-img" src="/images/carrito.png" alt="Carrito" style="display: none;">
+
+
     <script src="script/juego1.js"></script>
-    <script>
-        // Iniciar automáticamente al cargar la página
-        window.addEventListener('load', () => {
-            // Pequeño retardo para asegurar que todo está cargado
-            setTimeout(() => {
-                if (typeof startGame === 'function') {
-                    startGame();
-                }
-            }, 100);
-        });
-    </script>
 </body>
 </html>

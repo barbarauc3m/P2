@@ -1,201 +1,168 @@
+let canvas, ctx;
+let carritoImg;
+let carritoX;
+let carritoY;
+let carritoAncho = 80;
+let carritoAlto = 50;
+let canvasAncho = 600;
+let canvasAlto = 400;
 
-// Configuración del juego
-const canvas = document.getElementById('game-canvas');
-const ctx = canvas.getContext('2d');
-const scoreDisplay = document.getElementById('score-display');
-const timerDisplay = document.getElementById('timer-display');
-const gameOverDisplay = document.getElementById('game-over');
 
-// Ajustar tamaño del canvas
-canvas.width = window.innerWidth;
-canvas.height = window.innerHeight;
-
-// Variables del juego
+// Prendas del juego
+let objetos = [];
 let score = 0;
-let timeLeft = 60;
-let gameActive = true;
-let gameTimer;
-
-// Jugador
-const player = {
-    x: canvas.width / 2 - 50,
-    y: canvas.height - 100,
-    width: 100,
-    height: 100,
-    speed: 10,
-    img: new Image()
-};
-player.img.src = 'images/carrito.png'; // Asegúrate de tener esta imagen
-
-// Objetos que caen
-let fallingItems = [];
-const itemTypes = [
-    { name: 'camiseta', points: 1, img: new Image() },
-    { name: 'pantalon', points: 1, img: new Image() },
-    { name: 'calcetin', points: 1, img: new Image() },
-    { name: 'bomba', points: -1, img: new Image() }
+let gameInterval;
+let caidaInterval;
+const tiposObjetos = [
+  { tipo: 'camiseta', src: '/images/camiseta.png', puntos: 1 },
+  { tipo: 'pantalon', src: '/images/pantalones.png', puntos: 1 },
+  { tipo: 'calcetines', src: '/images/calcetines.png', puntos: 1 },
+  { tipo: 'bomba', src: '/images/bomba.png', puntos: -1 }
 ];
 
-// Cargar imágenes
-itemTypes[0].img.src = 'images/camiseta.png';
-itemTypes[1].img.src = 'images/pantalon.png';
-itemTypes[2].img.src = 'images/calcetin.png';
-itemTypes[3].img.src = 'images/bomba.png';
 
-// Teclado
-const keys = {
-    ArrowLeft: false,
-    ArrowRight: false
-};
+let timer = 60;
+let intervalId;
 
-// Eventos de teclado
-window.addEventListener('keydown', (e) => {
-    if (e.key in keys) {
-        keys[e.key] = true;
-    }
-});
+function startGame() {
+    document.querySelector('.game-start-container').style.display = 'none';
+    document.querySelector('.game-title').style.display = 'none';
+    document.getElementById('game-container').style.display = 'block';
+    document.getElementById('carrito-img').style.display = 'block';
+    document.getElementById('score-display').style.display = 'block';
+    document.getElementById('timer-display').style.display = 'block';
 
-window.addEventListener('keyup', (e) => {
-    if (e.key in keys) {
-        keys[e.key] = false;
-    }
-});
 
-// Crear nuevos objetos que caen
-function createFallingItem() {
-    if (!gameActive) return;
-    
-    const type = Math.random() < 0.8 ? 
-        itemTypes[Math.floor(Math.random() * 3)] : // 80% de probabilidad para ropa
-        itemTypes[3]; // 20% para bomba
-    
-    fallingItems.push({
-        type: type,
-        x: Math.random() * (canvas.width - 50),
-        y: -50,
-        width: 50,
-        height: 50,
-        speed: 3 + Math.random() * 3
-    });
+
+    score = 0;
+    objetos = [];
+
+    document.getElementById('score-display').textContent = 'Puntos: 0';
+    document.getElementById('timer-display').textContent = 'Tiempo: 60';
+    document.getElementById('game-over').style.display = 'none';
+
+    // Crear objetos cada 800ms
+    caidaInterval = setInterval(crearObjeto, 1500);
+    // Moverlos cada 50ms
+    gameInterval = setInterval(moverObjetos, 50);
+
+    iniciarJuego();
 }
 
-// Actualizar posición del jugador
-function updatePlayer() {
-    if (keys.ArrowLeft && player.x > 0) {
-        player.x -= player.speed;
-    }
-    if (keys.ArrowRight && player.x < canvas.width - player.width) {
-        player.x += player.speed;
-    }
+function iniciarJuego() {
+    canvas = document.getElementById('game-canvas');
+    canvas.width = 600;
+    canvas.height = 400;
+
+    // Mostrar carrito
+    const carrito = document.getElementById('carrito-img');
+    carrito.style.display = 'block';
+
+    // Posición inicial
+    carrito.style.left = '50%'; // centrado con transform
+
+    // Escuchar teclas
+    document.addEventListener('keydown', moverCarritoImg);
+
+    // Temporizador
+    iniciarTemporizador();
 }
 
-// Actualizar posición de los objetos
-function updateItems() {
-    for (let i = fallingItems.length - 1; i >= 0; i--) {
-        const item = fallingItems[i];
-        item.y += item.speed;
-
-        // Detectar colisión con el jugador
-        if (
-            item.y + item.height > player.y &&
-            item.x + item.width > player.x &&
-            item.x < player.x + player.width
-        ) {
-            score += item.type.points;
-            scoreDisplay.textContent = `Puntos: ${score}`;
-            fallingItems.splice(i, 1);
-            continue;
-        }
-
-        // Eliminar si llega al suelo
-        if (item.y > canvas.height) {
-            fallingItems.splice(i, 1);
-        }
-    }
-}
-
-// Dibujar elementos
-function draw() {
-    // Limpiar canvas
-    ctx.clearRect(0, 0, canvas.width, canvas.height);
-
-    // Dibujar jugador
-    ctx.drawImage(player.img, player.x, player.y, player.width, player.height);
-
-    // Dibujar objetos
-    fallingItems.forEach(item => {
-        ctx.drawImage(item.type.img, item.x, item.y, item.width, item.height);
-    });
-}
-
-// Bucle del juego
-function gameLoop() {
-    if (!gameActive) return;
-
-    updatePlayer();
-    updateItems();
-    draw();
-    requestAnimationFrame(gameLoop);
-}
-
-// Temporizador del juego
-function startGameTimer() {
-    gameTimer = setInterval(() => {
-        timeLeft--;
-        timerDisplay.textContent = `Tiempo: ${timeLeft}`;
-
-        if (timeLeft <= 0) {
-            endGame();
+function iniciarTemporizador() {
+    let tiempo = 60;
+    const timer = setInterval(() => {
+        tiempo--;
+        document.getElementById('timer-display').textContent = `Tiempo: ${tiempo}`;
+        if (tiempo <= 0) {
+            clearInterval(timer);
+            clearInterval(caidaInterval);
+            clearInterval(gameInterval);
+            document.getElementById('game-over').style.display = 'block';
+            document.getElementById('game-over').textContent = `¡Juego Terminado! Puntuación: ${score}`;
+            objetos.forEach(o => o.remove());
+            objetos = [];
         }
     }, 1000);
 }
 
-// Finalizar juego
-function endGame() {
-    gameActive = false;
-    clearInterval(gameTimer);
-    clearInterval(itemInterval);
-    gameOverDisplay.style.display = 'block';
-    gameOverDisplay.textContent = `¡Juego Terminado! Puntos: ${score}`;
-}
+function moverCarritoImg(e) {
+    const carrito = document.getElementById('carrito-img');
+    const paso = 15;
+    const contenedorAncho = window.innerWidth;
+    const carritoAncho = carrito.offsetWidth;
+    const izquierdaActual = carrito.getBoundingClientRect().left;
 
-// Iniciar juego
-function startGame() {
-    gameActive = true;
-    score = 0;
-    timeLeft = 60;
-    scoreDisplay.textContent = `Puntos: ${score}`;
-    timerDisplay.textContent = `Tiempo: ${timeLeft}`;
-    gameOverDisplay.style.display = 'none';
-    fallingItems = [];
-    
-    startGameTimer();
-    gameLoop();
-}
+    let nuevaIzquierda;
 
-// Generar objetos cada segundo
-const itemInterval = setInterval(createFallingItem, 1000);
-
-// Redimensionar canvas
-window.addEventListener('resize', () => {
-    canvas.width = window.innerWidth;
-    canvas.height = window.innerHeight;
-    player.y = canvas.height - 100;
-});
-
-// Iniciar el juego cuando todas las imágenes estén cargadas
-let imagesLoaded = 0;
-const totalImages = 1 + itemTypes.length; // Jugador + tipos de items
-
-function checkImagesLoaded() {
-    imagesLoaded++;
-    if (imagesLoaded === totalImages) {
-        startGame();
+    if (e.key === 'ArrowLeft') {
+        nuevaIzquierda = izquierdaActual - paso;
+        if (nuevaIzquierda < 0) nuevaIzquierda = 0;
+        carrito.style.left = `${nuevaIzquierda + carritoAncho / 2}px`;
+        carrito.style.transform = 'translateX(-50%) scaleX(-1)'; // gira a la izquierda
+    } else if (e.key === 'ArrowRight') {
+        nuevaIzquierda = izquierdaActual + paso;
+        if (nuevaIzquierda + carritoAncho > contenedorAncho) {
+            nuevaIzquierda = contenedorAncho - carritoAncho;
+        }
+        carrito.style.left = `${nuevaIzquierda + carritoAncho / 2}px`;
+        carrito.style.transform = 'translateX(-50%) scaleX(1)'; // gira a la derecha
     }
 }
 
-player.img.onload = checkImagesLoaded;
-itemTypes.forEach(type => {
-    type.img.onload = checkImagesLoaded;
-});
-    
+
+function terminarJuego() {
+    clearInterval(intervalId);
+    document.getElementById('game-over').style.display = 'block';
+
+    const carrito = document.getElementById('carrito-img');
+    carrito.style.display = 'none';
+}
+
+function crearObjeto() {
+    const objetoInfo = tiposObjetos[Math.floor(Math.random() * tiposObjetos.length)];
+    const objeto = document.createElement('img');
+    objeto.src = objetoInfo.src;
+    objeto.classList.add('objeto');
+    objeto.dataset.tipo = objetoInfo.tipo;
+    objeto.dataset.puntos = objetoInfo.puntos;
+    objeto.style.position = 'absolute';
+    objeto.style.top = '0px';
+    objeto.style.left = `${Math.random() * (window.innerWidth - 60)}px`;
+    objeto.style.width = '80px';
+    objeto.style.zIndex = 5;
+
+    document.getElementById('game-container').appendChild(objeto);
+    objetos.push(objeto);
+}
+
+function moverObjetos() {
+    const carrito = document.getElementById('carrito-img');
+    const carritoRect = carrito.getBoundingClientRect();
+
+    objetos.forEach((obj, i) => {
+        let top = parseInt(obj.style.top);
+        obj.style.top = `${top + 5}px`;
+
+        const objRect = obj.getBoundingClientRect();
+
+        // Detectar colisión con el carrito
+        if (
+            objRect.bottom >= carritoRect.top &&
+            objRect.left < carritoRect.right &&
+            objRect.right > carritoRect.left
+        ) {
+            score += parseInt(obj.dataset.puntos);
+            obj.remove();
+            objetos.splice(i, 1);
+        }
+
+        // Si toca el suelo y no colisiona
+        else if (top > window.innerHeight) {
+            obj.remove();
+            objetos.splice(i, 1);
+        }
+    });
+
+    // Actualizar marcador
+    document.getElementById('score-display').textContent = `Puntos: ${score}`;
+}
