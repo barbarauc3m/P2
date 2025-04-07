@@ -20,6 +20,41 @@ const tiposObjetos = [
   { tipo: 'bomba', src: '/images/bomba.png', puntos: -1 }
 ];
 
+// Explosión de bomba
+const sonidoBomba = new Audio('/sounds/explosion.mp3');
+
+const explosion = {
+    img: new Image(),
+    active: false,
+    x: 0,
+    y: 0,
+    width: 100, 
+    height: 100,
+    frame: 0,
+    maxFrames: 10, // Ajusta según tus necesidades
+    animationSpeed: 5
+};
+explosion.img.src = '/images/explosion.png';
+
+function mostrarExplosion(x, y) {
+    const explosionElement = document.createElement('img');
+    explosionElement.src = explosion.img.src;
+    explosionElement.style.position = 'absolute';
+    explosionElement.style.left = `${x - explosion.width / 2}px`;
+    explosionElement.style.top = `${y - explosion.height / 2}px`;
+    explosionElement.style.width = `${explosion.width}px`;
+    explosionElement.style.height = `${explosion.height}px`;
+    explosionElement.style.zIndex = 10;
+    explosionElement.className = 'explosion';
+
+    document.getElementById('game-container').appendChild(explosionElement);
+
+    setTimeout(() => {
+        explosionElement.remove();
+    }, 400); // Mostrar por 400ms
+}
+
+
 
 let timer = 60;
 let intervalId;
@@ -145,16 +180,35 @@ function moverObjetos() {
 
         const objRect = obj.getBoundingClientRect();
 
-        // Detectar colisión con el carrito
         if (
             objRect.bottom >= carritoRect.top &&
             objRect.left < carritoRect.right &&
             objRect.right > carritoRect.left
         ) {
-            score += parseInt(obj.dataset.puntos);
+            const tipo = obj.dataset.tipo;
+            const puntos = parseInt(obj.dataset.puntos);
+            score += puntos;
+        
+            // Mostrar explosión si es bomba
+            if (tipo === 'bomba') {
+                const objRect = obj.getBoundingClientRect();
+                const containerRect = document.getElementById('game-container').getBoundingClientRect();
+            
+                // Coordenadas relativas al contenedor del juego
+                const explosionX = objRect.left - containerRect.left + objRect.width / 2;
+                const explosionY = objRect.top - containerRect.top + objRect.height / 2;
+            
+                mostrarExplosion(explosionX, explosionY);
+                sonidoBomba.currentTime = 0; // reinicia el sonido por si se repite rápido
+                sonidoBomba.play();
+
+            }
+            
+        
             obj.remove();
             objetos.splice(i, 1);
         }
+        
 
         // Si toca el suelo y no colisiona
         else if (top > window.innerHeight) {
