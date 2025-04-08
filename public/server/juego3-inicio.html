@@ -33,7 +33,7 @@
             <p>Puntos: </p>
         </div>
         <div class="contador-container">
-            <p>Prendas por colgar: </p>
+            <p>Prendas por colgar: <span id="contadorPrendas">0</span></p>
         </div>
     </div>
 
@@ -45,7 +45,17 @@
             <p>TOCASTE LA ROPA TENDIDA...</p>
         </div>
         
-        <button class="start-button" id="restart-button">VOLVER A JUGAR</button>
+        <button class="restart-button">VOLVER A JUGAR</button>
+        <button class="start-button" onclick="window.location.href='./'">MENÚ</button>
+    </div>
+
+    <div class="game-won-container" style="display: none;">
+        <div class="game-rules">
+            <h2>¡GANASTE!</h2>
+            <p>COLGASTE TODAS LAS PRENDAS</p>
+        </div>
+        
+        <button class="restart-button">VOLVER A JUGAR</button>
         <button class="start-button" onclick="window.location.href='./'">MENÚ</button>
     </div>
 

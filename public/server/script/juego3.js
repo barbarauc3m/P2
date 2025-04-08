@@ -11,6 +11,12 @@ document.addEventListener("DOMContentLoaded", function() {
         document.body.style.backgroundRepeat = "no-repeat";
     });
 
+    const viewportWidth = window.innerWidth;
+    console.log(viewportWidth);
+    const maxPrendas = Math.floor(viewportWidth / 120);
+    console.log(maxPrendas);
+    document.getElementById('contadorPrendas').textContent = maxPrendas;
+    
     const gameContainer = document.querySelector('.game-container');
     const alturaMaxima = 285;
     const velocidad = 8;
@@ -101,6 +107,11 @@ document.addEventListener("DOMContentLoaded", function() {
         document.querySelector(".game-container").style.display = "none";
         document.querySelector(".game-over-container").style.display = "block";
     }
+
+    function gameWon() {
+        document.querySelector(".game-container").style.display = "none";
+        document.querySelector(".game-won-container").style.display = "block";
+    }
     
 
     // Función para animar la prenda
@@ -121,6 +132,14 @@ document.addEventListener("DOMContentLoaded", function() {
 
     // Función para la animación final
     function iniciarAnimacionFinal(prenda) {
+        const contadorElement = document.getElementById("contadorPrendas");
+        let contadorActual = parseInt(contadorElement.textContent);
+        contadorElement.textContent = contadorActual - 10;
+    
+        if (contadorElement.textContent <= 0) { // El jugador gana
+            gameWon();
+            return;
+        }
         prenda.style.animation = 'moverRopa 8.2s linear 1 forwards';
         
         prenda.addEventListener('animationend', function handler() {
@@ -144,9 +163,14 @@ function reiniciarJuego() {
     // 1. Restablece el estado del juego
     prendas = [];
     puedeLanzar = true;
+
+    const viewportWidth = window.innerWidth;
+    const maxPrendas = Math.floor(viewportWidth / 120);
+    document.getElementById('contadorPrendas').textContent = maxPrendas;
     
     // 2. Oculta el contenedor de Game Over
     document.querySelector(".game-over-container").style.display = "none";
+    document.querySelector(".game-won-container").style.display = "none";
     
     // 3. Muestra el contenedor del juego
     document.querySelector(".game-container").style.display = "block";
@@ -175,5 +199,8 @@ function reiniciarJuego() {
 }
 
 // Asigna el evento al botón "VOLVER A JUGAR"
-document.getElementById("restart-button").addEventListener("click", reiniciarJuego);
+document.querySelectorAll(".restart-button").forEach(button => {
+    button.addEventListener("click", reiniciarJuego);
+});
+
 });
