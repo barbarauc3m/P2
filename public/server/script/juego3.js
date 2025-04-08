@@ -11,6 +11,10 @@ document.addEventListener("DOMContentLoaded", function() {
         document.body.style.backgroundRepeat = "no-repeat";
     });
 
+    // Variables para evitar que gameOver y gameWon solapen 
+    let juegoPerdido = false;  
+    let juegoGanado = false;
+
     const viewportWidth = window.innerWidth;
     console.log(viewportWidth);
     const maxPrendas = Math.floor(viewportWidth / 120);
@@ -95,7 +99,7 @@ document.addEventListener("DOMContentLoaded", function() {
                 rect1.top > rect2.bottom
             );
     
-            if (colisiona) {
+            if (colisiona && juegoGanado == false) {
                 gameOver();
                 return;
             }
@@ -104,13 +108,17 @@ document.addEventListener("DOMContentLoaded", function() {
     
 
     function gameOver() {
+        juegoPerdido = true;
         document.querySelector(".game-container").style.display = "none";
         document.querySelector(".game-over-container").style.display = "block";
+        
     }
 
-    function gameWon() {
+    function gameWon() { 
+        juegoGanado = true;   
         document.querySelector(".game-container").style.display = "none";
         document.querySelector(".game-won-container").style.display = "block";
+        
     }
     
 
@@ -134,9 +142,9 @@ document.addEventListener("DOMContentLoaded", function() {
     function iniciarAnimacionFinal(prenda) {
         const contadorElement = document.getElementById("contadorPrendas");
         let contadorActual = parseInt(contadorElement.textContent);
-        contadorElement.textContent = contadorActual - 10;
+        contadorElement.textContent = contadorActual - 1;
     
-        if (contadorElement.textContent <= 0) { // El jugador gana
+        if (contadorElement.textContent <= 0 && juegoPerdido == false) { // El jugador gana
             gameWon();
             return;
         }
@@ -163,6 +171,8 @@ function reiniciarJuego() {
     // 1. Restablece el estado del juego
     prendas = [];
     puedeLanzar = true;
+    juegoPerdido = false;
+    juegoGanado = false;
 
     const viewportWidth = window.innerWidth;
     const maxPrendas = Math.floor(viewportWidth / 120);
