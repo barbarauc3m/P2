@@ -41,14 +41,20 @@ document.addEventListener("DOMContentLoaded", function() {
         prendas.push(prenda);
         prendaActual = prenda;
     }
-
-    // Función para actualizar la imagen de la prenda
+    
     function actualizarImagenPrenda(prendaContainer) {
         const img = prendaContainer.querySelector('img');
         const tipo = tiposPrenda[indicePrenda];
         img.src = `../../images/${tipo}.png`;
         img.alt = tipo;
         img.className = tipo; // Actualizamos la clase CSS
+        
+        // Ajustar el ancho del contenedor según el tipo de prenda
+        if (tipo === 'pantalones') {
+            prendaContainer.style.width = '80px';
+        } else {
+            prendaContainer.style.width = '100px';
+        }
         
         // Rotamos al siguiente tipo de prenda 
         indicePrenda = Math.floor(Math.random() * tiposPrenda.length);

@@ -206,12 +206,14 @@ body {
 .ropa-container {
     background-color: red;
     position: fixed;
-    width: 120px;  /*auto*/
+    width: 100px;  
     height: 120px;
     top: 900px;
     z-index: 100;
     left: 50%;         /* Lo coloca a la mitad del ancho del viewport */
     transform: translate(-50%, -50%); /* Ajusta el centro exacto (tiene en cuenta las dimensiones de la camiseta en sí)*/
+    display: inline-flex; /* Contenedor ajustable al contenido */
+    justify-content: center; /* Centra horizontalmente la imagen */
 }
 
 .calcetines, .pantalones, .camiseta {
@@ -219,6 +221,7 @@ body {
     width: auto;
     object-fit: contain;
 }
+
 
 @keyframes moverRopa {
     0% {
