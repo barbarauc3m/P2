@@ -3,13 +3,47 @@ function loadGame(gameTitle, gameDescription) {
     // Guardar la información del juego seleccionado
     localStorage.setItem('selectedGameTitle', gameTitle);
     localStorage.setItem('selectedGameDescription', gameDescription);
-    
+
     // Redirigir a la pantalla de juego
     window.location.href = 'jugando.html';
 }
 
+function initDeviceOrientation() {    
+    const socket = io();
+
+    let lastBeta = null;
+    let lastTime = null;
+
+    window.addEventListener('deviceorientation', function(event) {
+        const beta = event.beta;
+        if (beta === null) return;
+
+        const currentTime = Date.now();
+
+        if (lastBeta !== null && lastTime !== null) {
+            const deltaBeta = beta - lastBeta;
+            const deltaTime = currentTime - lastTime;
+
+            if (deltaBeta > 20 && deltaTime < 500) {
+                console.log('📱 Inclinación rápida detectada');
+                socket.emit('lanzar');
+            }
+        }
+
+        lastBeta = beta;
+        lastTime = currentTime;
+    });
+}
+
 // Para jugando.html - Cargar los datos del juego seleccionado
 document.addEventListener("DOMContentLoaded", function() {
+
+    const selectedGame = localStorage.getItem("selectedGameTitle");
+    if (selectedGame === 'El Rey del Tendedero') {
+        console.log('🧭 Activando sensor para El Rey del Tendedero');
+        initDeviceOrientation();
+    }
+
     // Si estamos en la página de juego
     if (document.getElementById("game-title")) {
         const titleElement = document.getElementById("game-title");

@@ -99,6 +99,10 @@ app.get('/escaner-color.html', (req, res) => {
   res.sendFile(path.join(__dirname, 'public/client/escaner-color.html'));
 });
 
+app.get('/juego3.html', (req, res) => {
+  res.sendFile(path.join(__dirname, 'public/client/juego3.html'));
+});
+
 // Ruta POST para guardar lavado
 app.post('/guardar-lavado', (req, res) => {
   const nuevoLavado = req.body;
@@ -255,6 +259,11 @@ io.on('connection', (socket) => {
     console.log('Mensaje recibido:', data);
     socket.broadcast.emit('mensaje', data);
   });
+
+  socket.on('lanzar', () => {  // BARBARAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA (por si la lio)
+    console.log('📱 Movimiento recibido desde móvil');
+    socket.broadcast.emit('lanzar'); // Reenvía a todos menos al móvil
+  }); // BARBARAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA
 
   socket.on('disconnect', () => {
     console.log('Usuario desconectado');

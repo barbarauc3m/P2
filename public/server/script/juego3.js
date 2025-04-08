@@ -1,3 +1,26 @@
+console.log("✅ juego3.js cargado");
+try {
+    window.socket = io(); // Esto lo hace global
+    const socket = window.socket;
+
+  socket.on('connect', () => {
+    console.log('✅ Ordenador conectado al servidor con socket ID:', socket.id);
+  });
+
+  socket.on('lanzar', () => {
+    console.log("🚀 Lanzamiento recibido desde móvil");
+    moverPrenda(); // activa si quieres probar la animación
+  });
+
+  socket.on('mensaje', (data) => {
+    console.log('📩 Mensaje desde móvil:', data);
+  });
+
+} catch (error) {
+  console.warn("⚠️ No se pudo conectar a Socket.IO:", error);
+}
+
+
 document.addEventListener("DOMContentLoaded", function() {
     // Configuración inicial del juego
     document.querySelector(".start-button").addEventListener("click", function() {
@@ -162,7 +185,7 @@ document.addEventListener("DOMContentLoaded", function() {
         });
     }
 
-    // Evento de teclado
+    // Evento de teclado (CAMBIAR POR SEÑAL MÓVIL)
     document.addEventListener('keydown', function(e) {
         if (e.code === 'Space' && puedeLanzar) {
             e.preventDefault();

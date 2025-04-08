@@ -1,0 +1,44 @@
+<!-- BORRAR ESTE ARCHIVO SI FUNCIONA EL JUEGO 3 --> 
+<!-- public/client/juego3.html -->
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <title>Control Remoto</title>
+  <script src="/socket.io/socket.io.js"></script>
+</head>
+<body>
+  <h1>Control de Juego</h1>
+  <p>Mueve el móvil hacia arriba con fuerza para lanzar ropa 🚀</p>
+
+  <script>
+    
+    const socket = io();
+
+    let lastBeta = null;
+    let lastTime = null;
+
+    window.addEventListener('deviceorientation', function(event) {
+      const beta = event.beta; // Inclinación vertical (eje X)
+
+      if (beta === null) return;
+
+      const currentTime = Date.now();
+
+      if (lastBeta !== null && lastTime !== null) {
+        const deltaBeta = beta - lastBeta;
+        const deltaTime = currentTime - lastTime;
+
+        // Detectar una inclinación rápida (por ejemplo > 40° en menos de 500ms)
+        if (deltaBeta > 20 && deltaTime < 500) {
+          console.log('📱 Inclinación rápida detectada');
+          socket.emit('lanzar');
+        }
+      }
+
+      lastBeta = beta;
+      lastTime = currentTime;
+    });
+  </script>
+</body>
+</html>
