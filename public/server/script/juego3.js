@@ -17,7 +17,7 @@ document.addEventListener("DOMContentLoaded", function() {
 
     const viewportWidth = window.innerWidth;
     console.log(viewportWidth);
-    const maxPrendas = Math.floor(viewportWidth / 120);
+    const maxPrendas = Math.floor(viewportWidth / 100);
     console.log(maxPrendas);
     document.getElementById('contadorPrendas').textContent = maxPrendas;
     
@@ -41,7 +41,7 @@ document.addEventListener("DOMContentLoaded", function() {
         prendas.push(prenda);
         prendaActual = prenda;
     }
-    
+
     function actualizarImagenPrenda(prendaContainer) {
         const img = prendaContainer.querySelector('img');
         const tipo = tiposPrenda[indicePrenda];
