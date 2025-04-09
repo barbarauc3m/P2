@@ -178,4 +178,26 @@ document.addEventListener('DOMContentLoaded', () => {
       });
     });
 
+
+    const backButton = document.querySelector("#back-button-categorias");
+    const homeButton = document.querySelector("#home-button-categorias");
+
+    function navigateToHome(event) {
+      if (event) {
+        event.preventDefault(); // Evita la navegación normal del enlace
+      }
+
+      socketCategoriesClient.emit('requestDisplayChange', {
+        targetPage: '/',
+      });
+      window.location.href = '/mobile'; // Navega a la página de inicio
+
+    }
+    if (backButton) {
+      backButton.addEventListener("click", navigateToHome);
+    }
+    if (homeButton) {
+      homeButton.addEventListener("click", navigateToHome);
+    }
+
 }); // Fin DOMContentLoaded Principal
