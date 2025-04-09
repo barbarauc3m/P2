@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Mi Perfil</title>
+    <link rel="stylesheet" href="/server/styles/perfil.css"> 
+    <script src="/socket.io/socket.io.js"></script>
+</head>
+<body>
+
+    <main class="content">
+        <div class="profile-info">
+            <h1 class="username">Cargando...</h1>
+            <img id="profile-page-photo" src="../../images/persona_os.svg" alt="Foto">
+        </div>
+        
+        <div class="content">
+            <section class="historial">
+                <h2>Últimos Lavados (<span class="completados">0</span>)</h2>
+                <div class="categoria-list">
+                    <p>Cargando historial...</p>
+                </div>
+            </section>
+
+            <section class="mis-programas-section">
+                <h2>Mis Programas</h2>
+                <h3>Favoritos (<span class="favoritos">0</span>)</h3>
+                <div id="perfil-favoritos-lista" class="wash-list-summary">
+                    <p>Cargando favoritos...</p>
+                </div>
+                <h3>Personalizados (<span id="personalizados-count">0</span>)</h3>
+                <div id="perfil-personalizados-lista" class="wash-list-summary">
+                    <p>Cargando personalizados...</p>
+                </div>
+            </section>
+        </div>
+
+    </main>
+
+    <script src="/server/script/perfil.js"></script>
+     </body>
+</html>

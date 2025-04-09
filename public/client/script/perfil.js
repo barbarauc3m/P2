@@ -97,6 +97,45 @@ document.addEventListener("DOMContentLoaded", () => {
           </div>
         </div>
       `;
+
       favBox.appendChild(favDiv);
+
+      if (typeof io === 'undefined') { console.error('Perfil script: io no definido.'); return; }
+    const socketPerfil = io(); // O reutiliza una conexión existente
+
+
+    // --- NUEVA LÓGICA PARA "VER MÁS PROGRAMAS" ---
+    const verMasProgramasBtn = document.getElementById('ver-mas-programas');
+
+    if (verMasProgramasBtn) {
+        verMasProgramasBtn.addEventListener('click', (event) => {
+            event.preventDefault(); // Prevenir navegación normal del enlace <a>
+            const usuario = localStorage.getItem("loggedInUser"); // Obtener usuario actual
+
+            if (!usuario) {
+                alert("Debes iniciar sesión para ver tus programas.");
+                const loginPopup = document.getElementById('popup-login');
+                if (loginPopup) loginPopup.style.display = 'flex';
+                return;
+            }
+
+            console.log(`📱 Botón 'Ver Más Programas' presionado por ${usuario}.`);
+
+            // 1. Notificar al servidor para que muestre la pantalla de "Mis Programas"
+            socketPerfil.emit('requestDisplayChange', {
+                targetPage: '/display/my-programs', // Nueva ruta para el servidor
+                userId: usuario
+            });
+
+            // 2. Navegar el cliente a su página de gestión (lavados-favs.html)
+            window.location.href = 'lavados-favs.html'; // O usa event.target.href si era un <a>
+        });
+        console.log("📱 Listener añadido a #ver-mas-programas.");
+    } else {
+        console.warn("Botón/Enlace #ver-mas-programas no encontrado.");
+    }
+
     });
-});
+  });
+
+

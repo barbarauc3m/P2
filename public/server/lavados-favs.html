@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Mis Programas - Servidor</title>
+    <link rel="stylesheet" href="/server/styles/categorias-lavados.css">
+    <link rel="stylesheet" href="/server/styles/lavados-favs.css">
+</head>
+<body>
+    <div class="focus-overlay"></div>
+
+    <div class="mis-programas-display">
+        <h1>Mis Programas (<span id="my-programs-user">...</span>)</h1>
+
+        <section class="programas-section">
+            <h2>Favoritos</h2>
+            <div id="my-programs-favoritos" class="categories-container">
+                <p>Cargando favoritos...</p>
+            </div>
+        </section>
+
+        <section class="programas-section">
+            <h2>Personalizados</h2>
+            <div id="my-programs-personalizados" class="categories-container">
+                 <p>Cargando personalizados...</p>
+            </div>
+        </section>
+    </div>
+
+    <script src="/socket.io/socket.io.js"></script>
+    <script src="/server/script/display-manager.js"></script>
+    <script src="/server/script/lavados-favs.js"></script>
+</body>
+</html>

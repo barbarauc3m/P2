@@ -6,31 +6,22 @@
     "foto": "/images/persona_cla.svg",
     "favoritos": [
       {
-        "nombre": "Lavado Frío",
-        "descripcion": "Ideal para lana, seda, ropa interior, etc.",
-        "temperatura": "20ºC",
-        "duracion": "40 min",
-        "centrifugado": "600 rpm",
-        "detergente": "30 ml",
-        "imagen": "../../../images/frio.svg"
-      },
-      {
-        "nombre": "Lavado Caliente",
-        "descripcion": "Ideal para ropa muy sucia o con manchas.",
-        "temperatura": "60ºC",
-        "duracion": "1h 15 min",
-        "centrifugado": "1200 rpm",
-        "detergente": "60 ml",
-        "imagen": "../../../images/caliente.svg"
-      },
-      {
-        "nombre": "Lavado Edredones",
-        "descripcion": "Ideal para edredones.",
-        "temperatura": "30ºC",
-        "duracion": "2 h 30 min",
+        "nombre": "Lavado Deporte",
+        "descripcion": "Ideal para ropa de deporte, poliester, lycra, etc.",
+        "temperatura": "40ºC",
+        "duracion": "50 min",
         "centrifugado": "800 rpm",
-        "detergente": "45 ml",
-        "imagen": "../../../images/edredon.svg"
+        "detergente": "50 ml",
+        "imagen": "../../../images/ropa_deporte.svg"
+      },
+      {
+        "nombre": "Lavado Rápido",
+        "descripcion": "Ideal para ropa poco sucia o uso diario.",
+        "temperatura": "30ºC",
+        "duracion": "30 min",
+        "centrifugado": "1200 rpm",
+        "detergente": "50 ml",
+        "imagen": "../../../images/rapido.svg"
       }
     ],
     "personalizados": [

@@ -135,10 +135,15 @@ document.addEventListener('DOMContentLoaded', () => {
            const isLoggedIn = localStorage.getItem("isLoggedIn") === "true";
            const loggedInUser = localStorage.getItem("loggedInUser");
            if (isLoggedIn && loggedInUser) {
-               socketLogin.emit('requestDisplayChange', { targetPage: '/display/profile', userId: loggedInUser });
+               socketLogin.emit('requestDisplayChange', { 
+                    targetPage: '/display/profile', 
+                    userId: loggedInUser 
+                });
                window.location.href = 'perfil.html';
            } else {
-               socketLogin.emit('requestDisplayChange', { targetPage: '/display/login-prompt', userId: null });
+               socketLogin.emit('requestDisplayChange', { 
+                targetPage: '/display/login-prompt', 
+                userId: null });
                if(loginPopup) loginPopup.style.display = 'flex';
            }
        });

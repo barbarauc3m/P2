@@ -468,6 +468,14 @@ app.get('/api/users/:username/personalizados', async (req, res) => { // Nueva ru
   }
 });
 
+app.get('/display/profile', (req, res) => {
+  res.sendFile(path.join(__dirname, 'public/server/perfil.html'));
+});
+
+app.get('/display/lavados-favs', (req, res) => {
+  res.sendFile(path.join(__dirname, 'public/server/lavados-favs.html'));
+});
+
 
 // CONEXIONES SOCKET.IO
 io.on('connection', (socket) => {

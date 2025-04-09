@@ -1,0 +1,12 @@
+/* public/server/styles/my-programs-display.css */
+body {
+    background-color: #334; /* Fondo oscuro para esta vista? */
+    color: #eee;
+}
+h1 { text-align: center; }
+.programas-section h2 {
+    text-align: center;
+    margin-top: 30px;
+    padding-bottom: 10px;
+    border-bottom: 1px solid #556;
+}

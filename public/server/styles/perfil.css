@@ -1,0 +1,289 @@
+/* public/server/styles/categorias-lavados.css */
+
+/* ... (Fuentes y estilos de body, h1, etc. sin cambios) ... */
+@font-face {
+    font-family: 'Super Cottage';
+    src: url(/fonts/Super\ Cottage.ttf);
+    font-weight: normal;
+    font-style: normal;
+  }
+
+  @font-face {
+    font-family: 'Super Lobster';
+    src: url(/fonts/Super\ Lobster.ttf);
+    font-weight: normal;
+    font-style: normal;
+  }
+
+  @font-face {
+    font-family: 'Super Peace';
+    src: url(/fonts/Super\ Peace.ttf);
+    font-weight: normal;
+    font-style: normal;
+  }
+
+  h2{
+    font-family: 'Super Lobster', sans-serif;
+    color: #373F52;
+    font-size: 4vh;
+    margin-left: 10vh;
+  }
+
+  h3{
+    font-family: 'Super Lobster', sans-serif;
+    color: #373F52;
+    font-size: 3vh;
+    margin-left: 10vh;
+  }
+
+
+  .profile-info{
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 5vh 10vh;
+  }
+
+  .profile-info img{
+    width: 10vh;
+    height: 10vh;
+    border-radius: 50%;
+  }
+
+  .profile-info h1{
+    font-size: 5vh;
+    margin: 0;
+    font-family: 'Super Cottage', sans-serif;
+    color: #373F52;
+  }
+
+
+  .categoria-list{
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    justify-content: center;
+    align-items: center;
+    padding: 10vh 20vh;
+    gap: 10vh;
+  }
+
+  #perfil-favoritos-lista{
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    justify-content: center;
+    align-items: center;
+    padding: 10vh 20vh;
+    gap: 10vh;
+  }
+
+  #perfil-personalizados-lista{
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    justify-content: center;
+    align-items: center;
+    padding: 10vh 20vh;
+    gap: 10vh;
+  }
+
+  .lavado {
+    background-color: #5D6B8B;
+    border-radius: 1.5rem;
+    padding: 1.5rem;
+    display: flex;
+    flex-direction: column;
+    height: 30vh;
+    justify-content: center;
+    align-items: center;
+    color: white;
+    font-family: 'Segoe UI', sans-serif;
+    position: relative;
+  }
+  
+  .lavado-sombra {
+    position: relative;
+  }
+  
+  .sombra {
+    position: absolute;
+    height: 123px;
+    border-radius: 1.5rem;
+    top: 0;
+    left: 50%;
+    transform: translateX(-50%);
+    z-index: 0;
+  }
+  
+  .sombra-50 {
+    width: 95%;
+    height: 105%;
+    background-color: #5D6B8B;
+    opacity: 0.5;
+  }
+  
+  .sombra-20 {
+    width: 90%;
+    height: 110%;
+    background-color: #5D6B8B;
+    opacity: 0.2;
+  }
+/* Estilo base para cada tarjeta */
+.category-display {
+    border-radius: 1.5rem;
+    padding: 1.5rem;
+    display: flex;
+    flex-direction: column;
+    height: 30vh;
+    justify-content: center;
+    align-items: center;
+    color: white;
+
+    opacity: 1;
+    transform: scale(1);
+    position: relative; 
+    z-index: 1; 
+    /* --- Transición GENERAL --- */
+    transition: all 0.4s ease-in-out;
+}
+
+
+.category-display .lavado-card {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    width: 100%;
+    flex-grow: 1;
+}
+
+.category-display img.icon {
+    height: 10vh;
+    object-fit: contain;
+    margin-bottom: 10px; /* Reducido un poco */
+}
+
+.category-display h2 {
+    font-size: 3vh;
+    font-family: 'Super Lobster', sans-serif;
+    padding: 1vh 0 2.5vh 0;
+    margin: 0;
+    color: #F6F9FD;
+}
+
+.category-display p {
+    font-size: 1.75vh;
+    padding: 2vh;
+    margin: 0;
+    flex-grow: 1; 
+}
+
+.heart {
+    width: 24px;
+    height: 24px;
+    cursor: pointer;
+    transition: transform 0.3s ease, opacity 0.3s ease;
+  }
+  
+  .heart.activo {
+    transform: scale(1.2);
+    opacity: 0.9;
+  }
+
+.info{
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-direction: column;
+    width: 100%;
+}
+
+.category-display .info ul { display: none; } /* Ocultos en esta vista */
+.category-display .lavado-button { display: none; } /* Ocultos en esta vista */
+.category-display .heart { display: none; } /* Ocultos en esta vista */
+
+/* --- Overlay --- */
+.focus-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color:#373F52; 
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity 0.4s ease-in-out; 
+    z-index: 50;
+}
+.focus-overlay.active {
+    opacity: 1;
+    pointer-events: auto;
+}
+
+
+.categories-container.container-focused .category-display {
+    opacity: 0.1;
+    transform: scale(0.9); 
+    pointer-events: none;
+    z-index: 1; 
+}
+
+.categories-container.container-focused .category-display.focused {
+    opacity: 1;
+    position: fixed; 
+    top: 50%;
+    left: 50%;
+    width: 50vh; 
+    height: 30vh; 
+    transform: translate(-50%, -50%) scale(1); /* Centrado perfecto, sin escala extra */
+    box-shadow: 0 15px 40px rgba(0, 0, 0, 0.4);
+    z-index: 100; 
+    pointer-events: auto;
+     transition: all 0.4s ease-in-out,
+}
+
+.category-display.focused .lavado-card{
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    width: 100%;
+    flex-grow: 1;
+}
+
+.category-display.focused h2 {
+    font-size: 4vh;
+}
+
+.category-display.focused img.icon {
+    height: 15vh; /* Aumentado para el enfoque */
+    margin-bottom: 0; /* Eliminado el margen inferior */
+}
+
+.categories-container.container-focused .category-display.focused p{
+        font-size: 2vh;;
+}
+
+/* Mostrar detalles cuando está enfocado */
+.categories-container.container-focused .category-display.focused .info ul {
+    display: block; 
+    list-style: none;
+    padding: 0 10px;
+    margin: 10px 0;
+    color: #444;
+    text-align: left;
+}
+.categories-container.container-focused .category-display.focused .info li{
+     margin-bottom: 6px;
+     position: relative;
+     padding-left: 15px;
+}
+
+
+/* Mostrar corazón cuando está enfocado */
+.categories-container.container-focused .category-display.focused .heart {
+     display: block;
+     position: absolute;
+     top: 15px;
+     right: 15px;
+     width: 28px;
+     height: 28px;
+     opacity: 0.8;
+     cursor: default; /* O quitar el cursor pointer si no hace nada aquí */
+}
