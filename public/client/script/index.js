@@ -70,10 +70,21 @@ if (verMasLink) {
   verMasLink.addEventListener('click', (event) => {
     event.preventDefault(); // Evita la navegación normal del enlace
 
+    // Obtener el usuario actual del localStorage
+    const usuarioActual = localStorage.getItem('loggedInUser');
+    // Es buena idea comprobar si existe, aunque la lógica de favoritos ya lo hace
+    if (!usuarioActual) {
+        console.warn('📱 Usuario no logueado al intentar ver categorías.');
+        // Quizás mostrar un alert o simplemente no enviar el ID
+    }
+
     console.log('📱 Click en "ver más". Solicitando cambio de display y navegando...');
 
     // 1. Pide a la pantalla del servidor que cambie
-    socket.emit('requestDisplayChange', { targetPage: '/display/categories' });
+    socket.emit('requestDisplayChange', {
+      targetPage: '/display/categories',
+      userId: usuarioActual // <-- AÑADIDO
+  });
 
     // 2. Navega en el propio móvil
     window.location.href = verMasLink.href; // Usa el href original del enlace

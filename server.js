@@ -323,6 +323,13 @@ io.on('connection', (socket) => {
     // Reenviar a los otros clientes (pantallas del servidor)
     socket.broadcast.emit('unhighlightCategory', data);
   });
+
+  socket.on('favoritesUpdated', (data) => {
+    console.log(`❤️ Favoritos actualizados para usuario: ${data.userId} (Notificado por: ${socket.id})`);
+    // Retransmitir a los otros clientes (pantallas servidor) para que refresquen
+    socket.broadcast.emit('refreshFavorites', data); // Reenvía la misma data
+    console.log(`🖥️ Emitiendo 'refreshFavorites' a otros clientes.`);
+});
 });
 
 

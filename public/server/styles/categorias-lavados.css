@@ -1,71 +1,90 @@
-/*FUENTES*/
+/* public/server/styles/categorias-lavados.css */
 
+/* ... (Fuentes y estilos de body, h1, etc. sin cambios) ... */
 @font-face {
     font-family: 'Super Cottage';
-    src: url(../../../../fonts/Super\ Cottage.ttf);
+    src: url(/fonts/Super\ Cottage.ttf);
     font-weight: normal;
     font-style: normal;
   }
-  
+
   @font-face {
     font-family: 'Super Lobster';
-    src: url(../../../../fonts/Super\ Lobster.ttf);
+    src: url(/fonts/Super\ Lobster.ttf);
     font-weight: normal;
     font-style: normal;
   }
-  
+
   @font-face {
     font-family: 'Super Peace';
-    src: url(../../../../fonts/Super\ Peace.ttf);
+    src: url(/fonts/Super\ Peace.ttf);
     font-weight: normal;
     font-style: normal;
   }
 
-  
-body {
-    font-family: sans-serif;
-    background-color: #5D6B8B;
-    text-align: center;
-}
-
+  h1{
+    margin: 4vh 0 0 0;
+    font-size: 7vh;
+    font-family: 'Super Cottage', sans-serif;
+  }
+/* Contenedor principal */
 .categories-container {
-    display: flex;
-    flex-wrap: wrap;
+    display: grid;
+    grid-template-columns: repeat(4, 1fr); 
     justify-content: center;
-    gap: 20px;
-    padding: 20px;
+    align-items: center;
+    padding: 10vh 20vh;
+    gap: 10vh; 
+    transition: opacity 0.4s ease-in-out;
 }
 
+/* Estilo base para cada tarjeta */
 .category-display {
     background-color: #e6ebf7;
-    border-radius: 10px;
+    border-radius: 15px;
     padding: 20px;
-    width: 200px;
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-    transition: transform 0.3s ease, box-shadow 0.3s ease; /* Transición suave */
-    border: 2px solid transparent; /* Borde inicial transparente */
+    height: 30vh;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    box-shadow: 0 10px 25px rgba(0, 0, 0, 0.35);
+    opacity: 1;
+    transform: scale(1);
+    position: relative; 
+    z-index: 1; 
+    /* --- Transición GENERAL --- */
+    transition: all 0.4s ease-in-out;
 }
 
-.category-display img {
-    max-width: 80px;
-    margin-bottom: 10px;
+
+.category-display .lavado-card {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    width: 100%;
+    flex-grow: 1;
+}
+
+.category-display img.icon {
+    height: 10vh;
+    object-fit: contain;
+    margin-bottom: 10px; /* Reducido un poco */
 }
 
 .category-display h2 {
-    font-size: 1.5em;
-    font-family: 'Super Cottage', sans-serif;
+    font-size: 3vh;
+    font-family: 'Super Lobster', sans-serif;
+    padding: 1vh 0 2vh 0;
     margin: 0;
     color: #000000;
 }
 
 .category-display p {
-    font-size: 1em;
-    color: #000;
+    font-size: 1.75vh;
+    color: #333;
+    padding: 1vh 0;
     margin: 0;
-}
-
-.info ul{
-    display: none;
+    flex-grow: 1; 
 }
 
 .heart {
@@ -79,9 +98,104 @@ body {
     transform: scale(1.2);
     opacity: 0.9;
   }
-/* --- ESTADO RESALTADO --- */
-.category-display.highlighted {
-    transform: scale(1.15); /* Hacerlo más grande */
-    box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2); /* Sombra más pronunciada */
-    z-index: 10; /* Asegurar que esté por encima */
+
+.info{
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-direction: column;
+    width: 100%;
+}
+
+.category-display .info ul { display: none; } /* Ocultos en esta vista */
+.category-display .lavado-button { display: none; } /* Ocultos en esta vista */
+.category-display .heart { display: none; } /* Ocultos en esta vista */
+
+/* --- Overlay --- */
+.focus-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color:#373F52; 
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity 0.4s ease-in-out; 
+    z-index: 50;
+}
+.focus-overlay.active {
+    opacity: 1;
+    pointer-events: auto;
+}
+
+
+.categories-container.container-focused .category-display {
+    opacity: 0.1;
+    transform: scale(0.9); 
+    pointer-events: none;
+    z-index: 1; 
+}
+
+.categories-container.container-focused .category-display.focused {
+    opacity: 1;
+    position: fixed; 
+    top: 50%;
+    left: 50%;
+    width: 50vh; 
+    height: 30vh; 
+    transform: translate(-50%, -50%) scale(1); /* Centrado perfecto, sin escala extra */
+    box-shadow: 0 15px 40px rgba(0, 0, 0, 0.4);
+    z-index: 100; 
+    pointer-events: auto;
+     transition: all 0.4s ease-in-out,
+}
+
+.category-display.focused .lavado-card{
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    width: 100%;
+    flex-grow: 1;
+}
+
+.category-display.focused h2 {
+    font-size: 4vh;
+}
+
+.category-display.focused img.icon {
+    height: 15vh; /* Aumentado para el enfoque */
+    margin-bottom: 0; /* Eliminado el margen inferior */
+}
+
+.categories-container.container-focused .category-display.focused p{
+        font-size: 2vh;;
+}
+
+/* Mostrar detalles cuando está enfocado */
+.categories-container.container-focused .category-display.focused .info ul {
+    display: block; 
+    list-style: none;
+    padding: 0 10px;
+    margin: 10px 0;
+    color: #444;
+    text-align: left;
+}
+.categories-container.container-focused .category-display.focused .info li{
+     margin-bottom: 6px;
+     position: relative;
+     padding-left: 15px;
+}
+
+
+/* Mostrar corazón cuando está enfocado */
+.categories-container.container-focused .category-display.focused .heart {
+     display: block;
+     position: absolute;
+     top: 15px;
+     right: 15px;
+     width: 28px;
+     height: 28px;
+     opacity: 0.8;
+     cursor: default; /* O quitar el cursor pointer si no hace nada aquí */
 }

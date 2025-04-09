@@ -6,6 +6,7 @@
   <title>Categorías de lavados</title>
   <link rel="stylesheet" href="styles/categorias-lavados.css" />
   <link rel="stylesheet" href="styles/login.css" />
+  <script src="/socket.io/socket.io.js"></script>
 </head>
 <body>
   <header class="top-bar">
@@ -14,9 +15,9 @@
   </header>
 
   <main class="content">
-    <section class="lavado" data-category-id="rapido">
+    <section class="lavado">
       <h2>Lavado Rápido</h2>
-      <div class="lavado-card">
+      <div class="lavado-card"  data-category-id="rapido">
         <div class="lavado-imagen">
           <img src="../../../images/rapido.svg" class="icon" alt="Lavado Rápido">
         </div>
@@ -36,9 +37,9 @@
       </div>
     </section>
 
-    <section class="lavado" data-category-id="frio">
+    <section class="lavado">
       <h2>Lavado Frío</h2>
-      <div class="lavado-card">
+      <div class="lavado-card" data-category-id="frio">
         <img src="../../../images/frio.svg" class="icon" alt="Lavado Frío">
         <div class="info">
           <p>Ideal para lana, seda, ropa interior, etc.</p>
@@ -56,9 +57,9 @@
       </div>
     </section>
 
-    <section class="lavado" data-category-id="caliente">
+    <section class="lavado">
       <h2>Lavado Caliente</h2>
-      <div class="lavado-card">
+      <div class="lavado-card"  data-category-id="caliente">
         <img src="../../../images/caliente.svg" class="icon" alt="Lavado Caliente">
         <div class="info">
           <p>Ideal para ropa muy sucia o con manchas.</p>
@@ -76,9 +77,9 @@
       </div>
     </section>
 
-    <section class="lavado" data-category-id="eco">
+    <section class="lavado">
       <h2>Lavado Eco</h2>
-      <div class="lavado-card">
+      <div class="lavado-card"  data-category-id="eco">
         <img src="../../../images/eco.svg" class="icon" alt="Lavado Rápido">
         <div class="info">
           <p>Ideal para ahorrar energía y agua.</p>
@@ -96,9 +97,9 @@
       </div>
     </section>
 
-    <section class="lavado" data-category-id="ropa-blanca">
+    <section class="lavado">
       <h2>Lavado Ropa Blanca</h2>
-      <div class="lavado-card">
+      <div class="lavado-card" data-category-id="ropa-blanca">
         <img src="../../../images/ropa_blanca.svg" class="icon" alt="Lavado Rápido">
         <div class="info">
           <p>Ideal para camisas, toallas, sábanas, ropa blanca, etc.</p>
@@ -116,9 +117,9 @@
       </div>
     </section>
 
-    <section class="lavado" data-category-id="ropa-oscura">
+    <section class="lavado">
       <h2>Lavado Ropa Oscura</h2>
-      <div class="lavado-card">
+      <div class="lavado-card"  data-category-id="ropa-oscura">
         <div class="lavado-imagen">
           <img src="../../../images/ropa_oscura.svg" class="icon" alt="Lavado Rápido">
         </div>
@@ -138,9 +139,9 @@
       </div>
     </section>
 
-    <section class="lavado" data-category-id="deporte">
+    <section class="lavado">
       <h2>Lavado Deporte</h2>
-      <div class="lavado-card">
+      <div class="lavado-card"  data-category-id="deporte">
         <img src="../../../images/ropa_deporte.svg" class="icon" alt="Lavado Rápido">
         <div class="info">
           <p>Ideal para ropa de deporte, poliester, lycra, etc.</p>
@@ -149,6 +150,26 @@
             <li>Duración: 50 min</li>
             <li>Centrifugado: 800 rpm</li>
             <li>Detergente: 50 ml</li>
+          </ul>
+          <div class="lavado-button">
+            <button class="button">EMPEZAR</button>
+          </div>
+        </div>
+        <img src="../../../images/corazon.svg" class="heart" alt="Favorito">
+      </div>
+    </section>
+
+    <section class="lavado">
+      <h2>Lavado Edredones</h2>
+      <div class="lavado-card"  data-category-id="edredon">
+        <img src="../../../images/edredon.svg" class="icon" alt="Lavado edredon">
+        <div class="info">
+          <p>Ideal para edredones.</p>
+          <ul>
+            <li>Temperatura: 30ºC</li>
+            <li>Duración: 2 h 30 min</li>
+            <li>Centrifugado: 800 rpm</li>
+            <li>Detergente: 45 ml</li>
           </ul>
           <div class="lavado-button">
             <button class="button">EMPEZAR</button>

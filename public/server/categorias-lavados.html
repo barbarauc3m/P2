@@ -3,18 +3,23 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Lavaloo - Categorías (Servidor)</title>
+    <title>Lavaloo</title>
     <link rel="stylesheet" href="/server/styles/categorias-lavados.css">
     <link rel="stylesheet" href="/server/styles/index.css"> </head>
 <body>
-    <h1>Categorías de Lavado</h1>
+
+    <div class="focus-overlay"></div>
+
+    <div class="categorias-lavados">
+    <h1>Categorías de Lavados</h1>
+    
     <div class="categories-container">
         
         <section class="category-display" data-category-id="rapido">
             <h2>Lavado Rápido</h2>
             <div class="lavado-card">
               <div class="lavado-imagen">
-                <img src="../../../images/rapido.svg" class="icon" alt="Lavado Rápido">
+                <img src="/images/rapido.svg" class="icon" alt="Lavado Rápido">
               </div>
               <div class="info">
                 <p>Ideal para ropa poco sucia o uso diario.</p>
@@ -28,14 +33,14 @@
                   <button class="button">EMPEZAR</button>
                 </div>
               </div>
-              <img src="../../../images/corazon.svg" class="heart" alt="Favorito">
+              <img src="/images/corazon.svg" class="heart" alt="Favorito">
             </div>
           </section>
       
           <section class="category-display" data-category-id="frio">
             <h2>Lavado Frío</h2>
             <div class="lavado-card">
-              <img src="../../../images/frio.svg" class="icon" alt="Lavado Frío">
+              <img src="/images/frio.svg" class="icon" alt="Lavado Frío">
               <div class="info">
                 <p>Ideal para lana, seda, ropa interior, etc.</p>
                 <ul>
@@ -48,14 +53,14 @@
                   <button class="button">EMPEZAR</button>
                 </div>
               </div>
-              <img src="../../../images/corazon.svg" class="heart" alt="No favorito">
+              <img src="/images/corazon.svg" class="heart" alt="No favorito">
             </div>
           </section>
       
           <section class="category-display" data-category-id="caliente">
             <h2>Lavado Caliente</h2>
             <div class="lavado-card">
-              <img src="../../../images/caliente.svg" class="icon" alt="Lavado Caliente">
+              <img src="/images/caliente.svg" class="icon" alt="Lavado Caliente">
               <div class="info">
                 <p>Ideal para ropa muy sucia o con manchas.</p>
                 <ul>
@@ -68,14 +73,14 @@
                   <button class="button">EMPEZAR</button>
                 </div>
               </div>
-              <img src="../../../images/corazon.svg" class="heart" alt="Favorito">
+              <img src="/images/corazon.svg" class="heart" alt="Favorito">
             </div>
           </section>
       
           <section class="category-display" data-category-id="eco">
             <h2>Lavado Eco</h2>
             <div class="lavado-card">
-              <img src="../../../images/eco.svg" class="icon" alt="Lavado Rápido">
+              <img src="/images/eco.svg" class="icon" alt="Lavado Rápido">
               <div class="info">
                 <p>Ideal para ahorrar energía y agua.</p>
                 <ul>
@@ -88,14 +93,14 @@
                   <button class="button">EMPEZAR</button>
                 </div>
               </div>
-              <img src="../../../images/corazon.svg" class="heart" alt="Favorito">
+              <img src="/images/corazon.svg" class="heart" alt="Favorito">
             </div>
           </section>
       
           <section class="category-display" data-category-id="ropa-blanca">
             <h2>Lavado Ropa Blanca</h2>
             <div class="lavado-card">
-              <img src="../../../images/ropa_blanca.svg" class="icon" alt="Lavado Rápido">
+              <img src="/images/ropa_blanca.svg" class="icon" alt="Lavado Rápido">
               <div class="info">
                 <p>Ideal para camisas, toallas, sábanas, ropa blanca, etc.</p>
                 <ul>
@@ -108,7 +113,7 @@
                   <button class="button">EMPEZAR</button>
                 </div>
               </div>
-              <img src="../../../images/corazon.svg" class="heart" alt="Favorito">
+              <img src="/images/corazon.svg" class="heart" alt="Favorito">
             </div>
           </section>
       
@@ -116,7 +121,7 @@
         <h2>Lavado Ropa Oscura</h2>
         <div class="lavado-card">
           <div class="lavado-imagen">
-            <img src="../../../images/ropa_oscura.svg" class="icon" alt="Lavado Rápido">
+            <img src="/images/ropa_oscura.svg" class="icon" alt="Lavado Rápido">
           </div>
           <div class="info">
             <p>Ideal para vaqueros, camisetas negras, sudaderas, etc.</p>
@@ -130,14 +135,14 @@
               <button class="button">EMPEZAR</button>
             </div>
           </div>
-          <img src="../../../images/corazon.svg" class="heart" alt="Favorito">
+          <img src="/images/corazon.svg" class="heart" alt="Favorito">
         </div>
       </section>
   
       <section class="category-display" data-category-id="deporte">
         <h2>Lavado Deporte</h2>
         <div class="lavado-card">
-          <img src="../../../images/ropa_deporte.svg" class="icon" alt="Lavado Rápido">
+          <img src="/images/ropa_deporte.svg" class="icon" alt="Lavado Rápido">
           <div class="info">
             <p>Ideal para ropa de deporte, poliester, lycra, etc.</p>
             <ul>
@@ -150,10 +155,31 @@
               <button class="button">EMPEZAR</button>
             </div>
           </div>
-          <img src="../../../images/corazon.svg" class="heart" alt="Favorito">
+          <img src="/images/corazon.svg" class="heart" alt="Favorito">
+        </div>
+      </section>
+
+      <section class="category-display" data-category-id="edredon">
+        <h2>Lavado Edredones</h2>
+        <div class="lavado-card">
+          <img src="/images/edredon.svg" class="icon" alt="Lavado edredon">
+          <div class="info">
+            <p>Ideal para edredones.</p>
+            <ul>
+              <li>Temperatura: 30ºC</li>
+              <li>Duración: 2 h 30 min</li>
+              <li>Centrifugado: 800 rpm</li>
+              <li>Detergente: 45 ml</li>
+            </ul>
+            <div class="lavado-button">
+              <button class="button">EMPEZAR</button>
+            </div>
+          </div>
+          <img src="/images/corazon.svg" class="heart" alt="Favorito">
         </div>
       </section>
         </div>
+    </div>
 
     <script src="/socket.io/socket.io.js"></script>
     <script src="/server/script/categorias-lavados.js"></script>
