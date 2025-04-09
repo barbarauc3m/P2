@@ -1,0 +1,52 @@
+{
+  "albatello": {
+    "username": "albatello",
+    "email": "albatello@gmail.com",
+    "hashedPassword": "$2b$10$.oi.asJhKH2V6hkbHw9Onelou7aWVyQ0SYLJcGmEV3n3KRmEG0mme",
+    "foto": "/images/persona_cla.svg",
+    "favoritos": [
+      {
+        "nombre": "Lavado Frío",
+        "descripcion": "Ideal para lana, seda, ropa interior, etc.",
+        "temperatura": "20ºC",
+        "duracion": "40 min",
+        "centrifugado": "600 rpm",
+        "detergente": "30 ml",
+        "imagen": "../../../images/frio.svg"
+      },
+      {
+        "nombre": "Lavado Caliente",
+        "descripcion": "Ideal para ropa muy sucia o con manchas.",
+        "temperatura": "60ºC",
+        "duracion": "1h 15 min",
+        "centrifugado": "1200 rpm",
+        "detergente": "60 ml",
+        "imagen": "../../../images/caliente.svg"
+      },
+      {
+        "nombre": "Lavado Edredones",
+        "descripcion": "Ideal para edredones.",
+        "temperatura": "30ºC",
+        "duracion": "2 h 30 min",
+        "centrifugado": "800 rpm",
+        "detergente": "45 ml",
+        "imagen": "../../../images/edredon.svg"
+      }
+    ],
+    "personalizados": [
+      {
+        "nivelSuciedad": "Ropa de uso diario",
+        "temperatura": "55°C",
+        "centrifugado": "Bajo: 600 rpm",
+        "duracion": "45 min",
+        "detergente": "95 ml",
+        "tejido": [
+          "Sintético"
+        ],
+        "favorito": false,
+        "nombre": "Lavado personalizado 1",
+        "index": 1
+      }
+    ]
+  }
+}

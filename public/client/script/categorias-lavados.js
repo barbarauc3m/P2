@@ -61,7 +61,7 @@ document.addEventListener('DOMContentLoaded', () => {
     // Solo añadir listeners y fetch si hay usuario
     if (usuarioActual) {
         console.log(`📱 Usuario logueado: ${usuarioActual}. Cargando y configurando favoritos.`);
-        fetch('/favoritos')
+        fetch(`/api/users/${usuarioActual}/favoritos`)
             .then(res => {
                 if (!res.ok) throw new Error('Error al obtener favoritos');
                 return res.json();
@@ -114,7 +114,7 @@ document.addEventListener('DOMContentLoaded', () => {
                             const imagen = lavadoCard?.querySelector("img.icon")?.getAttribute("src") || "";
                             const infoLavado = {
                                 nombre: nombreLavado,
-                                // Extraer datos de forma más segura
+                                descripcion: descripcion,
                                 temperatura: items?.[0]?.textContent.split(":")[1]?.trim() || "",
                                 duracion: items?.[1]?.textContent.split(":")[1]?.trim() || "",
                                 centrifugado: items?.[2]?.textContent.split(":")[1]?.trim() || "",
@@ -172,7 +172,19 @@ document.addEventListener('DOMContentLoaded', () => {
         const imagen = card.querySelector("img.icon")?.getAttribute("src") || "";
         if (!nombre) return; // Salir si no hay nombre
 
-        const lavado = { /* ... crear objeto lavado ... */ };
+        const lavado = { 
+            nombre: nombre,
+              descripcion,
+              temperatura: items[0]?.textContent.split(":")[1]?.trim() || "",
+              duracion: items[1]?.textContent.split(":")[1]?.trim() || "",
+              centrifugado: items[2]?.textContent.split(":")[1]?.trim() || "",
+              detergente: items[3]?.textContent.split(":")[1]?.trim() || "",
+              fechaInicio: new Date().toLocaleString("es-ES", {
+                dateStyle: "short",
+                timeStyle: "short"
+              }),
+              imagen
+        };
         localStorage.setItem("lavadoSeleccionado", JSON.stringify(lavado));
         window.location.href = "empezar-lavado.html";
       });

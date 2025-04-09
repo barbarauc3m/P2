@@ -1,6 +1,28 @@
 {
   "albatello": [
     {
+      "nombre": "Lavado Edredones",
+      "descripcion": "Ideal para edredones.",
+      "temperatura": "30ºC",
+      "duracion": "2 h 30 min",
+      "centrifugado": "800 rpm",
+      "detergente": "45 ml",
+      "fechaInicio": "9/4/25, 20:42",
+      "imagen": "../../../images/edredon.svg",
+      "usuario": "albatello"
+    },
+    {
+      "nombre": "Lavado Rápido",
+      "descripcion": "Ideal para ropa poco sucia o uso diario.",
+      "temperatura": "30ºC",
+      "duracion": "30 min",
+      "centrifugado": "1200 rpm",
+      "detergente": "50 ml",
+      "fechaInicio": "9/4/25, 20:42",
+      "imagen": "../../../images/rapido.svg",
+      "usuario": "albatello"
+    },
+    {
       "nombre": "Lavado Eco",
       "descripcion": "Ideal para ahorrar energía y agua.",
       "temperatura": "40ºC",

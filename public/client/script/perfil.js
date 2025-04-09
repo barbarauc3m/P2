@@ -66,10 +66,9 @@ document.addEventListener("DOMContentLoaded", () => {
   // =========================
   // LAVADOS FAVORITOS
   // =========================
-  fetch("/favoritos")
-    .then(res => res.json())
-    .then(data => {
-      const favoritos = data[usuario] || [];
+  fetch(`/api/users/${usuario}/favoritos`)
+  .then(res => res.json())
+    .then(favoritos => {
       document.querySelector(".favoritos").textContent = favoritos.length;
 
       if (favoritos.length === 0) return;

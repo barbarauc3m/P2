@@ -3,10 +3,9 @@ document.addEventListener("DOMContentLoaded", () => {
     if (!usuario) return alert("Debes iniciar sesión.");
   
     // FAVORITOS
-    fetch("/favoritos")
+    fetch(`/api/users/${usuario}/favoritos`)
       .then(res => res.json())
-      .then(data => {
-        const favoritos = data[usuario] || [];
+      .then(favoritos => {
         const contenedor = document.getElementById("favoritos-container");
         contenedor.innerHTML = "";
   
@@ -88,7 +87,7 @@ document.addEventListener("DOMContentLoaded", () => {
       });
   
     // PERSONALIZADOS
-    fetch(`/lavados-personalizados/${usuario}`)
+    fetch(`/api/users/${usuario}/personalizados`) 
     .then(res => res.json())
     .then(personalizados => {
     const contenedor = document.getElementById("personalizados-container");
