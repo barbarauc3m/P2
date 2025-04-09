@@ -32,15 +32,21 @@ app.use('/styles', express.static(path.join(__dirname, 'public', 'client', 'styl
 
 app.use('/client', express.static(path.join(__dirname, 'public', 'client')));
 
+app.use('/server', express.static(path.join(__dirname, 'public', 'server')));
 
 app.get('/', (req, res) => {
-  res.sendFile(path.join(__dirname, 'public/client/index.html'));
+  res.sendFile(path.join(__dirname, 'public/server/index.html'));
 }
 );
 
-app.get('/index.html', (req, res) => {
-  res.sendFile(path.join(__dirname, 'public/client/index.html'));
+// Ruta '/mobile' servirá el index del CLIENTE (móvil)
+app.get('/mobile', (req, res) => {
+  res.sendFile(path.join(__dirname, 'public', 'client', 'index.html'));
 });
+
+// LADO CLIENTE
+app.get('/index.html', (req, res) => 
+  res.redirect('/mobile')); // Redirige a /mobile si se pide explícitamente el index del cliente
 
 app.get('/perfil.html', (req, res) => {
   res.sendFile(path.join(__dirname, 'public/client/perfil.html'));
@@ -102,6 +108,33 @@ app.get('/escaner-color.html', (req, res) => {
 app.get('/juego3.html', (req, res) => {
   res.sendFile(path.join(__dirname, 'public/client/juego3.html'));
 });
+
+// LADO SERVIDOR
+app.get('/juego1.html', (req, res) => {
+  res.sendFile(path.join(__dirname, 'public/server/juego1.html'));
+});
+
+app.get('/juego2.html', (req, res) => {
+  res.sendFile(path.join(__dirname, 'public/server/juego2.html'));
+});
+
+app.get('/juego3-inicio.html', (req, res) => {
+  res.sendFile(path.join(__dirname, 'public/server/juego3-inicio.html'));
+});
+
+app.get('/juego3.html', (req, res) => {
+  res.sendFile(path.join(__dirname, 'public/server/juego3.html'));
+});
+
+app.get('/juego4.html', (req, res) => {
+  res.sendFile(path.join(__dirname, 'public/server/juego4.html'));
+});
+
+app.get('/display/categories', (req, res) => {
+  res.sendFile(path.join(__dirname, 'public', 'server', 'categorias-lavados.html'));
+});
+
+
 
 // Ruta POST para guardar lavado
 app.post('/guardar-lavado', (req, res) => {
@@ -268,11 +301,36 @@ io.on('connection', (socket) => {
   socket.on('disconnect', () => {
     console.log('Usuario desconectado');
   });
+
+  // NUEVO: Escuchar solicitud para cambiar la pantalla del servidor
+  socket.on('requestDisplayChange', (data) => {
+    console.log(`📱 Recibida petición de ${socket.id} para cambiar display a: ${data.targetPage}`);
+    // Reenviar solo a los otros clientes (asumiendo que son las pantallas del servidor)
+    socket.broadcast.emit('changeDisplay', data);
+    console.log(`🖥️ Emitiendo 'changeDisplay' a otros clientes.`);
+  });
+
+  // NUEVO: Escuchar evento de hover desde el móvil
+  socket.on('hoverCategory', (data) => {
+    console.log(`📱 Hover en categoría ${data.categoryId} desde ${socket.id}`);
+    // Reenviar a los otros clientes (pantallas del servidor)
+    socket.broadcast.emit('highlightCategory', data);
+  });
+
+  // NUEVO: Escuchar evento de fin de hover desde el móvil
+  socket.on('unhoverCategory', (data) => {
+    console.log(`📱 Unhover en categoría ${data.categoryId} desde ${socket.id}`);
+    // Reenviar a los otros clientes (pantallas del servidor)
+    socket.broadcast.emit('unhighlightCategory', data);
+  });
 });
 
 
 server.listen(PORT, () => {
   console.log(`Servidor HTTPS con Socket.IO en https://localhost:${PORT}`);
+  console.log(`Accede a la pantalla del servidor en: https://localhost:${PORT}/`);
+  console.log(`Accede a la pantalla del móvil en: https://localhost:${PORT}/mobile`);
+  // Puedes añadir: console.log(`Pantalla servidor (categorías): https://localhost:${PORT}/display/categories`);
 });
 
 

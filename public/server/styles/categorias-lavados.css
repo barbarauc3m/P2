@@ -1,0 +1,87 @@
+/*FUENTES*/
+
+@font-face {
+    font-family: 'Super Cottage';
+    src: url(../../../../fonts/Super\ Cottage.ttf);
+    font-weight: normal;
+    font-style: normal;
+  }
+  
+  @font-face {
+    font-family: 'Super Lobster';
+    src: url(../../../../fonts/Super\ Lobster.ttf);
+    font-weight: normal;
+    font-style: normal;
+  }
+  
+  @font-face {
+    font-family: 'Super Peace';
+    src: url(../../../../fonts/Super\ Peace.ttf);
+    font-weight: normal;
+    font-style: normal;
+  }
+
+  
+body {
+    font-family: sans-serif;
+    background-color: #5D6B8B;
+    text-align: center;
+}
+
+.categories-container {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 20px;
+    padding: 20px;
+}
+
+.category-display {
+    background-color: #e6ebf7;
+    border-radius: 10px;
+    padding: 20px;
+    width: 200px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    transition: transform 0.3s ease, box-shadow 0.3s ease; /* Transición suave */
+    border: 2px solid transparent; /* Borde inicial transparente */
+}
+
+.category-display img {
+    max-width: 80px;
+    margin-bottom: 10px;
+}
+
+.category-display h2 {
+    font-size: 1.5em;
+    font-family: 'Super Cottage', sans-serif;
+    margin: 0;
+    color: #000000;
+}
+
+.category-display p {
+    font-size: 1em;
+    color: #000;
+    margin: 0;
+}
+
+.info ul{
+    display: none;
+}
+
+.heart {
+    width: 24px;
+    height: 24px;
+    cursor: pointer;
+    transition: transform 0.3s ease, opacity 0.3s ease;
+  }
+  
+  .heart.activo {
+    transform: scale(1.2);
+    opacity: 0.9;
+  }
+/* --- ESTADO RESALTADO --- */
+.category-display.highlighted {
+    transform: scale(1.15); /* Hacerlo más grande */
+    box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2); /* Sombra más pronunciada */
+    z-index: 10; /* Asegurar que esté por encima */
+}

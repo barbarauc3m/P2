@@ -3,6 +3,20 @@
     {
       "usuario": "albatello",
       "nivelSuciedad": "Ropa a penas usada",
+      "temperatura": "35°C",
+      "centrifugado": "Bajo: 600 rpm",
+      "duracion": "110 min",
+      "detergente": "95 ml",
+      "tejido": [
+        "Algodón"
+      ],
+      "favorito": false,
+      "nombre": "Lavado personalizado 3",
+      "index": 3
+    },
+    {
+      "usuario": "albatello",
+      "nivelSuciedad": "Ropa a penas usada",
       "temperatura": "50°C",
       "centrifugado": "Bajo: 600 rpm",
       "duracion": "100 min",
