@@ -6,15 +6,6 @@
     "foto": "/images/persona_cla.svg",
     "favoritos": [
       {
-        "nombre": "Lavado Deporte",
-        "descripcion": "Ideal para ropa de deporte, poliester, lycra, etc.",
-        "temperatura": "40ºC",
-        "duracion": "50 min",
-        "centrifugado": "800 rpm",
-        "detergente": "50 ml",
-        "imagen": "../../../images/ropa_deporte.svg"
-      },
-      {
         "nombre": "Lavado Rápido",
         "descripcion": "Ideal para ropa poco sucia o uso diario.",
         "temperatura": "30ºC",
