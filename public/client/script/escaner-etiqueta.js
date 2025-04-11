@@ -120,8 +120,11 @@ snapButton.addEventListener('click', async () => {
             const predictionTensor = model.execute(batchedTensor);
             const probabilitiesArray = predictionTensor.dataSync();
 
-            // Devolver resultados como arrays normales para sacarlos de tf.tidy
-            return {probabilities: Array.from(probabilitiesArray), interpreted: interpretedResults};
+             // --- ¡MOVER LA INTERPRETACIÓN AQUÍ DENTRO! ---
+            const interpretedResults = interpretPredictions(probabilitiesArray); 
+
+            // Devolver resultados como arrays/objetos normales para sacarlos de tf.tidy
+            return {probabilities: Array.from(probabilitiesArray), interpreted: interpretedResults}; 
         });
 
         displayResults(probabilities, interpreted); // Mostrar resultados
