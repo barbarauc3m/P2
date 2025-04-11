@@ -44,34 +44,33 @@ body {
     
 }
 
-/* Estilo base para los botones de juego */
-.game-buttons {
+
+#game-display-container {
   position: fixed;
-  bottom: 20px;
+  top: 0;
   left: 0;
-  right: 0;
-  display: flex;
-  justify-content: center;
-  gap: 50px;
-  padding: 0 20px;
+  width: 100%;
+  height: 100%;
+  background: #f0f0f0;
+  z-index: 1000;
 }
 
-.game-btn {
-  text-decoration: none;
-  background-color: #FFD166;
+.game-iframe {
+  width: 100%;
+  height: 100%;
+  border: none;
+}
+
+/* Opcional: Botón para volver */
+.return-btn {
+  position: fixed;
+  top: 20px;
+  left: 20px;
+  padding: 10px 15px;
+  background: #ff5722;
   color: white;
   border: none;
-  border-radius: 50px;
-  padding: 12px 0;
-  width: 150px;
-  font-family: 'Super Peace', sans-serif;
-  font-size: 16px;
+  border-radius: 5px;
   cursor: pointer;
-  box-shadow: 0 4px 8px rgba(0,0,0,0.2);
-  transition: all 0.3s ease;
-}
-
-.game-btn:hover {
-  transform: translateY(-3px);
-  box-shadow: 0 6px 12px rgba(0,0,0,0.3);
+  z-index: 1001;
 }

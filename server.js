@@ -522,7 +522,17 @@ io.on('connection', (socket) => {
     // Retransmitir a los otros clientes (pantallas servidor) para que refresquen
     socket.broadcast.emit('refreshFavorites', data); // Reenvía la misma data
     console.log(`🖥️ Emitiendo 'refreshFavorites' a otros clientes.`);
-});
+  });
+
+  // CÓDIGO PARA QUE VAYA LA CONEXION DE JUEGOS
+  socket.on('gameSelected', (data) => {
+    console.log(`🎮 Juego seleccionado desde móvil: ${data.gameName}`);
+    // Reenvía a todas las pantallas del servidor
+    io.emit('showGameOnServer', {
+        gameFile: data.gameFile,
+        gameName: data.gameName
+    });
+  });
 });
 
 

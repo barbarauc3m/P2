@@ -1,11 +1,40 @@
+// CONEXIÓN SOCKET.IO
+const socket = io();
+
+socket.on('connect', () => {
+    console.log('📱 Conectado al servidor Socket.IO');
+});
+
+socket.on('disconnect', () => {
+    console.log('📱 Desconectado del servidor Socket.IO');
+});
+
+// Mapeo de nombres de juego a archivos HTML
+const gamesMap = {
+    'Atrapa la Ropa': 'juego1.html',
+    'Duelo de Doblado': 'juego2.html',
+    'El Rey del Tendedero': 'juego3-inicio.html',
+    'Combo de Manchas': 'juego4.html'
+};
+
 // Función para cargar el juego seleccionado
 function loadGame(gameTitle, gameDescription) {
+
+    console.log(`🎮 Juego seleccionado: ${gameTitle}`);
+    
     // Guardar la información del juego seleccionado
     localStorage.setItem('selectedGameTitle', gameTitle);
     localStorage.setItem('selectedGameDescription', gameDescription);
-
+    
+    // Notificar al servidor qué juego se ha seleccionado
+    socket.emit('gameSelected', {
+        gameName: gameTitle,
+        gameDescription: gameDescription,
+        gameFile: gamesMap[gameTitle]
+    });
+    
     // Redirigir a la pantalla de juego
-    window.location.href = 'jugando.html';
+    window.location.href = gamesMap[gameTitle] || 'jugando.html';
 }
 
 function initDeviceOrientation() {    
@@ -35,16 +64,16 @@ function initDeviceOrientation() {
     });
 }
 
-// Para jugando.html - Cargar los datos del juego seleccionado
+/// Inicialización cuando el DOM está listo
 document.addEventListener("DOMContentLoaded", function() {
-
+    // Configurar sensores si es El Rey del Tendedero
     const selectedGame = localStorage.getItem("selectedGameTitle");
     if (selectedGame === 'El Rey del Tendedero') {
         console.log('🧭 Activando sensor para El Rey del Tendedero');
         initDeviceOrientation();
     }
 
-    // Si estamos en la página de juego
+    // Si estamos en la página de juego (jugando.html)
     if (document.getElementById("game-title")) {
         const titleElement = document.getElementById("game-title");
         const descriptionElement = document.getElementById("game-description");
@@ -67,12 +96,14 @@ document.addEventListener("DOMContentLoaded", function() {
     
     if (pauseButton) {
         pauseButton.addEventListener("click", function() {
+            socket.emit('gameControl', { action: 'pause' });
             alert("Juego pausado");
         });
     }
     
     if (restartButton) {
         restartButton.addEventListener("click", function() {
+            socket.emit('gameControl', { action: 'restart' });
             alert("Juego reiniciado");
         });
     }
@@ -90,14 +121,14 @@ document.addEventListener("DOMContentLoaded", function() {
             const y = (e.clientY - rect.top) / rect.height - 0.5;
             
             // Rotación más pronunciada (30 grados máximo en lugar de 20)
-            const xRotation = y * 30;  // Hasta 15 grados en cada dirección
-            const yRotation = -x * 30; // Invertido para que se aleje del ratón
+            const xRotation = y * 30;
+            const yRotation = -x * 30;
             
-            // Añadir un pequeño efecto de traslación para mayor profundidad
+            // Efecto de traslación
             const xTranslate = x * 10;
             const yTranslate = y * 10;
             
-            // Aplicar transformación con perspectiva
+            // Aplicar transformación
             card.style.transform = `
                 perspective(1000px) 
                 rotateX(${xRotation}deg) 
@@ -106,11 +137,11 @@ document.addEventListener("DOMContentLoaded", function() {
                 translateY(${yTranslate}px)
             `;
             
-            // Efecto de brillo más pronunciado
+            // Efecto de brillo
             const distanceFromCenter = Math.sqrt(x*x + y*y) * 2;
             card.style.filter = `brightness(${1 + 0.3 * distanceFromCenter})`;
             
-            // Añadir sombra dinámica para efecto de profundidad
+            // Sombra dinámica
             card.style.boxShadow = `
                 ${-x * 20}px ${-y * 20}px 30px rgba(0, 0, 0, 0.3)
             `;
@@ -122,5 +153,29 @@ document.addEventListener("DOMContentLoaded", function() {
             card.style.filter = 'brightness(1)';
             card.style.boxShadow = '0 4px 15px rgba(0, 0, 0, 0.2)';
         });
+
+        // Añadir evento click para cada tarjeta de juego
+        container.addEventListener('click', () => {
+            const gameTitle = container.querySelector('h3')?.textContent || '';
+            const gameDescription = container.querySelector('p')?.textContent || '';
+            loadGame(gameTitle, gameDescription);
+        });
+    });
+
+    // Escuchar controles desde el servidor (para juegos que lo necesiten)
+    socket.on('gameControl', (data) => {
+        console.log('🎮 Control recibido:', data.action);
+        // Implementa las acciones según tu juego
+        switch(data.action) {
+            case 'move-left':
+                // Tu lógica para mover izquierda
+                break;
+            case 'move-right':
+                // Tu lógica para mover derecha
+                break;
+            case 'start':
+                // Iniciar juego
+                break;
+        }
     });
 });
