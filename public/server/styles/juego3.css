@@ -243,16 +243,16 @@ body {
         transform: translateX(-50%);
     }
 }
-
-.puntos-container{
-    position: fixed;
-    top: 0;
-    left: 10px;
-}
 .contador-container{
     position: fixed;
-    top: 0;
-    right: 10px;
+    top: 65px;
+    left: 50%;
+    transform: translate(-50%, -50%);
+}
+.contador-container p{
+    font-size: 35px;
+    /*text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.7); /* sombrita */
+    text-shadow: 0px 0px 6px rgba(0, 0, 0, 1);
 }
 
 

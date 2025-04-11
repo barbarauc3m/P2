@@ -98,34 +98,33 @@ snapButton.addEventListener('click', async () => {
     // --- Preprocesamiento y Predicción (usando tf.tidy para limpiar memoria) ---
     try {
          const { probabilities, interpreted } = tf.tidy(() => {
-            // Convertir el contenido del canvas a Tensor
             const imgTensor = tf.browser.fromPixels(canvas);
+            console.log("Tensor crudo - Forma:", imgTensor.shape, "Tipo:", imgTensor.dtype); // Ej: [480, 640, 3]
 
-            // Redimensionar a 128x128
             const resizedTensor = imgTensor.resizeNearestNeighbor([IMG_SIZE, IMG_SIZE]);
+            console.log("Tensor redimensionado - Forma:", resizedTensor.shape, "Tipo:", resizedTensor.dtype); // Ej: [128, 128, 3]
 
-            // Convertir a float
             const floatTensor = resizedTensor.toFloat();
+            console.log("Tensor float - Min:", floatTensor.min().dataSync()[0], "Max:", floatTensor.max().dataSync()[0]); // Debería ser ~0 a ~255
 
-            // Preprocesamiento: Escalar píxeles a [-1, 1] (¡VERIFICAR!)
+            // Preprocesamiento: Escalar píxeles a [-1, 1]
             const processedTensor = floatTensor.div(tf.scalar(127.5)).sub(tf.scalar(1.0));
+            console.log("Tensor preprocesado - Min:", processedTensor.min().dataSync()[0], "Max:", processedTensor.max().dataSync()[0]); // <<< ¡¡DEBERÍA ser ~-1 a ~1 !!
+            console.log("Tensor preprocesado - Forma:", processedTensor.shape, "Tipo:", processedTensor.dtype);
 
-            // Añadir dimensión de batch [1, 128, 128, 3]
             const batchedTensor = processedTensor.expandDims(0);
+            console.log("Tensor en batch - Forma:", batchedTensor.shape); // Ej: [1, 128, 128, 3]
 
-            // Realizar predicción
-            console.log('Realizando predicción...');
-            const predictionTensor = model.execute(batchedTensor); // ¡Execute!
-            // Obtener el array de probabilidades (síncrono para simplificar)
+            // Predicción (igual que antes)
+            console.log('Realizando predicción (execute)...');
+            const predictionTensor = model.execute(batchedTensor);
             const probabilitiesArray = predictionTensor.dataSync();
 
-            console.log('Probabilidades Sigmoid:', probabilitiesArray);
+             // --- ¡MOVER LA INTERPRETACIÓN AQUÍ DENTRO! ---
+            const interpretedResults = interpretPredictions(probabilitiesArray); 
 
-             // Interpretar Resultados
-            const interpretedResults = interpretPredictions(probabilitiesArray);
-
-            // Devolver resultados como arrays normales para sacarlos de tf.tidy
-            return {probabilities: Array.from(probabilitiesArray), interpreted: interpretedResults};
+            // Devolver resultados como arrays/objetos normales para sacarlos de tf.tidy
+            return {probabilities: Array.from(probabilitiesArray), interpreted: interpretedResults}; 
         });
 
         displayResults(probabilities, interpreted); // Mostrar resultados
