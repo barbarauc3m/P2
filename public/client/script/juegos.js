@@ -10,32 +10,52 @@ socket.on('disconnect', () => {
 });
 
 // Mapeo de nombres de juego a archivos HTML
-const gamesMap = {
-    'Atrapa la Ropa': 'juego1.html',
-    'Duelo de Doblado': 'juego2.html',
-    'El Rey del Tendedero': 'juego3-inicio.html',
-    'Combo de Manchas': 'juego4.html'
-};
+const gamesMap = [
+    {
+        title: "Atrapa la Ropa",
+        description: "Atrapa las prendas antes de que caigan",
+        mobilePage: "jugando.html",
+        serverPage: "../server/juego1.html"
+    },
+    {   
+        title: "Duelo de Doblado",
+        description: "Se el más rápido en doblar la ropa",
+        mobilePage: "jugando.html",
+        serverPage: "../server/juego2.html" 
+    },
+    { 
+        title: "El Rey del Tendedero",
+        description: "Pon la ropa en el tendedero. CUIDADO, que no se toquen entre sí",
+        mobilePage: "jugando.html",
+        serverPage: "../server/juego3-inicio.html"
+    },
+    { 
+        title: "Combo de Manchas",
+        description: "Combina manchas para ganar puntos",
+        mobilePage: "jugando.html",
+        serverPage: "../server/juego4.html" 
+    }
+];
 
 // Función para cargar el juego seleccionado
-function loadGame(gameTitle, gameDescription) {
+function loadGame(index) {
+    const game = gamesMap[index];
+    if (!game) return;
 
-    console.log(`🎮 Juego seleccionado: ${gameTitle}`);
-    
-    // Guardar la información del juego seleccionado
-    localStorage.setItem('selectedGameTitle', gameTitle);
-    localStorage.setItem('selectedGameDescription', gameDescription);
-    
-    // Notificar al servidor qué juego se ha seleccionado
-    socket.emit('gameSelected', {
-        gameName: gameTitle,
-        gameDescription: gameDescription,
-        gameFile: gamesMap[gameTitle]
+    // 1. Guardar datos para jugando.html
+    localStorage.setItem('selectedGameTitle', game.title);
+    localStorage.setItem('selectedGameDescription', game.description);
+
+    // 2. Notificar al servidor
+    socket.emit('showGameOnServer', {
+        gameFile: game.serverPage,
+        gameName: game.title
     });
-    
-    // Redirigir a la pantalla de juego
-    window.location.href = gamesMap[gameTitle] || 'jugando.html';
+
+    // 3. Redirigir en el móvil
+    window.location.href = game.mobilePage;
 }
+
 
 function initDeviceOrientation() {    
     const socket = io();
@@ -95,26 +115,23 @@ document.addEventListener("DOMContentLoaded", function() {
         initDeviceOrientation();
     }
 
-    // Si estamos en la página de juego (jugando.html)
-    if (document.getElementById("game-title")) {
-        const titleElement = document.getElementById("game-title");
-        const descriptionElement = document.getElementById("game-description");
-        
-        // Cargar la información del juego seleccionado
-        titleElement.textContent = localStorage.getItem("selectedGameTitle") || "Juego";
-        descriptionElement.textContent = localStorage.getItem("selectedGameDescription") || "Descripción del juego.";
-    }
+    // Mostrar datos del juego
+    document.getElementById("game-title").textContent = 
+        localStorage.getItem("selectedGameTitle") || "Juego";
+    
+    document.getElementById("game-description").textContent = 
+        localStorage.getItem("selectedGameDescription") || "Descripción";
+
     
     // Configurar botones (solo en jugando.html)
     const exitButton = document.getElementById("exit-button");
     const pauseButton = document.getElementById("pause-button");
     const restartButton = document.getElementById("restart-button");
-    
-    if (exitButton) {
-        exitButton.addEventListener("click", function() {
-            window.location.href = "juegos.html";
-        });
-    }
+
+    // Configurar botones
+    exitButton.addEventListener("click", () => {
+        window.location.href = "juegos.html";
+    });
     /*
     if (pauseButton) {
         pauseButton.addEventListener("click", function() {
@@ -130,10 +147,12 @@ document.addEventListener("DOMContentLoaded", function() {
     }*/
     
     // Configurar efecto 3D mejorado para las cartas (solo en juegos.html)
-    const cardContainers = document.querySelectorAll('.card-container');
 
-    cardContainers.forEach(container => {
+    document.querySelectorAll('.card-container').forEach((container, index) => {
         container.addEventListener('mousemove', (e) => {
+
+            container.addEventListener('click', () => loadGame(index));
+
             const card = container.querySelector('.card');
             const rect = container.getBoundingClientRect();
             
@@ -198,5 +217,16 @@ document.addEventListener("DOMContentLoaded", function() {
                 // Iniciar juego
                 break;
         }
+    });
+
+    // Modifica el evento del botón de la casita en el DOMContentLoaded:
+    document.querySelector('.button-nav[onclick*="index.html"]').addEventListener('click', function(e) {
+        e.preventDefault();
+        
+        // Emitir evento para cerrar el juego en el servidor
+        socketGamesClient.emit('closeGameDisplay');
+        
+        // Redirigir en el móvil
+        window.location.href = 'index.html';
     });
 });

@@ -534,14 +534,28 @@ io.on('connection', (socket) => {
     console.log(`🖥️ Emitiendo 'refreshFavorites' a otros clientes.`);
   });
 
-  // CÓDIGO PARA QUE VAYA LA CONEXION DE JUEGOS
-  socket.on('gameSelected', (data) => {
-    console.log(`🎮 Juego seleccionado desde móvil: ${data.gameName}`);
-    // Reenvía a todas las pantallas del servidor
-    io.emit('showGameOnServer', {
+  // Manejar la visualización del juego en el servidor
+  socket.on('showGameOnServer', (data) => {
+    console.log(`🖥️ Recibido juego para mostrar: ${data.gameName}`);
+    
+    // Enviar a TODAS las pantallas del servidor (incluyendo la que lo envió si es necesario)
+    io.emit('loadGameOnDisplay', {
         gameFile: data.gameFile,
         gameName: data.gameName
     });
+  });
+
+  // Manejar controles del juego
+  socket.on('gameControl', (data) => {
+    console.log(`🎮 Control recibido: ${data.action} para ${data.game}`);
+    // Reenviar a todas las pantallas del servidor
+    io.emit('gameAction', data);
+  });
+
+  // Añade este manejador en la sección de Socket.IO:
+  socket.on('closeGameDisplay', () => {
+    console.log('📱 Recibida petición para cerrar juego');
+    io.emit('closeGameDisplay');
   });
 });
 
