@@ -486,14 +486,19 @@ io.on('connection', (socket) => {
     socket.broadcast.emit('mensaje', data);
   });
 
-  socket.on('lanzar', () => {  // BARBARAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA (por si la lio)
+  socket.on('lanzar', () => {  // JUEGOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOO3
     console.log('📱 Movimiento recibido desde móvil');
     socket.broadcast.emit('lanzar'); // Reenvía a todos menos al móvil
-  }); // BARBARAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA
+  }); // JUEGOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOO3
 
   socket.on('disconnect', () => {
     console.log('Usuario desconectado');
   });
+
+  socket.on('juego3-pausar', () => {  // Pausar juego desde el móvil
+    console.log('📱 Pausa recibida desde móvil');
+    socket.broadcast.emit('juego3-pausar'); // Reenvía a todos menos al móvil
+  }); // JUEGOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOO3
 
   // NUEVO: Escuchar solicitud para cambiar la pantalla del servidor
   socket.on('requestDisplayChange', (data) => {

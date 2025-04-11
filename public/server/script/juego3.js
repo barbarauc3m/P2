@@ -1,26 +1,3 @@
-console.log("✅ juego3.js cargado");
-try {
-    window.socket = io(); // Esto lo hace global
-    const socket = window.socket;
-
-  socket.on('connect', () => {
-    console.log('✅ Ordenador conectado al servidor con socket ID:', socket.id);
-  });
-
-  socket.on('lanzar', () => {
-    console.log("🚀 Lanzamiento recibido desde móvil");
-    moverPrenda(); // activa si quieres probar la animación
-  });
-
-  socket.on('mensaje', (data) => {
-    console.log('📩 Mensaje desde móvil:', data);
-  });
-
-} catch (error) {
-  console.warn("⚠️ No se pudo conectar a Socket.IO:", error);
-}
-
-
 document.addEventListener("DOMContentLoaded", function() {
     // Configuración inicial del juego
     document.querySelector(".start-button").addEventListener("click", function() {
@@ -40,7 +17,7 @@ document.addEventListener("DOMContentLoaded", function() {
 
     const viewportWidth = window.innerWidth;
     console.log(viewportWidth);
-    const maxPrendas = Math.floor(viewportWidth / 100);
+    const maxPrendas = Math.floor(viewportWidth / 120); 
     console.log(maxPrendas);
     document.getElementById('contadorPrendas').textContent = maxPrendas;
     
@@ -241,5 +218,31 @@ function reiniciarJuego() {
 document.querySelectorAll(".restart-button").forEach(button => {
     button.addEventListener("click", reiniciarJuego);
 });
+
+console.log("✅ juego3.js cargado");
+try {
+    window.socket = io(); // Esto lo hace global
+    const socket = window.socket;
+
+  socket.on('connect', () => {
+    console.log('✅ Ordenador conectado al servidor con socket ID:', socket.id);
+  });
+
+  socket.on('lanzar', () => {
+    console.log("🚀 Lanzamiento recibido desde móvil");
+    moverPrenda(); // activa si quieres probar la animación
+  });
+
+  socket.on('mensaje', (data) => {
+    console.log('📩 Mensaje desde móvil:', data);
+  });
+
+  socket.on('juego3-pausar', () => {
+    console.log("Se pausa el juego");
+  });
+
+} catch (error) {
+  console.warn("No se pudo conectar a Socket.IO:", error);
+}
 
 });

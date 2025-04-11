@@ -67,6 +67,8 @@ document.addEventListener("DOMContentLoaded", function() {
     
     if (pauseButton) {
         pauseButton.addEventListener("click", function() {
+            console.log("⏸ Emitiendo pausa...");
+            socket.emit('juego3-pausar');
             alert("Juego pausado");
         });
     }
