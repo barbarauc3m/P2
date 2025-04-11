@@ -237,9 +237,11 @@ try {
     console.log('📩 Mensaje desde móvil:', data);
   });
 
+  /*
   socket.on('juego3-pausar', () => {
-    console.log("Se pausa el juego");
+    console.log("[juego3.js] Se pausa el juego");
   });
+  */
 
 } catch (error) {
   console.warn("No se pudo conectar a Socket.IO:", error);
