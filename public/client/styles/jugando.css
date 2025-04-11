@@ -1,13 +1,14 @@
 /* Estilos generales */
 body {
     font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-    background-color: #5d6b8b; /* Azul oscuro */
+    background-color: #5d6b8b;
     color: white;
     margin: 0;
     padding: 0;
-    min-height: 100vh;
+    min-height: 100vh; /* CAMBIO AQUÍ */
     display: flex;
     flex-direction: column;
+    font-size: 5vw;
 }
 
 /* Encabezado */
@@ -23,7 +24,7 @@ body {
     background: none;
     border: none;
     color: white;
-    font-size: 24px;
+    font-size: 5vw;
     cursor: pointer;
     padding: 5px 10px;
     margin-right: 15px;
@@ -31,12 +32,13 @@ body {
 
 #game-title {
     margin: 0;
-    font-size: 1.5em;
+    font-size: 5vw;
+    margin-left: 7vw;
 }
 
 /* Contenido principal */
 .game-content {
-    flex: 1;
+    flex: 1 0 auto;
     display: flex;
     flex-direction: column;
     align-items: center;
@@ -47,41 +49,47 @@ body {
 
 #game-description {
     margin: 15px 0;
+    font-size: 3vw;
     color: #e0e0e0;
     max-width: 80%;
 }
 
 .game-placeholder {
     margin-top: 20px;
+    width: 100%;
 }
 
 .game-placeholder img {
-    width: 100px;
-    height: 100px;
+    width: 200px;
     opacity: 0.7;
 }
 
 .game-placeholder p {
     margin-top: 15px;
+    font-size: 2.5vw;
     color: #b0b0b0;
 }
 
 /* Controles */
 .game-controls {
+    flex: none; /* Evita que crezca */
     display: flex;
+    flex-direction: column;
     justify-content: center;
+    align-items: center;
     gap: 20px;
     padding: 20px;
     background-color: rgba(0, 0, 0, 0.1);
 }
 
 .control-button {
+    width: 40%;
     background-color: #4a6fa5;
     color: white;
     border: none;
-    padding: 12px 25px;
+    padding: 12px;
     border-radius: 30px;
-    font-size: 1em;
+    font-size: 5vw;
     cursor: pointer;
     transition: background-color 0.3s;
     box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
@@ -89,17 +97,4 @@ body {
 
 .control-button:hover {
     background-color: #3a5a80;
-}
-
-/* Responsive */
-@media (max-width: 600px) {
-    .game-controls {
-        flex-direction: column;
-        align-items: center;
-    }
-    
-    .control-button {
-        width: 80%;
-        max-width: 200px;
-    }
 }
