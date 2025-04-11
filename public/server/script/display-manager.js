@@ -43,13 +43,12 @@ socketDisplayManager.on('loadGameOnDisplay', (data) => {
   gameContainer.style.display = 'block';
 });
 
-// Nueva función para cerrar juegos desde el móvil
 socketDisplayManager.on('closeGameDisplay', () => {
-  const gameContainer = document.getElementById('game-display-container');
+  const gameContainer = document.getElementById('game-container');
   if (gameContainer) {
-    gameContainer.style.display = 'none';
-    gameContainer.innerHTML = '';
-    console.log('🖥️ Juego cerrado por solicitud del móvil');
+      gameContainer.style.display = 'none';
+      gameContainer.innerHTML = '';
+      console.log('🖥️ Juego cerrado por solicitud del móvil');
   }
 });
 

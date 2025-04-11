@@ -201,32 +201,4 @@ document.addEventListener("DOMContentLoaded", function() {
             loadGame(gameTitle, gameDescription);
         });
     });
-
-    // Escuchar controles desde el servidor (para juegos que lo necesiten)
-    socket.on('gameControl', (data) => {
-        console.log('🎮 Control recibido:', data.action);
-        // Implementa las acciones según tu juego
-        switch(data.action) {
-            case 'move-left':
-                // Tu lógica para mover izquierda
-                break;
-            case 'move-right':
-                // Tu lógica para mover derecha
-                break;
-            case 'start':
-                // Iniciar juego
-                break;
-        }
-    });
-
-    // Modifica el evento del botón de la casita en el DOMContentLoaded:
-    document.querySelector('.button-nav[onclick*="index.html"]').addEventListener('click', function(e) {
-        e.preventDefault();
-        
-        // Emitir evento para cerrar el juego en el servidor
-        socketGamesClient.emit('closeGameDisplay');
-        
-        // Redirigir en el móvil
-        window.location.href = 'index.html';
-    });
 });

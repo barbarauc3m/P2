@@ -552,10 +552,9 @@ io.on('connection', (socket) => {
     io.emit('gameAction', data);
   });
 
-  // Añade este manejador en la sección de Socket.IO:
   socket.on('closeGameDisplay', () => {
     console.log('📱 Recibida petición para cerrar juego');
-    io.emit('closeGameDisplay');
+    io.emit('closeGameDisplay');  // Envía a todas las pantallas del servidor
   });
 });
 

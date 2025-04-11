@@ -2,35 +2,28 @@
 <html>
 <head>
     <title>Jugando - Lavaloo</title>
-    <link rel="stylesheet" href="styles/jugando.css">
+    <link rel="stylesheet" href="/styles/jugando.css">
+    <script src="/socket.io/socket.io.js"></script>
 </head>
 <body>
     <header class="game-header">
-        <button id="exit-button" onclick="exitGame()">← Salir</button>
-        <script>
-            function exitGame() {
-                const socket = io();
-                socket.emit('requestDisplayChange', { targetPage: '/' });
-                window.location.href = 'juegos.html';
-            }
-        </script>
+        <button id="exit-button">← Salir</button>
         <h1 id="game-title"></h1>
     </header>
 
-    <div class="game-container">
+    <div class="game-content">
         <p id="game-description"></p>
         <div class="game-placeholder">
-            <img src="images/game-controller.svg" alt="Jugando">
+            <img src="/images/game-controller.svg" alt="Jugando">
             <p>El juego se está mostrando en la pantalla principal</p>
         </div>
     </div>
 
     <div class="game-controls">
-        <button id="pause-button">Pausa</button>
-        <button id="restart-button">Reiniciar</button>
+        <button id="pause-button" class="control-button">Pausa</button>
+        <button id="restart-button" class="control-button">Reiniciar</button>
     </div>
 
-    <script src="/socket.io/socket.io.js"></script>
-    <script src="script/jugando.js"></script>
+    <script src="/script/jugando.js"></script>
 </body>
 </html>
