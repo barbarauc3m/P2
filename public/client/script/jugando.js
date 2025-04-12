@@ -10,7 +10,7 @@ document.addEventListener('DOMContentLoaded', function() {
 
     // Configurar botón de salida
     document.getElementById('exit-button').addEventListener('click', function() {
-        // Emitir evento para cerrar el juego en el servidor
+        /*emit redirigir el servidor a index*/ 
         socket.emit('closeGameDisplay');
         
         // Redirigir a la página de juegos

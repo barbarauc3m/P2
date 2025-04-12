@@ -124,6 +124,7 @@ document.addEventListener("DOMContentLoaded", function() {
 
     
     // Configurar botones (solo en jugando.html)
+    /*
     const exitButton = document.getElementById("exit-button");
     const pauseButton = document.getElementById("pause-button");
     const restartButton = document.getElementById("restart-button");
@@ -132,22 +133,9 @@ document.addEventListener("DOMContentLoaded", function() {
     exitButton.addEventListener("click", () => {
         window.location.href = "juegos.html";
     });
-    /*
-    if (pauseButton) {
-        pauseButton.addEventListener("click", function() {
-            //alert("Juego pausado");
-        });
-    }*/
-    /*
-    if (restartButton) {
-        restartButton.addEventListener("click", function() {
-            socket.emit('gameControl', { action: 'restart' });
-            alert("Juego reiniciado");
-        });
-    }*/
+    */
     
     // Configurar efecto 3D mejorado para las cartas (solo en juegos.html)
-
     document.querySelectorAll('.card-container').forEach((container, index) => {
         container.addEventListener('mousemove', (e) => {
 
