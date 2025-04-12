@@ -33,7 +33,6 @@ body {
     align-items: center;
     position: relative;
 }
-
 .game-title {
     font-size: 4em;
     margin-bottom: 20px;
@@ -175,8 +174,6 @@ body {
 .start-button:hover::after {
     transform: translateX(100%);
 }
-
-
 
 
 .game-container {
