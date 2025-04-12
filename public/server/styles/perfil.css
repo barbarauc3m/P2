@@ -33,7 +33,13 @@
     font-family: 'Super Lobster', sans-serif;
     color: #373F52;
     font-size: 3vh;
-    margin-left: 10vh;
+  }
+
+  .content{
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: center;
   }
 
 
@@ -57,13 +63,12 @@
     color: #373F52;
   }
 
-
   .categoria-list{
     display: grid;
     grid-template-columns: repeat(4, 1fr);
     justify-content: center;
-    align-items: center;
-    padding: 10vh 20vh;
+    align-items: flex-start;
+    padding: 5vh 10vh;
     gap: 10vh;
   }
 
@@ -72,7 +77,6 @@
     grid-template-columns: repeat(4, 1fr);
     justify-content: center;
     align-items: center;
-    padding: 10vh 20vh;
     gap: 10vh;
   }
 
@@ -81,7 +85,6 @@
     grid-template-columns: repeat(4, 1fr);
     justify-content: center;
     align-items: center;
-    padding: 10vh 20vh;
     gap: 10vh;
   }
 
@@ -92,6 +95,22 @@
     display: flex;
     flex-direction: column;
     height: 30vh;
+    width: 25vh;
+    justify-content: center;
+    align-items: center;
+    color: white;
+    font-family: 'Segoe UI', sans-serif;
+    position: relative;
+  }
+
+  .lavado-fav{
+    background-color: #5D6B8B;
+    border-radius: 1.5rem;
+    padding: 1.5rem;
+    display: flex;
+    flex-direction: column;
+    height: 20vh;
+    width: 15vh;
     justify-content: center;
     align-items: center;
     color: white;
@@ -129,20 +148,22 @@
 /* Estilo base para cada tarjeta */
 .category-display {
     border-radius: 1.5rem;
-    padding: 1.5rem;
     display: flex;
     flex-direction: column;
     height: 30vh;
     justify-content: center;
     align-items: center;
     color: white;
-
     opacity: 1;
     transform: scale(1);
     position: relative; 
     z-index: 1; 
-    /* --- Transición GENERAL --- */
     transition: all 0.4s ease-in-out;
+}
+
+
+.icon-fav{
+  height: 5vh;
 }
 
 
@@ -152,6 +173,15 @@
     align-items: center;
     width: 100%;
     flex-grow: 1;
+}
+
+.category-display-fav .lavado-card-fav {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  width: 100%;
+  font-size: 1.5vh !important;
+
 }
 
 .category-display img.icon {
@@ -166,6 +196,14 @@
     padding: 1vh 0 2.5vh 0;
     margin: 0;
     color: #F6F9FD;
+}
+
+.category-display-fav h2 {
+  font-size: 2vh;
+  font-family: 'Super Lobster', sans-serif;
+  padding: 1vh 0 2.5vh 0;
+  margin: 0;
+  color: #F6F9FD;
 }
 
 .category-display p {
@@ -196,6 +234,7 @@
 }
 
 .category-display .info ul { display: none; } /* Ocultos en esta vista */
+.category-display-fav .info-fav ul { display: none; } /* Ocultos en esta vista */
 .category-display .lavado-button { display: none; } /* Ocultos en esta vista */
 .category-display .heart { display: none; } /* Ocultos en esta vista */
 

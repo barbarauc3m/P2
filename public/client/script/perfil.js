@@ -2,6 +2,10 @@ document.addEventListener("DOMContentLoaded", () => {
   const usuario = localStorage.getItem("loggedInUser");
   if (!usuario) return;
 
+  const socketHistorial = io(); // Conexión específica para esta página
+  socketHistorial.on('connect', () => console.log('📱✅ Historial Client Conectado:', socketHistorial.id));
+  socketHistorial.on('connect_error', (err) => console.error('📱❌ Error conexión socket en historial.js:', err));
+
   // Mostrar nombre del usuario
   document.querySelector(".username").textContent = usuario;
 
@@ -136,6 +140,44 @@ document.addEventListener("DOMContentLoaded", () => {
     }
 
     });
+
+    const verMasHistorialLink = document.getElementById('historial'); // El enlace <a>
+
+    if (verMasHistorialLink) {
+        verMasHistorialLink.addEventListener('click', (event) => {
+            event.preventDefault(); // Prevenir navegación normal del enlace
+            const usuario = localStorage.getItem("loggedInUser"); // Obtener usuario actual
+
+            if (!usuario) {
+                alert("Debes iniciar sesión para ver el historial completo.");
+                return;
+            }
+
+            console.log(`📱 Botón 'Ver Más Historial' presionado por ${usuario}.`);
+
+            // 1. Notificar al servidor para que muestre la pantalla de historial
+            // Asegúrate que tienes una conexión socket disponible (ej: socketPerfil)
+             if (typeof socketPerfil !== 'undefined' && socketPerfil.connected) {
+                 socketPerfil.emit('requestDisplayChange', {
+                    targetPage: '/display/historial', // Nueva ruta para el servidor
+                    userId: usuario
+                 });
+             } else {
+                 console.error("Socket no conectado en perfil.js para emitir requestDisplayChange");
+                 // Considera reconectar o mostrar error
+             }
+
+
+            // 2. Navegar el cliente a su página de historial completa
+            window.location.href = 'historial.html'; // Navega al HTML del cliente
+
+        });
+        console.log("📱 Listener añadido a #historial (ver más).");
+    } else {
+        console.warn("Enlace #historial no encontrado en perfil.html.");
+    }
+
+
   });
 
 

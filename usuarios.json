@@ -6,6 +6,15 @@
     "foto": "/images/persona_cla.svg",
     "favoritos": [
       {
+        "nombre": "Lavado Frío",
+        "descripcion": "Ideal para lana, seda, ropa interior, etc.",
+        "temperatura": "20ºC",
+        "duracion": "40 min",
+        "centrifugado": "600 rpm",
+        "detergente": "30 ml",
+        "imagen": "../../../images/frio.svg"
+      },
+      {
         "nombre": "Lavado Rápido",
         "descripcion": "Ideal para ropa poco sucia o uso diario.",
         "temperatura": "30ºC",
@@ -13,9 +22,32 @@
         "centrifugado": "1200 rpm",
         "detergente": "50 ml",
         "imagen": "../../../images/rapido.svg"
+      },
+      {
+        "nombre": "Lavado Caliente",
+        "descripcion": "Ideal para ropa muy sucia o con manchas.",
+        "temperatura": "60ºC",
+        "duracion": "1h 15 min",
+        "centrifugado": "1200 rpm",
+        "detergente": "60 ml",
+        "imagen": "../../../images/caliente.svg"
       }
     ],
     "personalizados": [
+      {
+        "nivelSuciedad": "Manchas visibles",
+        "temperatura": "60°C",
+        "centrifugado": "Bajo: 600 rpm",
+        "duracion": "105 min",
+        "detergente": "20 ml",
+        "tejido": [
+          "Lana"
+        ],
+        "favorito": false,
+        "nombre": "Lavado personalizado 2",
+        "index": 2,
+        "fechaGuardado": "2025-04-12T09:36:24.381Z"
+      },
       {
         "nivelSuciedad": "Ropa de uso diario",
         "temperatura": "55°C",

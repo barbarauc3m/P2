@@ -4,6 +4,17 @@ document.addEventListener("DOMContentLoaded", () => {
   
     const contenedor = document.getElementById("historial-container");
   
+     // --- Conexión Socket.IO (Necesaria para emitir hover) ---
+     if (typeof io === 'undefined') {
+      console.error('Historial script: io no definido.');
+      // return; // Opcional: detener si no hay socket
+    }
+    const socketHistorial = io(); // Conexión específica para esta página
+    socketHistorial.on('connect', () => console.log('📱✅ Historial Client Conectado:', socketHistorial.id));
+    socketHistorial.on('connect_error', (err) => console.error('📱❌ Error conexión socket en historial.js:', err));
+
+
+
     Promise.all([
       fetch(`/lavados/${usuario}`).then(res => res.json()),
       fetch(`/api/users/${usuario}/favoritos`).then(res => res.json())
@@ -17,12 +28,14 @@ document.addEventListener("DOMContentLoaded", () => {
   
         const isFavorito = favoritos.some(fav => fav.nombre === lavado.nombre);
   
+        const uniqueId = sanitizeId(`${lavado.nombre}-${lavado.fechaInicio || index}`);
+
         const section = document.createElement("section");
         section.classList.add("lavado");
   
         section.innerHTML = `
           <h2>${fechaStr}</h2>
-          <div class="lavado-card">
+          <div class="lavado-card" data-category-id="${uniqueId}">
             <img src="${lavado.imagen}" class="icon" alt="${lavado.nombre}" />
             <div class="info">
               <h3 class="hist-title">${lavado.nombre}</h3>
@@ -51,10 +64,30 @@ document.addEventListener("DOMContentLoaded", () => {
             empezarBtn.addEventListener('click', () => handleEmpezarClickHistorial(lavado));
         }
 
+        const cardElement = section.querySelector('.lavado-card');
+                if (cardElement) {
+                    cardElement.addEventListener('mouseenter', () => {
+                        // console.log(`➡️ ENTER Historial: ${uniqueId}`); // Log opcional
+                        socketHistorial.emit('hoverCategory', { categoryId: uniqueId });
+                    });
+                    cardElement.addEventListener('mouseleave', () => {
+                         // console.log(`⬅️ LEAVE Historial: ${uniqueId}`); // Log opcional
+                        socketHistorial.emit('unhoverCategory', { categoryId: uniqueId });
+                    });
+                }
+
       });
     });
   });
 
+  function sanitizeId(text) {
+    if (!text) return `item-${Math.random().toString(36).substr(2, 9)}`;
+    return text.toString().toLowerCase()
+               .replace(/\s+/g, '-') // Reemplaza espacios con guiones
+               .replace(/[^\w-]+/g, ''); // Quita caracteres no alfanuméricos (excepto guion)
+               // Podrías añadir más reemplazos si las fechas/horas dan problemas (:, /)
+               // .replace(/[:\/]/g, '-');
+}
 
    // --- Paso 3: Crear Función handleFavoriteToggle ---
    async function handleFavoriteToggle(currentUser, washData, heartElement) {
