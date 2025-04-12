@@ -495,11 +495,11 @@ io.on('connection', (socket) => {
   socket.on('orientationData', (data) => {  // Puntero juego3
     
     // Extrae x e y directamente del objeto
-    const { x, y } = data;
-    console.log("Posición procesada:", { x, y }); 
+    const { x, z } = data;
+    console.log("Posición procesada:", { x, z }); 
 
     // Reenvía a todos los clientes (excepto al emisor)
-    socket.broadcast.emit('updatePointer', x, y); 
+    socket.broadcast.emit('updatePointer', x, z); 
   });
 
   socket.on('lanzar', () => {  // Juego 3
