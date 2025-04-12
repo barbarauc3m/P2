@@ -19,7 +19,6 @@ document.addEventListener('DOMContentLoaded', function() {
 
     // Configurar controles específicos para "El Rey del Tendedero"
     if (localStorage.getItem('selectedGameTitle') === 'El Rey del Tendedero') {
-        //initDeviceOrientation(); 
         juego3();
     }
 });

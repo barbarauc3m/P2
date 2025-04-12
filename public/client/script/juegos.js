@@ -56,63 +56,15 @@ function loadGame(index) {
     window.location.href = game.mobilePage;
 }
 
-/*
-function initDeviceOrientation() {    
-    const socket = io();
 
-    let lastBeta = null;
-    let lastTime = null;
-
-    // API DEVICEORIENTATION para capturar movimientos hacia arriba con el móvil
-    window.addEventListener('deviceorientation', function(event) {
-        const beta = event.beta;
-        if (beta === null) return;
-
-        const currentTime = Date.now();
-
-        if (lastBeta !== null && lastTime !== null) {
-            const deltaBeta = beta - lastBeta;
-            const deltaTime = currentTime - lastTime;
-
-            if (deltaBeta > 20 && deltaTime < 500) {
-                console.log('📱 Inclinación rápida detectada');
-                socket.emit('lanzar');
-            }
-        }
-
-        lastBeta = beta;
-        lastTime = currentTime;
-    });
-
-    // Para emitir mensajes cuando se presiona 'Pausar' en el móvil
-    const pauseButton = document.getElementById("pause-button");
-    if (pauseButton) {
-        pauseButton.addEventListener("click", function() {
-            console.log("😡 MÓVIL MANDA QUE SE PARE EL JUEGO");
-            socket.emit('juego3-pausar');
-            alert("Juego pausado");
-        });
-    }
-
-    // Y cuando se presiona 'Reiniciar' en el móvil
-    const restartButton = document.getElementById("restart-button");
-    if (restartButton) {
-        restartButton.addEventListener("click", function() {
-            console.log("😱 MÓVIL MANDA QUE SE REINICIE EL JUEGO");
-            socket.emit('juego3-reiniciar');
-            //alert("Juego reiniciado");
-        });
-    }
-}
-*/
 /// Inicialización cuando el DOM está listo
 document.addEventListener("DOMContentLoaded", function() {
+
+    // const selectedGame = localStorage.getItem("selectedGameTitle");
+
     // Configurar sensores si es El Rey del Tendedero
-    const selectedGame = localStorage.getItem("selectedGameTitle");
-    console.log('Valor de selectedGame:', selectedGame);
     if (selectedGame === 'El Rey del Tendedero') { // AÑADIR QUE SEA CUANDO SE ESTÉ JUGANDO (variables esas)
         console.log('🧭 SE PRENDEN SENSORES PARA JUEGO3 (deviceOrientation y botones emiten)!!!');
-        //initDeviceOrientation();
         juego3();
     }
 
