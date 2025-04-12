@@ -476,6 +476,10 @@ app.get('/display/lavados-favs', (req, res) => {
   res.sendFile(path.join(__dirname, 'public/server/lavados-favs.html'));
 });
 
+app.get('/display/historial', (req, res) => {
+  res.sendFile(path.join(__dirname, 'public/server/historial.html'));
+});
+
 
 // CONEXIONES SOCKET.IO
 io.on('connection', (socket) => {

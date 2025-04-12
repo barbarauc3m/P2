@@ -98,9 +98,9 @@ document.addEventListener("DOMContentLoaded", async () => {
             favoritosContainer.innerHTML = '<p class="empty-message">Sin favoritos.</p>';
         } else {
             // favoritosContainer.classList.add('categories-container'); // Opcional
-            favoritos.slice(0, 1).forEach(lavado => {
+            favoritos.slice(0, 2).forEach(lavado => {
                 const section = document.createElement("section");
-                section.className = "category-display"; // Misma clase = mismo estilo base
+                section.className = "category-display-fav"; // Misma clase = mismo estilo base
 
                 let imagenFavorito = lavado.imagen || '/images/default-wash.png';
                  if (imagenFavorito.startsWith('.')) imagenFavorito = '/images/' + imagenFavorito.split('/').pop();
@@ -109,11 +109,11 @@ document.addEventListener("DOMContentLoaded", async () => {
                 <div class="lavado-sombra">
                     <div class="sombra sombra-50"></div>
                     <div class="sombra sombra-20"></div>
-                    <div class="lavado">
+                    <div class="lavado-fav">
                     <h2>${lavado.nombre || 'Favorito'}</h2>
-                     <div class="lavado-card">
-                        <img src="${imagenFavorito}" class="icon" alt="${lavado.nombre || 'Favorito'}">
-                        <div class="info">
+                     <div class="lavado-card-fav">
+                        <img src="${imagenFavorito}" class="icon-fav" alt="${lavado.nombre || 'Favorito'}">
+                        <div class="info-fav">
                             <p>${lavado.descripcion || 'Descripción no disponible'}</p>
                             <ul style="font-size: 0.8em; color: #555;">
                                  ${lavado.temperatura ? `<li>Temp: ${lavado.temperatura}</li>` : ''}
@@ -139,19 +139,19 @@ document.addEventListener("DOMContentLoaded", async () => {
             personalizadosContainer.innerHTML = '<p class="empty-message">Sin personalizados.</p>';
         } else {
             // personalizadosContainer.classList.add('categories-container'); // Opcional
-            personalizados.slice(0, 1).forEach(lavado => {
+            personalizados.slice(0, 2).forEach(lavado => {
                 const section = document.createElement("section");
-                section.className = "category-display"; // Misma clase
+                section.className = "category-display-fav"; // Misma clase
 
                 section.innerHTML = `
                 <div class="lavado-sombra">
                     <div class="sombra sombra-50"></div>
                     <div class="sombra sombra-20"></div>
-                    <div class="lavado">
+                    <div class="lavado-fav">
                     <h2>${lavado.nombre || 'Personalizado'}</h2>
-                    <div class="lavado-card">
-                        <img src="/images/personalizado.svg" class="icon" alt="Personalizado">
-                        <div class="info">
+                    <div class="lavado-card-fav">
+                        <img src="/images/personalizado.svg" class="icon-fav" alt="Personalizado">
+                        <div class="info-fav">
                              <p>${lavado.nivelSuciedad || 'Nivel de suciedad no especificado'}</p>
                              <ul style="font-size: 0.8em; color: #555;">
                                  ${lavado.temperatura ? `<li>Temp: ${lavado.temperatura}</li>` : ''}
@@ -207,6 +207,8 @@ document.addEventListener("DOMContentLoaded", async () => {
         const meses = ['Enero', 'Febrero', 'Marzo', 'Abril', 'Mayo', 'Junio', 'Julio', 'Agosto', 'Septiembre', 'Octubre', 'Noviembre', 'Diciembre'];
         return `${dias[fecha.getDay()]}, ${fecha.getDate()} ${meses[fecha.getMonth()]}`;
     }
+
+
 
 
 }); // Fin DOMContentLoaded

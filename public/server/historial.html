@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Historial de Lavados - Servidor</title>
+    <link rel="stylesheet" href="/server/styles/categorias-lavados.css">
+    </head>
+<body>
+    <div class="focus-overlay"></div>
+
+    <div class="history-display"> <h1>Historial de Lavados (<span id="history-user">...</span>)</h1>
+        <p>(Últimos 8 lavados)</p>
+
+        <div id="history-display-container" class="categories-container">
+            <p>Cargando historial...</p>
+        </div>
+    </div>
+
+    <script src="/socket.io/socket.io.js"></script>
+    <script src="/server/script/display-manager.js"></script>
+    <script src="/server/script/history-display.js"></script> </body>
+</html>
