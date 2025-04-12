@@ -237,6 +237,11 @@ try {
     console.log('📩 Mensaje desde móvil:', data);
   });
 
+  socket.on('closeGameDisplay', (data) => {
+    console.log('El servidor vuelve a index', data);
+    window.location.href = 'index.html';
+  });
+
   /*
   socket.on('juego3-pausar', () => {
     console.log("[juego3.js] Se pausa el juego");

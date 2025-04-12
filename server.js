@@ -130,10 +130,6 @@ app.get('/juego2.html', (req, res) => {
   res.sendFile(path.join(__dirname, 'public/server/juego2.html'));
 });
 
-app.get('/juego3-inicio.html', (req, res) => {
-  res.sendFile(path.join(__dirname, 'public/server/juego3-inicio.html'));
-});
-
 app.get('/juego3.html', (req, res) => {
   res.sendFile(path.join(__dirname, 'public/server/juego3.html'));
 });
