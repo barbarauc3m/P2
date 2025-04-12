@@ -37,8 +37,36 @@ document.addEventListener('DOMContentLoaded', function() {
     }
 });
 
+/// FUNCIÓN: Activa el envío de puntero Wii remoto
+function activarPunteroWii() {
+    console.log("Dentro de la activarPunteroWii");
+    if (typeof DeviceOrientationEvent !== 'undefined' && typeof DeviceOrientationEvent.requestPermission === 'function') {
+        // iOS necesita pedir permiso
+        DeviceOrientationEvent.requestPermission().then(response => {
+            if (response === 'granted') {
+                iniciarEnvioOrientacion();
+            }
+        }).catch(console.error);
+    } else {
+        iniciarEnvioOrientacion();
+    }
+
+    function iniciarEnvioOrientacion() {
+        window.addEventListener('deviceorientation', (event) => {
+            const { alpha, gamma } = event;
+
+            const x = (gamma);
+            const z = (alpha);
+
+            console.log("Haciendo emit de { x, y }",{ x, z });
+            socket.emit('orientationData', { x, z });
+        });
+    }
+}
+
 function juego3() {    
-    // const socket = io();
+    console.log('🧭 Activando puntero Wii remoto desde móvil');
+    activarPunteroWii();
 
     let lastBeta = null;
     let lastTime = null;

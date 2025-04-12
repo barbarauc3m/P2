@@ -1,3 +1,5 @@
+const pointer = document.getElementById('pointer');
+
 document.addEventListener("DOMContentLoaded", function() {
     console.log("Dentro de DOMContentLoaded");
 
@@ -39,6 +41,19 @@ document.addEventListener("DOMContentLoaded", function() {
         console.log("🟢 Señal de empezar recibida desde el móvil");
         iniciarJuego3();
       });    
+
+      socket.on('updatePointer', (x, y) => {  // Puntero
+        console.log("En updatePointer");
+        console.log("Posición recibida { x, y }:", x, y);
+
+        const posX = x * 10;
+        const posY = y * 10;
+        console.log("Valores finales { x, y }:", posX, posY);
+
+        pointer.style.left = `${posX}px`;
+        pointer.style.top = `${posY}px`;
+      });
+
     } catch (error) {
       console.warn("No se pudo conectar a Socket.IO:", error);
     }

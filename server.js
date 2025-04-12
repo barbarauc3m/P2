@@ -481,9 +481,25 @@ app.get('/display/historial', (req, res) => {
 io.on('connection', (socket) => {
   console.log('Usuario conectado');
 
+  /*
+  socket.onAny((event, ...args) => {
+    console.log(`📥 Evento recibido: ${event}`, args);
+});*/
+
+
   socket.on('mensaje', (data) => {
     console.log('Mensaje recibido:', data);
     socket.broadcast.emit('mensaje', data);
+  });
+
+  socket.on('orientationData', (data) => {  // Puntero juego3
+    
+    // Extrae x e y directamente del objeto
+    const { x, y } = data;
+    console.log("Posición procesada:", { x, y }); 
+
+    // Reenvía a todos los clientes (excepto al emisor)
+    socket.broadcast.emit('updatePointer', x, y); 
   });
 
   socket.on('lanzar', () => {  // Juego 3

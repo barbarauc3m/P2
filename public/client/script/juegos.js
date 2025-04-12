@@ -55,13 +55,44 @@ function loadGame(index) {
     // 3. Redirigir en el móvil
     window.location.href = game.mobilePage;
 }
+/*
+/// FUNCIÓN: Activa el envío de puntero Wii remoto
+function activarPunteroWii() {
+    console.log("Dentro de la función");
+    if (typeof DeviceOrientationEvent !== 'undefined' && typeof DeviceOrientationEvent.requestPermission === 'function') {
+        // iOS necesita pedir permiso
+        DeviceOrientationEvent.requestPermission().then(response => {
+            if (response === 'granted') {
+                iniciarEnvioOrientacion();
+            }
+        }).catch(console.error);
+    } else {
+        iniciarEnvioOrientacion();
+    }
 
+    function iniciarEnvioOrientacion() {
+        window.addEventListener('deviceorientation', (event) => {
+            const { beta, gamma } = event;
+
+            const x = (gamma + 90) / 180;
+            const y = (beta + 180) / 360;
+
+            socket.emit('orientationData', { x, y });
+        });
+    }
+}
+*/
 
 /// Inicialización cuando el DOM está listo
 document.addEventListener("DOMContentLoaded", function() {
 
     //const selectedGame = localStorage.getItem("selectedGameTitle");
     const selectedGame = localStorage.removeItem("selectedGameTitle");
+
+    /*
+    console.log('🧭 Activando puntero Wii remoto desde móvil');
+    activarPunteroWii();
+    */
 
     // Configurar sensores si es El Rey del Tendedero
     if (selectedGame === 'El Rey del Tendedero') { // AÑADIR QUE SEA CUANDO SE ESTÉ JUGANDO (variables esas)

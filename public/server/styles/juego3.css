@@ -32,7 +32,24 @@ body {
     justify-content: center;
     align-items: center;
     position: relative;
+    overflow: hidden;  /* nuevo para meter puntero */
 }
+
+#pointer {
+    width: 20px;
+    height: 20px;
+    background: red;
+    border-radius: 50%;
+    position: absolute;
+    /*
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    pointer-events: none;
+    */
+  }
+
 .game-title {
     font-size: 4em;
     margin-bottom: 20px;
