@@ -60,7 +60,8 @@ function loadGame(index) {
 /// Inicialización cuando el DOM está listo
 document.addEventListener("DOMContentLoaded", function() {
 
-    // const selectedGame = localStorage.getItem("selectedGameTitle");
+    //const selectedGame = localStorage.getItem("selectedGameTitle");
+    const selectedGame = localStorage.removeItem("selectedGameTitle");
 
     // Configurar sensores si es El Rey del Tendedero
     if (selectedGame === 'El Rey del Tendedero') { // AÑADIR QUE SEA CUANDO SE ESTÉ JUGANDO (variables esas)
@@ -68,13 +69,15 @@ document.addEventListener("DOMContentLoaded", function() {
         juego3();
     }
 
+    /*
     // Mostrar datos del juego
     document.getElementById("game-title").textContent = 
         localStorage.getItem("selectedGameTitle") || "Juego";
     
+        
     document.getElementById("game-description").textContent = 
         localStorage.getItem("selectedGameDescription") || "Descripción";
-
+        */
     
     
     // Configurar efecto 3D mejorado para las cartas (solo en juegos.html)

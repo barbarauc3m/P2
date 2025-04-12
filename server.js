@@ -482,14 +482,19 @@ io.on('connection', (socket) => {
     socket.broadcast.emit('mensaje', data);
   });
 
-  socket.on('lanzar', () => {  // JUEGOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOO3
-    console.log('[SERVER.JS]📱 Movimiento recibido desde móvil');
+  socket.on('lanzar', () => {  // Juego 3
+    console.log('[SERVER.JS] Movimiento recibido desde móvil');
     socket.broadcast.emit('lanzar'); // Reenvía a todos menos al móvil
-  }); // JUEGOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOO3
+  }); 
 
   socket.on('disconnect', () => {
     console.log('Usuario desconectado');
   });
+
+  socket.on('juego3-empezar', () => {  // Llega solicitud desde el móvil
+    console.log('[SERVER.JS] Empieza el juego 3');
+    socket.broadcast.emit('juego3-empezar'); // Reenvía a todos menos al móvil
+  }); 
 
   socket.on('juego3-pausar', () => {  // Llega solicitud desde el móvil
     console.log('[SERVER.JS]📱 Pausa recibida desde móvil');

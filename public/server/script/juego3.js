@@ -1,5 +1,50 @@
 document.addEventListener("DOMContentLoaded", function() {
+    console.log("Dentro de DOMContentLoaded");
+
+    function iniciarJuego3() {
+        console.log("Dentro de IniciarJuego3");
+        document.querySelector(".game-title").style.display = "none";
+        document.querySelector(".game-start-container").style.display = "none";
+        document.querySelector(".game-container").style.display = "block";
+        
+        document.body.style.backgroundImage = 'url("../../../images/garden.jpg")';
+        document.body.style.backgroundSize = "cover";
+        document.body.style.backgroundPosition = "center";
+        document.body.style.backgroundRepeat = "no-repeat";
+    }
+
+    try {
+        window.socket = io();
+        const socket = window.socket;
+    
+      socket.on('connect', () => {
+        console.log('✅ Ordenador conectado al servidor con socket ID:', socket.id);
+      });
+    
+      socket.on('lanzar', () => {
+        console.log("🚀 Lanzamiento recibido desde móvil");
+        moverPrenda(); 
+      });
+    
+      socket.on('mensaje', (data) => {
+        console.log('📩 Mensaje desde móvil:', data);
+      });
+    
+      socket.on('closeGameDisplay', (data) => {
+        console.log('El servidor vuelve a index', data);
+        window.location.href = 'index.html';
+      });
+    
+      socket.on('juego3-empezar', () => {
+        console.log("🟢 Señal de empezar recibida desde el móvil");
+        iniciarJuego3();
+      });    
+    } catch (error) {
+      console.warn("No se pudo conectar a Socket.IO:", error);
+    }
+
     // Configuración inicial del juego
+    /*
     document.querySelector(".start-button").addEventListener("click", function() {
         document.querySelector(".game-title").style.display = "none";
         document.querySelector(".game-start-container").style.display = "none";
@@ -10,6 +55,21 @@ document.addEventListener("DOMContentLoaded", function() {
         document.body.style.backgroundPosition = "center";
         document.body.style.backgroundRepeat = "no-repeat";
     });
+    */
+   
+    /*
+    function iniciarJuego3() {
+        console.log("Dentro de IniciarJuego3");
+        document.querySelector(".game-title").style.display = "none";
+        document.querySelector(".game-start-container").style.display = "none";
+        document.querySelector(".game-container").style.display = "block";
+        
+        document.body.style.backgroundImage = 'url("../../../images/garden.jpg")';
+        document.body.style.backgroundSize = "cover";
+        document.body.style.backgroundPosition = "center";
+        document.body.style.backgroundRepeat = "no-repeat";
+    }
+    */
 
     // Variables para evitar que gameOver y gameWon solapen 
     let juegoPerdido = false;  
@@ -220,9 +280,10 @@ document.querySelectorAll(".restart-button").forEach(button => {
 });
 
 console.log("✅ juego3.js cargado");
+/*
 try {
-    window.socket = io(); // Esto lo hace global
-    const socket = window.socket;
+    //window.socket = io(); // Esto lo hace global
+    //const socket = window.socket;
 
   socket.on('connect', () => {
     console.log('✅ Ordenador conectado al servidor con socket ID:', socket.id);
@@ -242,14 +303,20 @@ try {
     window.location.href = 'index.html';
   });
 
+  socket.on('juego3-empezar', () => {
+    console.log("🟢 Señal de empezar recibida desde el móvil");
+    iniciarJuego3();
+});
+*/
+
   /*
   socket.on('juego3-pausar', () => {
     console.log("[juego3.js] Se pausa el juego");
   });
   */
-
+/*
 } catch (error) {
   console.warn("No se pudo conectar a Socket.IO:", error);
 }
-
+*/
 });
