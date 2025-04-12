@@ -56,7 +56,7 @@ function loadGame(index) {
     window.location.href = game.mobilePage;
 }
 
-
+/*
 function initDeviceOrientation() {    
     const socket = io();
 
@@ -104,7 +104,7 @@ function initDeviceOrientation() {
         });
     }
 }
-
+*/
 /// Inicialización cuando el DOM está listo
 document.addEventListener("DOMContentLoaded", function() {
     // Configurar sensores si es El Rey del Tendedero
@@ -112,7 +112,8 @@ document.addEventListener("DOMContentLoaded", function() {
     console.log('Valor de selectedGame:', selectedGame);
     if (selectedGame === 'El Rey del Tendedero') { // AÑADIR QUE SEA CUANDO SE ESTÉ JUGANDO (variables esas)
         console.log('🧭 SE PRENDEN SENSORES PARA JUEGO3 (deviceOrientation y botones emiten)!!!');
-        initDeviceOrientation();
+        //initDeviceOrientation();
+        juego3();
     }
 
     // Mostrar datos del juego
@@ -123,17 +124,6 @@ document.addEventListener("DOMContentLoaded", function() {
         localStorage.getItem("selectedGameDescription") || "Descripción";
 
     
-    // Configurar botones (solo en jugando.html)
-    /*
-    const exitButton = document.getElementById("exit-button");
-    const pauseButton = document.getElementById("pause-button");
-    const restartButton = document.getElementById("restart-button");
-
-    // Configurar botones
-    exitButton.addEventListener("click", () => {
-        window.location.href = "juegos.html";
-    });
-    */
     
     // Configurar efecto 3D mejorado para las cartas (solo en juegos.html)
     document.querySelectorAll('.card-container').forEach((container, index) => {
