@@ -19,6 +19,9 @@
     font-style: normal;
   }
 
+button{
+  display: none;
+}
 
 body {
     background-color: #5d6b8b;

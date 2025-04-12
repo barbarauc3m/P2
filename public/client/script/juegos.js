@@ -27,7 +27,7 @@ const gamesMap = [
         title: "El Rey del Tendedero",
         description: "Pon la ropa en el tendedero. CUIDADO, que no se toquen entre sí",
         mobilePage: "jugando.html",
-        serverPage: "../server/juego3-inicio.html"
+        serverPage: "../server/juego3.html"
     },
     { 
         title: "Combo de Manchas",
