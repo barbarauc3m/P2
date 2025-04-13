@@ -42,13 +42,13 @@ document.addEventListener("DOMContentLoaded", function() {
         iniciarJuego3();
       });    
 
-      socket.on('updatePointer', (x, z) => {  // Puntero
-        console.log("En updatePointer");
-        console.log("Posición recibida { x, y }:", x, z);
+      socket.on('updatePointer', (x, y) => {  // Puntero
+        //console.log("En updatePointer");
+        //console.log("Posición recibida { x, y }:", x, y);
 
-        const posX = x * 10;
-        const posY = z * 10;
-        console.log("Valores finales { x, y }:", posX, posY);
+        const posX = (1024/2) - (x * 30);
+        const posY = (600/2) + (y * 30);
+        console.log("Valores finales css { x, y }:", posX, posY);
 
         pointer.style.left = `${posX}px`;
         pointer.style.top = `${posY}px`;

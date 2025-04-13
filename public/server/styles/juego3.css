@@ -40,7 +40,7 @@ body {
     height: 20px;
     background: red;
     border-radius: 50%;
-    position: absolute;
+    position: fixed;
     /*
     position: absolute;
     top: 50%;

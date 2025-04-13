@@ -37,6 +37,38 @@ document.addEventListener('DOMContentLoaded', function() {
     }
 });
 
+function iniciarEnvioOrientacion() { // controlar puntero
+  if (window.DeviceMotionEvent) {
+    window.addEventListener('devicemotion', function(event) {
+      var aceleracionY = event.accelerationIncludingGravity.y;
+      var aceleracionX = event.accelerationIncludingGravity.x;
+
+      var sensibilidad = 2;
+      var umbral = 0.5;
+
+      var y = 0;
+      if (aceleracionY > umbral) {
+        y = -sensibilidad;
+      } else if (aceleracionY < -umbral) {
+        y = sensibilidad;
+      }
+
+      var x = 0;
+      if (aceleracionX > umbral) {
+        x = sensibilidad; // Mover a la derecha
+      } else if (aceleracionX < -umbral) {
+        x = -sensibilidad; // Mover a la izquierda
+      }
+      console.log("Haciendo emit de { x, y }",{ x, y });
+      socket.emit('orientationData', { x, y });
+    });
+  } else {
+    console.log('El sensor de movimiento no está soportado en este dispositivo.');
+    //alert
+  }
+}
+
+
 /// FUNCIÓN: Activa el envío de puntero Wii remoto
 function activarPunteroWii() {
     console.log("Dentro de la activarPunteroWii");
@@ -50,7 +82,7 @@ function activarPunteroWii() {
     } else {
         iniciarEnvioOrientacion();
     }
-
+    /*
     function iniciarEnvioOrientacion() {
         window.addEventListener('deviceorientation', (event) => {
             const { alpha, gamma } = event;
@@ -62,6 +94,7 @@ function activarPunteroWii() {
             socket.emit('orientationData', { x, z });
         });
     }
+        */
 }
 
 function juego3() {    
