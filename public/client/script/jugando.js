@@ -37,35 +37,20 @@ document.addEventListener('DOMContentLoaded', function() {
     }
 });
 
-function iniciarEnvioOrientacion() { // controlar puntero
-  if (window.DeviceMotionEvent) {
-    window.addEventListener('devicemotion', function(event) {
-      var aceleracionY = event.accelerationIncludingGravity.y;
-      var aceleracionX = event.accelerationIncludingGravity.x;
-
-      var sensibilidad = 2;
-      var umbral = 0.5;
-
-      var y = 0;
-      if (aceleracionY > umbral) {
-        y = -sensibilidad;
-      } else if (aceleracionY < -umbral) {
-        y = sensibilidad;
-      }
-
-      var x = 0;
-      if (aceleracionX > umbral) {
-        x = sensibilidad; // Mover a la derecha
-      } else if (aceleracionX < -umbral) {
-        x = -sensibilidad; // Mover a la izquierda
-      }
-      console.log("Haciendo emit de { x, y }",{ x, y });
-      socket.emit('orientationData', { x, y });
+function controlarPuntero() { // controlar puntero
+  if (window.DeviceOrientationEvent) {
+    window.addEventListener('deviceorientation', (event) => {
+        // Obtenemos pitch y roll (nota: dependiendo del dispositivo y navegador, podrías usar event.beta y event.gamma)
+        const x = event.alpha;   // Inclinación lateral
+        const y = event.beta;   // Inclinación frontal
+        
+        
+        // Enviar los datos al servidor
+        socket.emit('orientationData', { x, y });
     });
-  } else {
-    console.log('El sensor de movimiento no está soportado en este dispositivo.');
-    //alert
-  }
+    } else {
+        console.log("Tu navegador no soporta DeviceOrientationEvent");
+    }
 }
 
 
@@ -76,11 +61,11 @@ function activarPunteroWii() {
         // iOS necesita pedir permiso
         DeviceOrientationEvent.requestPermission().then(response => {
             if (response === 'granted') {
-                iniciarEnvioOrientacion();
+                controlarPuntero();
             }
         }).catch(console.error);
     } else {
-        iniciarEnvioOrientacion();
+        controlarPuntero();
     }
     /*
     function iniciarEnvioOrientacion() {

@@ -493,8 +493,7 @@ io.on('connection', (socket) => {
   });
 
   socket.on('orientationData', (data) => {  // Puntero juego3
-    
-    // Extrae x e y directamente del objeto
+    // Extrae x e y de data
     const { x, y } = data;
     console.log("Posición procesada:", { x, y }); 
 
