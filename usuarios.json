@@ -62,5 +62,13 @@
         "index": 1
       }
     ]
+  },
+  "Chizanito": {
+    "username": "Chizanito",
+    "email": "izansanchezalvaro@gmail.com",
+    "hashedPassword": "$2b$10$X95slNkrgwCyhr9iub0NeeBkxcijaoQyDFajvW5MYHpueoEg64aXG",
+    "foto": "/images/persona_cla.svg",
+    "favoritos": [],
+    "personalizados": []
   }
 }

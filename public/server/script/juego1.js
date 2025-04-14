@@ -7,17 +7,16 @@ let carritoAlto = 50;
 let canvasAncho = 600;
 let canvasAlto = 400;
 
-
 // Prendas del juego
 let objetos = [];
 let score = 0;
 let gameInterval;
 let caidaInterval;
 const tiposObjetos = [
-  { tipo: 'camiseta', src: '/images/camiseta.png', puntos: 1 },
-  { tipo: 'pantalon', src: '/images/pantalones.png', puntos: 1 },
-  { tipo: 'calcetines', src: '/images/calcetines.png', puntos: 1 },
-  { tipo: 'bomba', src: '/images/bomba.png', puntos: -1 }
+{ tipo: 'camiseta', src: '/images/camiseta.png', puntos: 1 },
+{ tipo: 'pantalon', src: '/images/pantalones.png', puntos: 1 },
+{ tipo: 'calcetines', src: '/images/calcetines.png', puntos: 1 },
+{ tipo: 'bomba', src: '/images/bomba.png', puntos: -1 }
 ];
 
 // Explosión de bomba
@@ -31,43 +30,20 @@ const explosion = {
     width: 100, 
     height: 100,
     frame: 0,
-    maxFrames: 10, // Ajusta según tus necesidades
+    maxFrames: 10,
     animationSpeed: 5
 };
 explosion.img.src = '/images/explosion.png';
 
-function mostrarExplosion(x, y) {
-    const explosionElement = document.createElement('img');
-    explosionElement.src = explosion.img.src;
-    explosionElement.style.position = 'absolute';
-    explosionElement.style.left = `${x - explosion.width / 2}px`;
-    explosionElement.style.top = `${y - explosion.height / 2}px`;
-    explosionElement.style.width = `${explosion.width}px`;
-    explosionElement.style.height = `${explosion.height}px`;
-    explosionElement.style.zIndex = 10;
-    explosionElement.className = 'explosion';
 
-    document.getElementById('game-container').appendChild(explosionElement);
-
-    setTimeout(() => {
-        explosionElement.remove();
-    }, 400); // Mostrar por 400ms
-}
-
-
-
-let timer = 60;
-let intervalId;
-
-function startGame() {
+function iniciarJuego1() {
+    console.log("Dentro de IniciarJuego1");
     document.querySelector('.game-start-container').style.display = 'none';
     document.querySelector('.game-title').style.display = 'none';
     document.getElementById('game-container').style.display = 'block';
     document.getElementById('carrito-img').style.display = 'block';
     document.getElementById('score-display').style.display = 'block';
     document.getElementById('timer-display').style.display = 'block';
-
-
 
     score = 0;
     objetos = [];
@@ -81,10 +57,6 @@ function startGame() {
     // Moverlos cada 50ms
     gameInterval = setInterval(moverObjetos, 50);
 
-    iniciarJuego();
-}
-
-function iniciarJuego() {
     canvas = document.getElementById('game-canvas');
     canvas.width = 600;
     canvas.height = 400;
@@ -92,12 +64,7 @@ function iniciarJuego() {
     // Mostrar carrito
     const carrito = document.getElementById('carrito-img');
     carrito.style.display = 'block';
-
-    // Posición inicial
-    carrito.style.left = '50%'; // centrado con transform
-
-    // Escuchar teclas
-    document.addEventListener('keydown', moverCarritoImg);
+    carrito.style.left = '50%';
 
     // Temporizador
     iniciarTemporizador();
@@ -118,39 +85,6 @@ function iniciarTemporizador() {
             objetos = [];
         }
     }, 1000);
-}
-
-function moverCarritoImg(e) {
-    const carrito = document.getElementById('carrito-img');
-    const paso = 15;
-    const contenedorAncho = window.innerWidth;
-    const carritoAncho = carrito.offsetWidth;
-    const izquierdaActual = carrito.getBoundingClientRect().left;
-
-    let nuevaIzquierda;
-
-    if (e.key === 'ArrowLeft') {
-        nuevaIzquierda = izquierdaActual - paso;
-        if (nuevaIzquierda < 0) nuevaIzquierda = 0;
-        carrito.style.left = `${nuevaIzquierda + carritoAncho / 2}px`;
-        carrito.style.transform = 'translateX(-50%) scaleX(-1)'; // gira a la izquierda
-    } else if (e.key === 'ArrowRight') {
-        nuevaIzquierda = izquierdaActual + paso;
-        if (nuevaIzquierda + carritoAncho > contenedorAncho) {
-            nuevaIzquierda = contenedorAncho - carritoAncho;
-        }
-        carrito.style.left = `${nuevaIzquierda + carritoAncho / 2}px`;
-        carrito.style.transform = 'translateX(-50%) scaleX(1)'; // gira a la derecha
-    }
-}
-
-
-function terminarJuego() {
-    clearInterval(intervalId);
-    document.getElementById('game-over').style.display = 'block';
-
-    const carrito = document.getElementById('carrito-img');
-    carrito.style.display = 'none';
 }
 
 function crearObjeto() {
@@ -189,34 +123,109 @@ function moverObjetos() {
             const puntos = parseInt(obj.dataset.puntos);
             score += puntos;
         
-            // Mostrar explosión si es bomba
             if (tipo === 'bomba') {
                 const objRect = obj.getBoundingClientRect();
                 const containerRect = document.getElementById('game-container').getBoundingClientRect();
             
-                // Coordenadas relativas al contenedor del juego
                 const explosionX = objRect.left - containerRect.left + objRect.width / 2;
                 const explosionY = objRect.top - containerRect.top + objRect.height / 2;
             
                 mostrarExplosion(explosionX, explosionY);
-                sonidoBomba.currentTime = 0; // reinicia el sonido por si se repite rápido
+                sonidoBomba.currentTime = 0;
                 sonidoBomba.play();
-
             }
             
-        
             obj.remove();
             objetos.splice(i, 1);
         }
         
-
-        // Si toca el suelo y no colisiona
         else if (top > window.innerHeight) {
             obj.remove();
             objetos.splice(i, 1);
         }
     });
 
-    // Actualizar marcador
     document.getElementById('score-display').textContent = `Puntos: ${score}`;
 }
+
+function mostrarExplosion(x, y) {
+    const explosionElement = document.createElement('img');
+    explosionElement.src = explosion.img.src;
+    explosionElement.style.position = 'absolute';
+    explosionElement.style.left = `${x - explosion.width / 2}px`;
+    explosionElement.style.top = `${y - explosion.height / 2}px`;
+    explosionElement.style.width = `${explosion.width}px`;
+    explosionElement.style.height = `${explosion.height}px`;
+    explosionElement.style.zIndex = 10;
+    explosionElement.className = 'explosion';
+
+    document.getElementById('game-container').appendChild(explosionElement);
+
+    setTimeout(() => {
+        explosionElement.remove();
+    }, 400);
+}
+
+
+document.addEventListener("DOMContentLoaded", function() {
+    console.log("Dentro de DOMContentLoaded");
+
+    try {
+        window.socket = io();
+        const socket = window.socket;
+        console.log("Socket conectado en cliente del juego")
+    
+      socket.on('connect', () => {
+        console.log('✅ Ordenador conectado al servidor con socket ID:', socket.id);
+      });
+    
+      socket.on('closeGameDisplay', (data) => {
+        console.log('El servidor vuelve a index', data);
+        window.location.href = 'index.html';
+      });
+
+      socket.on('actualizarPosicionCarrito', (inclinacion) => {
+        moverCarritoPorInclinacion(inclinacion);
+      }
+      );
+    
+      socket.on('juego1-empezar', () => {
+        console.log("🟢 Señal de empezar recibida desde el móvil");
+        iniciarJuego1();
+      });    
+
+      socket.on('updatePointer', (x, y) => {  // Puntero
+        const posX = (1024/2) + (((-x + 90) / 180) * window.innerWidth);
+        const posY = (600/2) + (((-y + 90) / 180) * window.innerHeight);
+        
+        console.log("Valores finales css { x, y }:", posX, posY);
+
+        pointer.style.left = `${posX}px`;
+        pointer.style.top = `${posY}px`;
+      });
+
+    } catch (error) {
+      console.warn("No se pudo conectar a Socket.IO:", error);
+    }
+
+    function moverCarritoPorInclinacion(inclinacion) {
+        const carrito = document.getElementById('carrito-img');
+        const contenedorAncho = window.innerWidth;
+        const carritoAncho = carrito.offsetWidth;
+        
+        // Convertir la inclinación (-90 a 90) a posición en pantalla
+        let posicionX = ((inclinacion + 90) / 180) * contenedorAncho;
+        
+        // Asegurar que el carrito no salga de los límites
+        posicionX = Math.max(carritoAncho / 2, Math.min(posicionX, contenedorAncho - carritoAncho / 2));
+        
+        carrito.style.left = `${posicionX}px`;
+        
+        // Girar el carrito según la dirección
+        if (inclinacion < 0) {
+            carrito.style.transform = 'translateX(-50%) scaleX(-1)';
+        } else {
+            carrito.style.transform = 'translateX(-50%) scaleX(1)';
+        }
+    }
+});

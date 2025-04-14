@@ -506,8 +506,18 @@ io.on('connection', (socket) => {
     socket.broadcast.emit('lanzar'); // Reenvía a todos menos al móvil
   }); 
 
+  socket.on('movimientoCarrito', (inclinacion) => {
+    // Reenvía la inclinación a todos los clientes (excepto al emisor)
+    socket.broadcast.emit('actualizarPosicionCarrito', inclinacion);
+  });
+
   socket.on('disconnect', () => {
     console.log('Usuario desconectado');
+  });
+
+  socket.on('juego1-empezar', () => {  // Llega solicitud desde el móvil
+    console.log('[SERVER.JS] Empieza el juego 1');
+    socket.broadcast.emit('juego1-empezar'); // Reenvía a todos menos al móvil
   });
 
   socket.on('juego3-empezar', () => {  // Llega solicitud desde el móvil

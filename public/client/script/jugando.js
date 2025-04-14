@@ -32,8 +32,15 @@ document.addEventListener('DOMContentLoaded', function() {
     // Configurar controles específicos para "El Rey del Tendedero"
     if (localStorage.getItem('selectedGameTitle') === 'El Rey del Tendedero') {
         console.log("Esperando a que el usuario agite.");
-        agitarParaEmpezar();
+        agitarParaEmpezar3();
         //juego3();
+    }
+
+    // Configurar controles específicos para "El Rey del Tendedero"
+    if (localStorage.getItem('selectedGameTitle') === 'Atrapa la Ropa') {
+        console.log("Esperando a que el usuario agite.");
+        agitarParaEmpezar1();
+        //juego1();
     }
 });
 
@@ -52,6 +59,25 @@ function controlarPuntero() { // controlar puntero
         console.log("Tu navegador no soporta DeviceOrientationEvent");
     }
 }
+
+function controlarMovimientoCarrito() {
+    if (window.DeviceOrientationEvent) {
+      window.addEventListener('deviceorientation', (event) => {
+          // Usamos solo el eje beta (inclinación frontal) para el carrito
+          const inclinacion = event.beta;
+          
+          // Normalizamos la inclinación a un rango de -90 a 90
+          const inclinacionNormalizada = Math.max(-90, Math.min(90, inclinacion));
+          
+          // Enviar solo la inclinación al servidor con un evento específico
+          if (socket) {
+              socket.emit('movimientoCarrito', inclinacionNormalizada);
+          }
+      });
+    } else {
+      console.log("Tu navegador no soporta DeviceOrientationEvent");
+    }
+  }
 
 
 /// FUNCIÓN: Activa el envío de puntero Wii remoto
@@ -80,6 +106,26 @@ function activarPunteroWii() {
         });
     }
         */
+}
+
+function juego1() {    
+    console.log('🚗 Activando controles de movimiento para el carrito');
+    controlarMovimientoCarrito();
+
+    // Configurar botones de pausa/reinicio si es necesario
+    const pauseButton = document.getElementById("pause-button");
+    if (pauseButton) {
+        pauseButton.addEventListener("click", function() {
+            socket.emit('juego1-pausar');
+        });
+    }
+
+    const restartButton = document.getElementById("restart-button");
+    if (restartButton) {
+        restartButton.addEventListener("click", function() {
+            socket.emit('juego1-reiniciar');
+        });
+    }
 }
 
 function juego3() {    
@@ -132,7 +178,7 @@ function juego3() {
 }
 
 
-function agitarParaEmpezar() {
+function agitarParaEmpezar3() {
     let shakeCount = 0;
     let lastShakeTime = 0;
     let lastUpdate = 0;
@@ -174,6 +220,61 @@ function agitarParaEmpezar() {
                     juegoIniciado = true;
                     window.removeEventListener('devicemotion', onDeviceMotion);
                     juego3();
+                }
+                    
+            }
+        }
+
+        lastX = x;
+        lastY = y;
+        lastZ = z;
+    }
+
+    window.addEventListener('devicemotion', onDeviceMotion);
+}
+
+function agitarParaEmpezar1() {
+    let shakeCount = 0;
+    let lastShakeTime = 0;
+    let lastUpdate = 0;
+    let lastX = null, lastY = null, lastZ = null;
+    let juegoIniciado = false;
+
+    const SHAKE_THRESHOLD = 13; // Sensibilidad del sacudido
+    const SHAKE_TIMEOUT = 1000; // ms para contar picos 
+    const REQUIRED_SHAKES = 4;  // Cuántos picos de sacudidas se requieren
+
+    function onDeviceMotion(e) {
+        if (juegoIniciado) return;
+
+        const acc = e.accelerationIncludingGravity;
+        if (!acc) return;
+
+        const now = Date.now();
+        if ((now - lastUpdate) < 100) return;
+        lastUpdate = now;
+
+        const { x, y, z } = acc;
+
+        if (lastX !== null && lastY !== null && lastZ !== null) {
+            const deltaX = Math.abs(x - lastX);
+            const deltaY = Math.abs(y - lastY);
+            const deltaZ = Math.abs(z - lastZ);
+
+            if (deltaX > SHAKE_THRESHOLD || deltaY > SHAKE_THRESHOLD || deltaZ > SHAKE_THRESHOLD) {
+                if (now - lastShakeTime > SHAKE_TIMEOUT) {
+                    shakeCount = 0;
+                }
+
+                shakeCount++;
+                lastShakeTime = now;
+                
+                if (shakeCount >= REQUIRED_SHAKES) {
+                    console.log("📳 ¡Agitado!");
+                    socket.emit('juego1-empezar');
+                    juegoIniciado = true;
+                    window.removeEventListener('devicemotion', onDeviceMotion);
+                    juego1();
                 }
                     
             }

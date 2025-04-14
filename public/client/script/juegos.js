@@ -55,6 +55,7 @@ function loadGame(index) {
     // 3. Redirigir en el móvil
     window.location.href = game.mobilePage;
 }
+
 /*
 /// FUNCIÓN: Activa el envío de puntero Wii remoto
 function activarPunteroWii() {

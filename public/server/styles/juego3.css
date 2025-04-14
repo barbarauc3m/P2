@@ -144,24 +144,6 @@ body {
     font-weight: bold;
     border: 2px solid rgba(93, 107, 139, 0.3);
 }
-.start-button {
-    background: linear-gradient(to right, #FFD166, #FFB347); /* Degradado dorado */
-    color: #5d6b8b; /* Color del texto igual al fondo */
-    border: none;
-    padding: 15px 50px;
-    font-size: 1.5em;
-    border-radius: 50px;
-    cursor: pointer;
-    transition: all 0.3s;
-    box-shadow: 0 5px 15px rgba(0,0,0,0.3);
-    font-family: 'Super Peace', sans-serif;
-    text-transform: uppercase;
-    letter-spacing: 1px;
-    position: relative;
-    overflow: hidden;
-    font-weight: bold;
-    border: 2px solid rgba(93, 107, 139, 0.3);
-}
 
 .start-button:hover {
     transform: translateY(-3px);
