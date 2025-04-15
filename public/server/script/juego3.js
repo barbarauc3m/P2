@@ -46,7 +46,7 @@ document.addEventListener("DOMContentLoaded", function() {
         const posX = (1024/2) + (((-x + 90) / 180) * window.innerWidth);
         const posY = (600/2) + (((-y + 90) / 180) * window.innerHeight);
         
-        console.log("Valores finales css { x, y }:", posX, posY);
+        //console.log("Valores finales css { x, y }:", posX, posY);
 
         pointer.style.left = `${posX}px`;
         pointer.style.top = `${posY}px`;
@@ -160,6 +160,7 @@ document.addEventListener("DOMContentLoaded", function() {
         juegoPerdido = true;
         document.querySelector(".game-container").style.display = "none";
         document.querySelector(".game-over-container").style.display = "block";
+        document.querySelector("#pointer").style.display = "block";
         
     }
 
@@ -167,6 +168,7 @@ document.addEventListener("DOMContentLoaded", function() {
         juegoGanado = true;   
         document.querySelector(".game-container").style.display = "none";
         document.querySelector(".game-won-container").style.display = "block";
+        document.querySelector("#pointer").style.display = "block";
         
     }
     
