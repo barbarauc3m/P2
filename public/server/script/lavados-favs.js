@@ -46,7 +46,7 @@ document.addEventListener('DOMContentLoaded', async () => {
         // Si el hover viene de categorias-lavados.js, usa el ID de ahí.
         // Si viene de lavados-favs.js, asegúrate que ese script también genera y usa un ID único.
         // Asumiremos que el cliente envía un ID basado en el nombre para estos casos.
-        const uniqueId = sanitizeId(lavado.nombre || (type + '-' + Math.random())); // Usa nombre o fallback
+        const uniqueId = sanitizeId(`${lavado.nombre || type}-${type}`);
         section.dataset.categoryId = uniqueId; // ID para la animación
 
         let imagenSrc = '/images/default-wash.png';
@@ -66,7 +66,7 @@ document.addEventListener('DOMContentLoaded', async () => {
             <div class="lavado-card"> <img src="${imagenSrc}" class="icon" alt="${titulo}">
                 <div class="info">
                     <p>${(type === 'favorito' ? lavado.descripcion : lavado.nivelSuciedad) || ''}</p>
-                    </div>
+                </div>
             </div>
         `;
         return section;
@@ -114,19 +114,32 @@ document.addEventListener('DOMContentLoaded', async () => {
 
     function applyFocus(categoryId) {
         if (!overlay || allContainers.length === 0) return;
+
+
         overlay.classList.add('active');
         allContainers.forEach(c => c.classList.add('container-focused')); // Atenuar ambos
 
         document.querySelectorAll('.category-display.focused').forEach(el => el.classList.remove('focused')); // Quitar foco previo
 
+        
         // Buscar en ambos contenedores
         const elementToFocus = document.querySelector(`.category-display[data-category-id="${categoryId}"]`);
+
+
+        // --- DEBUGGING ---
+        const selector = `.category-display[data-category-id="${categoryId}"]`;
+        console.log(`🖥️ Intentando seleccionar: ${selector}`);
+        console.log("🖥️ Elemento encontrado:", elementToFocus); // ¿Es null o el elemento HTML?
+        // --- FIN DEBUGGING ---
+
         if (elementToFocus) {
             elementToFocus.classList.add('focused');
         } else {
              console.log(`🖥️ Elemento ${categoryId} no encontrado para focus en my-programs.`);
              removeFocus();
         }
+
+                
     }
 
     function removeFocus() {
@@ -139,8 +152,7 @@ document.addEventListener('DOMContentLoaded', async () => {
 
     socketMyPrograms.on('highlightCategory', (data) => {
          // Aplicar SOLO si estamos en esta página
-         if(window.location.pathname === '/display/my-programs') {
-            console.log(`🖥️ Recibido highlightCategory MY-PROGRAMS para: ${data.categoryId}`);
+         if(window.location.pathname === '/display/lavados-favs') {
             clearTimeout(focusTimeout);
             intendedFocusId = data.categoryId;
             applyFocus(data.categoryId);
@@ -148,8 +160,7 @@ document.addEventListener('DOMContentLoaded', async () => {
     });
 
     socketMyPrograms.on('unhighlightCategory', (data) => {
-        if(window.location.pathname === '/display/my-programs') {
-            console.log(`🖥️ Recibido unhighlightCategory MY-PROGRAMS para: ${data.categoryId}`);
+        if(window.location.pathname === '/display/lavados-favs') {
             if (data.categoryId === intendedFocusId) {
                  focusTimeout = setTimeout(() => {
                      if (intendedFocusId === data.categoryId) removeFocus();

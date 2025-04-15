@@ -30,6 +30,13 @@
     text-align: center;
   }
 
+  h2{
+    font-size: 3vh;
+    font-family: 'Super Cottage', sans-serif;
+    color: #f7f9fc;
+    margin-left: 10vh;
+  }
+
   body{
     background-color: #5d6b8b;
 
