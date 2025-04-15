@@ -1,4 +1,6 @@
 let timer; // Variable para el temporizador
+let tiempoRestante = 60; // Guardará el tiempo cuando se pause
+let juegoPausado = false; // Nueva bandera para estado de pausa
 
 
 document.addEventListener("DOMContentLoaded", function() {
@@ -73,8 +75,9 @@ function iniciarJuego1() {
     carrito.style.display = 'block';
     carrito.style.left = '50%';
 
-    // Temporizador
-    timer = iniciarTemporizador();
+    // Resetear tiempo al iniciar nueva partida
+    tiempoRestante = 60;
+    timer = iniciarTemporizador(tiempoRestante);
 }
 
 function gameFinished() {
@@ -83,12 +86,12 @@ function gameFinished() {
     document.querySelector(".game-finished-container").style.display = "block";
     //document.querySelector("#pointer").style.display = "block";   
 }
-
-function iniciarTemporizador() {
-    let tiempo = 60;  // Tiempo completo del juego
-    return setInterval(() => {  // Devuelve el intervalo
+function iniciarTemporizador(tiempoInicial = 60) {
+    let tiempo = tiempoInicial;
+    return setInterval(() => {
         if (!juegoTerminado) {
             tiempo--;
+            tiempoRestante = tiempo; // Guardamos el tiempo actual
             document.getElementById('timer-display').textContent = `Tiempo: ${tiempo}`;
             if (tiempo <= 0) {
                 console.log("Se ha agotado el tiempo");
@@ -194,10 +197,30 @@ function pausarJuego() {
     document.getElementById("game-container").style.display = "none";
     document.querySelector(".menu-pausa-container").style.display = "block";
     
-    // 3. Desactivar temporalmente el control del carrito 
-    juegoTerminado = true; // Esto evitará que se mueva el carrito
+    // 3. Actualizar estados
+    juegoTerminado = true;
+    juegoPausado = true;
     
     console.log("Juego pausado: intervalos detenidos");
+}
+
+function reanudarJuego() {
+    console.log("Reanudando juego...");
+    
+    // 1. Restaurar estados
+    juegoTerminado = false;
+    juegoPausado = false;
+    
+    // 2. Mostrar el juego y ocultar menú de pausa
+    document.getElementById("game-container").style.display = "block";
+    document.querySelector(".menu-pausa-container").style.display = "none";
+    
+    // 3. Reiniciar los intervalos del juego
+    caidaInterval = setInterval(crearObjeto, 1500);
+    gameInterval = setInterval(moverObjetos, 50);
+    timer = iniciarTemporizador(tiempoRestante); // Continuar con el tiempo restante
+    
+    console.log("Juego reanudado");
 }
 
     try {
@@ -318,22 +341,6 @@ function pausarJuego() {
         console.log("Juego reiniciado correctamente");
     }
 
-    function reanudarJuego() {
-    // 1. Restaurar el estado del juego
-    juegoTerminado = false;
-    
-    // 2. Mostrar el juego y ocultar menú de pausa
-    document.querySelector(".game-container").style.display = "block";
-    document.querySelector(".menu-pausa-container").style.display = "none";
-    
-    // 3. Reiniciar los intervalos
-    caidaInterval = setInterval(crearObjeto, 1500);
-    gameInterval = setInterval(moverObjetos, 50);
-    iniciarTemporizador(); // Reinicia el temporizador
-    
-    console.log("Juego reanudado");
-}
-
     function backtoMenu(){
         console.log("se envía el emit");
         juegoPerdido = true;
@@ -346,6 +353,7 @@ function pausarJuego() {
         button.addEventListener("click", reiniciarJuego);
     });
     document.querySelectorAll(".resume-button").forEach(button => {
+        console.log("Se ha pulsado reanudar");
         button.addEventListener("click", reanudarJuego);
     });
     document.querySelectorAll(".backtoMenu-button").forEach(button => { // volver al menú de inicio y cambiar la pantalla del móvil tmb
