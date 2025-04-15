@@ -221,15 +221,6 @@ document.addEventListener("DOMContentLoaded", function() {
         });
     }
 
-    // Evento de teclado (CAMBIAR POR SEÑAL MÓVIL)
-    /*
-    document.addEventListener('keydown', function(e) {
-        if (e.code === 'Space' && puedeLanzar) {
-            e.preventDefault();
-            moverPrenda();
-        }
-    });*/
-
     crearPrendaInicial();
 
     // Función para reiniciar el juego

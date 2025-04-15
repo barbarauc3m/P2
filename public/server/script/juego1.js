@@ -1,4 +1,10 @@
-let canvas, ctx;
+
+
+
+document.addEventListener("DOMContentLoaded", function() {
+    console.log("Dentro de DOMContentLoaded");
+
+    let canvas, ctx;
 let carritoImg;
 let carritoX;
 let carritoY;
@@ -6,6 +12,7 @@ let carritoAncho = 80;
 let carritoAlto = 50;
 let canvasAncho = 600;
 let canvasAlto = 400;
+let juegoTerminado = false;  
 
 // Prendas del juego
 let objetos = [];
@@ -70,19 +77,26 @@ function iniciarJuego1() {
     iniciarTemporizador();
 }
 
+function gameFinished() {
+    juegoTerminado = true;
+    document.getElementById("game-container").style.display = "none";
+    document.querySelector(".game-finished-container").style.display = "block";
+    //document.querySelector("#pointer").style.display = "block";   
+}
+
 function iniciarTemporizador() {
-    let tiempo = 60;
+    let tiempo = 3;  // cambiar a 60
     const timer = setInterval(() => {
         tiempo--;
         document.getElementById('timer-display').textContent = `Tiempo: ${tiempo}`;
         if (tiempo <= 0) {
+            console.log("Se ha agotado el tiempo");
             clearInterval(timer);
             clearInterval(caidaInterval);
             clearInterval(gameInterval);
-            document.getElementById('game-over').style.display = 'block';
-            document.getElementById('game-over').textContent = `¡Juego Terminado! Puntuación: ${score}`;
             objetos.forEach(o => o.remove());
             objetos = [];
+            gameFinished();
         }
     }, 1000);
 }
@@ -166,10 +180,6 @@ function mostrarExplosion(x, y) {
     }, 400);
 }
 
-
-document.addEventListener("DOMContentLoaded", function() {
-    console.log("Dentro de DOMContentLoaded");
-
     try {
         window.socket = io();
         const socket = window.socket;
@@ -192,7 +202,17 @@ document.addEventListener("DOMContentLoaded", function() {
       socket.on('juego1-empezar', () => {
         console.log("🟢 Señal de empezar recibida desde el móvil");
         iniciarJuego1();
-      });    
+      }); 
+
+      socket.on('juego1-pausar', () => {
+        console.log("Pausa recibida desde móvil");
+        pausarJuego();
+      });
+
+      socket.on('juego1-reiniciar', () => {
+        console.log("Reinicio recibido desde móvil");
+        reiniciarJuego();
+      });
 
       socket.on('updatePointer', (x, y) => {  // Puntero
         const posX = (1024/2) + (((-x + 90) / 180) * window.innerWidth);
@@ -202,6 +222,11 @@ document.addEventListener("DOMContentLoaded", function() {
 
         pointer.style.left = `${posX}px`;
         pointer.style.top = `${posY}px`;
+      });
+
+      socket.on('closeGameDisplay', (data) => {
+        console.log('El servidor vuelve a index', data);
+        window.location.href = 'index.html';
       });
 
     } catch (error) {
@@ -228,4 +253,37 @@ document.addEventListener("DOMContentLoaded", function() {
             carrito.style.transform = 'translateX(-50%) scaleX(1)';
         }
     }
+
+    
+
+    function reiniciarJuego() {
+        //document.querySelector("#pointer").style.display = "none";
+        // ...
+    }
+
+    function reanudarJuego(){
+        puedeLanzar = true;
+        document.querySelector(".game-container").style.display = "block";
+        document.querySelector(".menu-pausa-container").style.display = "none";
+        //document.querySelector("#pointer").style.display = "none";
+    }
+
+    function backtoMenu(){
+        console.log("se envía el emit");
+        juegoPerdido = true;
+        socket.emit("moverCienteAlMenu");
+        window.location.href = './index.html';
+    }
+
+    // Asigna el evento al botón "VOLVER A JUGAR"
+    document.querySelectorAll(".restart-button").forEach(button => {
+        button.addEventListener("click", reiniciarJuego);
+    });
+    document.querySelectorAll(".resume-button").forEach(button => {
+        button.addEventListener("click", reanudarJuego);
+    });
+    document.querySelectorAll(".start-button").forEach(button => { // volver al menú de inicio y cambiar la pantalla del móvil tmb
+        button.addEventListener("click", backtoMenu);
+    });
+
 });

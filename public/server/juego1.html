@@ -23,14 +23,34 @@
         
         <button class="start-button" onclick="startGame()">AGITA PARA JUGAR</button>
     </div>
-    <div id="game-container" style="display: none;">
+    <div id="game-container" style="display: none;"><!-- game container ?-->
         <canvas id="game-canvas"></canvas>
         <div id="score-display">Puntos: 0</div>
         <div id="timer-display">Tiempo: 60</div>
         <div id="game-over">¡Juego Terminado!</div>
+        <img id="carrito-img" src="/images/carrito.png" alt="Carrito" style="display: none;">
     </div>
 
-    <img id="carrito-img" src="/images/carrito.png" alt="Carrito" style="display: none;">
+    <!--<img id="carrito-img" src="/images/carrito.png" alt="Carrito" style="display: none;">-->
+
+    <div class="menu-pausa-container" style="display: none;">
+        <div class="menu-pausa">
+            <h2>JUEGO PAUSADO</h2>
+        </div>
+        
+        <button class="resume-button">REAUDAR</button>
+        <button class="start-button">VOLVER AL MENÚ</button><!--cambiar por onclick en el js para meter ahi un emit al móvil-->
+    </div>  
+
+    <div class="game-finished-container" style="display: none;">
+        <div class="game-rules">
+            <h2>¡FIN!</h2>
+            <p>Se agotó el tiempo</p>
+        </div>
+        
+        <button class="restart-button">VOLVER A JUGAR</button>
+        <button class="start-button">MENÚ</button>
+    </div>
 
     <script src="/socket.io/socket.io.js"></script>
     <script src="/server/script/juego1.js"></script>
