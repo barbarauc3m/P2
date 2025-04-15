@@ -282,11 +282,21 @@ document.addEventListener("DOMContentLoaded", function() {
         document.querySelector("#pointer").style.display = "none";
     }
 
+    function backtoMenu(){
+        console.log("se envía el emit");
+        juegoPerdido = true;
+        socket.emit("moverCienteAlMenu");
+        window.location.href = './index.html';
+    }
+
 // Asigna el evento al botón "VOLVER A JUGAR"
 document.querySelectorAll(".restart-button").forEach(button => {
     button.addEventListener("click", reiniciarJuego);
 });
 document.querySelectorAll(".resume-button").forEach(button => {
     button.addEventListener("click", reanudarJuego);
+});
+document.querySelectorAll(".start-button").forEach(button => { // volver al menú de inicio y cambiar la pantalla del móvil tmb
+    button.addEventListener("click", backtoMenu);
 });
 });
