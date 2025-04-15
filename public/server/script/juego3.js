@@ -15,9 +15,10 @@ document.addEventListener("DOMContentLoaded", function() {
         document.body.style.backgroundRepeat = "no-repeat";
     }
 
-    function juegoPausado(){
-        juegoPerdido = true;
-        document.querySelector(".game-container").style.display = "none";
+    function pausarJuego(){
+        //juegoPerdido = true;
+        puedeLanzar = false;
+        //document.querySelector(".game-container").style.display = "none";
         document.querySelector(".menu-pausa-container").style.display = "block";
         document.querySelector("#pointer").style.display = "block";
     }
@@ -36,6 +37,7 @@ document.addEventListener("DOMContentLoaded", function() {
       
       socket.on('juego3-pausar', () => {
         console.log("Pausa recibida desde móvil");
+        pausarJuego();
       });
 
       socket.on('juego3-reiniciar', () => {
@@ -220,12 +222,13 @@ document.addEventListener("DOMContentLoaded", function() {
     }
 
     // Evento de teclado (CAMBIAR POR SEÑAL MÓVIL)
+    /*
     document.addEventListener('keydown', function(e) {
         if (e.code === 'Space' && puedeLanzar) {
             e.preventDefault();
             moverPrenda();
         }
-    });
+    });*/
 
     crearPrendaInicial();
 
@@ -272,8 +275,18 @@ document.addEventListener("DOMContentLoaded", function() {
         prendaActual = prendaInicial;
     }
 
+    function reanudarJuego(){
+        puedeLanzar = true;
+        document.querySelector(".game-container").style.display = "block";
+        document.querySelector(".menu-pausa-container").style.display = "none";
+        document.querySelector("#pointer").style.display = "none";
+    }
+
 // Asigna el evento al botón "VOLVER A JUGAR"
 document.querySelectorAll(".restart-button").forEach(button => {
     button.addEventListener("click", reiniciarJuego);
+});
+document.querySelectorAll(".resume-button").forEach(button => {
+    button.addEventListener("click", reanudarJuego);
 });
 });
