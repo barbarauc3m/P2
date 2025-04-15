@@ -106,6 +106,7 @@ function juego1() {
     const pauseButton = document.getElementById("pause-button");
     if (pauseButton) {
         pauseButton.addEventListener("click", function() {
+            console.log("Pausa solicitada desde el móvil");
             socket.emit('juego1-pausar');
         });
     }

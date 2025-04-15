@@ -85,7 +85,7 @@ function gameFinished() {
 }
 
 function iniciarTemporizador() {
-    let tiempo = 3;  // cambiar a 60
+    let tiempo = 2;  // cambiar a 60
     const timer = setInterval(() => {
         tiempo--;
         document.getElementById('timer-display').textContent = `Tiempo: ${tiempo}`;
@@ -178,6 +178,14 @@ function mostrarExplosion(x, y) {
     setTimeout(() => {
         explosionElement.remove();
     }, 400);
+}
+
+function pausarJuego(){
+    console.log("En la función pausarJuego()");
+    //juegoTerminado = true;
+    document.getElementById("game-container").style.display = "none";
+    document.querySelector(".menu-pausa-container").style.display = "block";
+    //document.querySelector("#pointer").style.display = "block";
 }
 
     try {
@@ -282,7 +290,7 @@ function mostrarExplosion(x, y) {
     document.querySelectorAll(".resume-button").forEach(button => {
         button.addEventListener("click", reanudarJuego);
     });
-    document.querySelectorAll(".start-button").forEach(button => { // volver al menú de inicio y cambiar la pantalla del móvil tmb
+    document.querySelectorAll(".backtoMenu-button").forEach(button => { // volver al menú de inicio y cambiar la pantalla del móvil tmb
         button.addEventListener("click", backtoMenu);
     });
 
