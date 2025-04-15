@@ -78,6 +78,71 @@ document.addEventListener("DOMContentLoaded", () => {
 
       });
     });
+
+    const backButtonHistorial = document.getElementById('back-button-historial');
+    const homeButtonHistorial = document.getElementById('home-button-historial');
+
+    // Función para volver al Perfil (usada por botón atrás)
+    function navigateToProfile(event) {
+        event.preventDefault(); // Prevenir navegación del <a>
+        const usuario = localStorage.getItem("loggedInUser"); // Reconfirmar usuario
+
+        console.log('📱 Botón Atrás (a Perfil) presionado en historial.');
+
+        if (socketHistorial && socketHistorial.connected) {
+             console.log('   Socket conectado. Emitiendo para /display/profile...');
+            socketHistorial.emit('requestDisplayChange', {
+                targetPage: '/display/profile', // <-- Pantalla de perfil del servidor
+                userId: usuario // <-- Enviar userId
+            });
+            // Navegar cliente a su página de perfil
+            window.location.href = 'perfil.html'; // <-- Página de perfil del cliente
+        } else {
+            console.error("Socket no conectado al intentar volver al perfil.");
+            alert("Error de conexión. Inténtalo de nuevo.");
+             // Fallback: navegar solo el cliente si falla el socket?
+             // window.location.href = 'perfil.html';
+        }
+    }
+
+    // Función para volver a la Home (usada por botón home)
+     function navigateToHome(event) {
+        event.preventDefault();
+        const usuario = localStorage.getItem("loggedInUser");
+
+        console.log('📱 Botón Home presionado en historial.');
+
+        if (socketHistorial && socketHistorial.connected) {
+             console.log('   Socket conectado. Emitiendo para / ...');
+            socketHistorial.emit('requestDisplayChange', {
+                targetPage: '/', // <-- Pantalla principal del servidor
+                userId: usuario // <-- Enviar userId
+            });
+            // Navegar cliente a su página principal
+            window.location.href = '/mobile'; // <-- Página principal del cliente
+        } else {
+            console.error("Socket no conectado al intentar volver a home.");
+            alert("Error de conexión. Inténtalo de nuevo.");
+             // Fallback:
+             // window.location.href = '/mobile';
+        }
+    }
+
+
+    // Añadir listeners
+    if (backButtonHistorial) {
+        backButtonHistorial.addEventListener('click', navigateToProfile);
+        console.log('📱 Listener añadido a #back-button-historial.');
+    } else {
+        console.warn('Botón #back-button-historial no encontrado.');
+    }
+
+    if (homeButtonHistorial) {
+        homeButtonHistorial.addEventListener('click', navigateToHome);
+         console.log('📱 Listener añadido a #home-button-historial.');
+    } else {
+         console.warn('Botón #home-button-historial no encontrado.');
+    }
   });
 
   function sanitizeId(text) {

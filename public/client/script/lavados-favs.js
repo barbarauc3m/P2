@@ -1,6 +1,11 @@
 document.addEventListener("DOMContentLoaded", () => {
     const usuario = localStorage.getItem("loggedInUser");
     if (!usuario) return alert("Debes iniciar sesión.");
+
+    const socketFavsPage = io(); // Conexión para esta página
+    socketFavsPage.on('connect', () => console.log('📱✅ Socket conectado en lavados-favs.js:', socketFavsPage.id));
+    socketFavsPage.on('connect_error', (err) => console.error('📱❌ Error conexión socket en lavados-favs.js:', err));
+    socketFavsPage.on('disconnect', () => console.log('📱 Socket desconectado en lavados-favs.js'));
   
     // FAVORITOS
     fetch(`/api/users/${usuario}/favoritos`)
@@ -28,6 +33,17 @@ document.addEventListener("DOMContentLoaded", () => {
             </div>
             <img src="../../../images/cora_relleno.svg" class="heart activo" title="Quitar de favoritos" data-index="${index}" />
           `;
+
+          div.innerHTML.addEventListener('mouseenter', () => {
+            // console.log(`➡️ ENTER ${type}: ${uniqueId}`);
+            socketFavsPage.emit('hoverCategory', { categoryId: uniqueId });
+        });
+        div.innerHTML.addEventListener('mouseleave', () => {
+            // console.log(`⬅️ LEAVE ${type}: ${uniqueId}`);
+            socketFavsPage.emit('unhoverCategory', { categoryId: uniqueId });
+        });
+
+
           contenedor.appendChild(div);
         });
 
