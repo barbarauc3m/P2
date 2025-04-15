@@ -78,7 +78,7 @@ function controlarMovimientoCarrito() {
   }
 
 
-/// FUNCIÓN: Activa el envío de puntero Wii remoto
+// Activa el envío de puntero Wii remoto
 function activarPunteroWii() {
     console.log("Dentro de la activarPunteroWii");
     if (typeof DeviceOrientationEvent !== 'undefined' && typeof DeviceOrientationEvent.requestPermission === 'function') {
@@ -147,7 +147,7 @@ function juego3() {
         pauseButton.addEventListener("click", function() {
             console.log("😡 MÓVIL MANDA QUE SE PARE EL JUEGO");
             socket.emit('juego3-pausar');
-            alert("Juego pausado");
+            //alert("Juego pausado");
         });
     }
 

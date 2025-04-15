@@ -41,15 +41,8 @@ body {
     background: red;
     border-radius: 50%;
     position: fixed;
-    z-index: 1000;
-    /*
-    position: absolute;
-    top: 50%;
-    left: 50%;
-    transform: translate(-50%, -50%);
-    pointer-events: none;
-    */
-  }
+    z-index: 3000;
+}
 
 .game-title {
     font-size: 4em;
@@ -248,10 +241,37 @@ body {
 }
 .contador-container p{
     font-size: 35px;
-    /*text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.7); /* sombrita */
     text-shadow: 0px 0px 6px rgba(0, 0, 0, 1);
 }
 
+
+.menu-pausa-container{
+    position: fixed;
+    background-color: rgba(14, 54, 6, 0.9); /* Fondo semitransparente */
+    border-radius: 20px;
+    padding: 80px;
+    box-shadow: 
+        0 10px 30px rgba(0, 0, 0, 0.4),
+        inset 0 0 20px rgba(255, 255, 255, 0.1);
+    position: relative;
+    z-index: 1;
+    backdrop-filter: blur(5px);
+    display: flex; 
+    flex-direction: column; 
+    align-items: center;
+    z-index: 1000;
+}
+
+.menu-pausa-container h2{
+    color: rgb(255, 255, 255);
+}
+
+.manu-pausa-container button{
+    display: block;
+    margin-bottom: 10px;
+    color: rgb(3, 88, 17);
+    width: 290px;
+}
 
 .game-over-container{
     position: fixed;
@@ -264,9 +284,9 @@ body {
     position: relative;
     z-index: 1;
     backdrop-filter: blur(5px);
-    display: flex; /* Añade esto */
-    flex-direction: column; /* Añade esto */
-    align-items: center; /* Añade esto */
+    display: flex; 
+    flex-direction: column; 
+    align-items: center; 
 }
 
 .game-over-container h2{
@@ -291,9 +311,9 @@ body {
     position: relative;
     z-index: 1;
     backdrop-filter: blur(5px);
-    display: flex; /* Añade esto */
-    flex-direction: column; /* Añade esto */
-    align-items: center; /* Añade esto */
+    display: flex; 
+    flex-direction: column; 
+    align-items: center;
 }
 
 .game-won-container h2{
@@ -307,25 +327,6 @@ body {
     width: 290px;
 }
 
-
-.restart-button {
-    background: linear-gradient(to right, #FFD166, #FFB347); /* Degradado dorado */
-    color: #5d6b8b; /* Color del texto igual al fondo */
-    border: none;
-    padding: 15px 50px;
-    font-size: 1.5em;
-    border-radius: 50px;
-    cursor: pointer;
-    transition: all 0.3s;
-    box-shadow: 0 5px 15px rgba(0,0,0,0.3);
-    font-family: 'Super Peace', sans-serif;
-    text-transform: uppercase;
-    letter-spacing: 1px;
-    position: relative;
-    overflow: hidden;
-    font-weight: bold;
-    border: 2px solid rgba(93, 107, 139, 0.3);
-}
 .restart-button {
     background: linear-gradient(to right, #FFD166, #FFB347); /* Degradado dorado */
     color: #5d6b8b; /* Color del texto igual al fondo */

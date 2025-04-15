@@ -15,6 +15,13 @@ document.addEventListener("DOMContentLoaded", function() {
         document.body.style.backgroundRepeat = "no-repeat";
     }
 
+    function juegoPausado(){
+        juegoPerdido = true;
+        document.querySelector(".game-container").style.display = "none";
+        document.querySelector(".menu-pausa-container").style.display = "block";
+        document.querySelector("#pointer").style.display = "block";
+    }
+
     try {
         window.socket = io();
         const socket = window.socket;
@@ -223,46 +230,47 @@ document.addEventListener("DOMContentLoaded", function() {
     crearPrendaInicial();
 
     // Función para reiniciar el juego
-function reiniciarJuego() {
-    // 1. Restablece el estado del juego
-    prendas = [];
-    puedeLanzar = true;
-    juegoPerdido = false;
-    juegoGanado = false;
+    function reiniciarJuego() {
+        document.querySelector("#pointer").style.display = "none";
+        // 1. Restablece el estado del juego
+        prendas = [];
+        puedeLanzar = true;
+        juegoPerdido = false;
+        juegoGanado = false;
 
-    const viewportWidth = window.innerWidth;
-    const maxPrendas = Math.floor(viewportWidth / 120);
-    document.getElementById('contadorPrendas').textContent = maxPrendas;
+        const viewportWidth = window.innerWidth;
+        const maxPrendas = Math.floor(viewportWidth / 120);
+        document.getElementById('contadorPrendas').textContent = maxPrendas;
+        
+        // 2. Oculta el contenedor de Game Over
+        document.querySelector(".game-over-container").style.display = "none";
+        document.querySelector(".game-won-container").style.display = "none";
+        
+        // 3. Muestra el contenedor del juego
+        document.querySelector(".game-container").style.display = "block";
+        
+        // 4. Elimina todas las prendas del DOM excepto la primera
+        const todasLasPrendas = document.querySelectorAll('.ropa-container');
+        todasLasPrendas.forEach((prenda, index) => {
+            if (index > 0) {
+                prenda.remove();
+            }
+        });
     
-    // 2. Oculta el contenedor de Game Over
-    document.querySelector(".game-over-container").style.display = "none";
-    document.querySelector(".game-won-container").style.display = "none";
-    
-    // 3. Muestra el contenedor del juego
-    document.querySelector(".game-container").style.display = "block";
-    
-    // 4. Elimina todas las prendas del DOM excepto la primera
-    const todasLasPrendas = document.querySelectorAll('.ropa-container');
-    todasLasPrendas.forEach((prenda, index) => {
-        if (index > 0) {
-            prenda.remove();
-        }
-    });
-    
-    // 5. Reinicia la posición de la primera prenda
-    const prendaInicial = document.querySelector('.ropa-container');
-    prendaInicial.style.top = '900px';
-    prendaInicial.style.left = '50%';
-    prendaInicial.style.transform = 'translate(-50%, -50%)';
-    prendaInicial.style.animation = 'none';
-    
-    // 6. Actualiza la imagen de la prenda inicial
-    actualizarImagenPrenda(prendaInicial);
-    
-    // 7. Restablece el array de prendas y la prenda actual
-    prendas = [prendaInicial];
-    prendaActual = prendaInicial;
-}
+        // 5. Reinicia la posición de la primera prenda
+        const prendaInicial = document.querySelector('.ropa-container');
+        prendaInicial.style.top = '900px';
+        prendaInicial.style.left = '50%';
+        prendaInicial.style.transform = 'translate(-50%, -50%)';
+        prendaInicial.style.animation = 'none';
+        
+        // 6. Actualiza la imagen de la prenda inicial
+        actualizarImagenPrenda(prendaInicial);
+        
+        // 7. Restablece el array de prendas y la prenda actual
+        prendas = [prendaInicial];
+        prendaActual = prendaInicial;
+    }
 
 // Asigna el evento al botón "VOLVER A JUGAR"
 document.querySelectorAll(".restart-button").forEach(button => {
