@@ -1,4 +1,4 @@
-
+let timer; // Variable para el temporizador
 
 
 document.addEventListener("DOMContentLoaded", function() {
@@ -85,18 +85,20 @@ function gameFinished() {
 }
 
 function iniciarTemporizador() {
-    let tiempo = 2;  // cambiar a 60
+    let tiempo = 6;  // cambiar a 60
     const timer = setInterval(() => {
-        tiempo--;
-        document.getElementById('timer-display').textContent = `Tiempo: ${tiempo}`;
-        if (tiempo <= 0) {
-            console.log("Se ha agotado el tiempo");
-            clearInterval(timer);
-            clearInterval(caidaInterval);
-            clearInterval(gameInterval);
-            objetos.forEach(o => o.remove());
-            objetos = [];
-            gameFinished();
+        if (!juegoTerminado) {
+            tiempo--;
+            document.getElementById('timer-display').textContent = `Tiempo: ${tiempo}`;
+            if (tiempo <= 0) {
+                console.log("Se ha agotado el tiempo");
+                clearInterval(timer);
+                clearInterval(caidaInterval);
+                clearInterval(gameInterval);
+                objetos.forEach(o => o.remove());
+                objetos = [];
+                gameFinished();
+        }
         }
     }, 1000);
 }
@@ -180,12 +182,22 @@ function mostrarExplosion(x, y) {
     }, 400);
 }
 
-function pausarJuego(){
+function pausarJuego() {
     console.log("En la función pausarJuego()");
-    //juegoTerminado = true;
+    
+    // 1. Detener los intervalos de juego
+    clearInterval(gameInterval);
+    clearInterval(caidaInterval);
+    clearInterval(timer);
+    
+    // 2. Ocultar el juego y mostrar menú de pausa
     document.getElementById("game-container").style.display = "none";
     document.querySelector(".menu-pausa-container").style.display = "block";
-    //document.querySelector("#pointer").style.display = "block";
+    
+    // 3. Desactivar temporalmente el control del carrito 
+    juegoTerminado = true; // Esto evitará que se mueva el carrito
+    
+    console.log("Juego pausado: intervalos detenidos");
 }
 
     try {
@@ -242,6 +254,8 @@ function pausarJuego(){
     }
 
     function moverCarritoPorInclinacion(inclinacion) {
+        if (juegoTerminado) return; // No mover si el juego está pausado/terminado
+
         const carrito = document.getElementById('carrito-img');
         const contenedorAncho = window.innerWidth;
         const carritoAncho = carrito.offsetWidth;
@@ -269,12 +283,21 @@ function pausarJuego(){
         // ...
     }
 
-    function reanudarJuego(){
-        puedeLanzar = true;
-        document.querySelector(".game-container").style.display = "block";
-        document.querySelector(".menu-pausa-container").style.display = "none";
-        //document.querySelector("#pointer").style.display = "none";
-    }
+    function reanudarJuego() {
+    // 1. Restaurar el estado del juego
+    juegoTerminado = false;
+    
+    // 2. Mostrar el juego y ocultar menú de pausa
+    document.querySelector(".game-container").style.display = "block";
+    document.querySelector(".menu-pausa-container").style.display = "none";
+    
+    // 3. Reiniciar los intervalos
+    caidaInterval = setInterval(crearObjeto, 1500);
+    gameInterval = setInterval(moverObjetos, 50);
+    iniciarTemporizador(); // Reinicia el temporizador
+    
+    console.log("Juego reanudado");
+}
 
     function backtoMenu(){
         console.log("se envía el emit");
