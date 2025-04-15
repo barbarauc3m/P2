@@ -74,7 +74,7 @@ function iniciarJuego1() {
     carrito.style.left = '50%';
 
     // Temporizador
-    iniciarTemporizador();
+    timer = iniciarTemporizador();
 }
 
 function gameFinished() {
@@ -85,8 +85,8 @@ function gameFinished() {
 }
 
 function iniciarTemporizador() {
-    let tiempo = 6;  // cambiar a 60
-    const timer = setInterval(() => {
+    let tiempo = 60;  // Tiempo completo del juego
+    return setInterval(() => {  // Devuelve el intervalo
         if (!juegoTerminado) {
             tiempo--;
             document.getElementById('timer-display').textContent = `Tiempo: ${tiempo}`;
@@ -98,7 +98,7 @@ function iniciarTemporizador() {
                 objetos.forEach(o => o.remove());
                 objetos = [];
                 gameFinished();
-        }
+            }
         }
     }, 1000);
 }
@@ -279,8 +279,43 @@ function pausarJuego() {
     
 
     function reiniciarJuego() {
-        //document.querySelector("#pointer").style.display = "none";
-        // ...
+        console.log("Reiniciando juego...");
+        
+        // 1. Limpiar todos los intervalos y temporizadores activos
+        clearInterval(gameInterval);
+        clearInterval(caidaInterval);
+        clearInterval(timer);
+        
+        // 2. Eliminar todos los objetos del juego
+        objetos.forEach(o => o.remove());
+        objetos = [];
+        
+        // 3. Restablecer variables del juego
+        juegoTerminado = false;
+        score = 0;
+        
+        // 4. Ocultar todos los menús y mostrar el juego
+        document.querySelector(".game-finished-container").style.display = "none";
+        document.querySelector(".menu-pausa-container").style.display = "none";
+        document.getElementById("game-container").style.display = "block";
+        
+        // 5. Restablecer la pantalla de juego
+        document.getElementById('score-display').textContent = 'Puntos: 0';
+        document.getElementById('timer-display').textContent = 'Tiempo: 60';
+        document.getElementById('game-over').style.display = 'none';
+        
+        // 6. Reposicionar el carrito
+        const carrito = document.getElementById('carrito-img');
+        carrito.style.display = 'block';
+        carrito.style.left = '50%';
+        carrito.style.transform = 'translateX(-50%)'; // Resetear transformación
+        
+        // 7. Reiniciar los sistemas del juego
+        caidaInterval = setInterval(crearObjeto, 1500);
+        gameInterval = setInterval(moverObjetos, 50);
+        timer = iniciarTemporizador(); // Asignar el nuevo temporizador a la variable timer
+        
+        console.log("Juego reiniciado correctamente");
     }
 
     function reanudarJuego() {
