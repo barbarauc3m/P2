@@ -9,6 +9,11 @@ socket.on('connect_error', (err) => {
     console.error('❌ Error de conexión con el servidor de Socket.IO:', err.message);
 });
 
+socket.on('moverCienteAlMenu', (err) => {
+    console.error('Cliente vuelve al menú');
+    window.location.href = './juegos.html';
+});
+
 document.addEventListener('DOMContentLoaded', function() {
         
     // Mostrar datos del juego

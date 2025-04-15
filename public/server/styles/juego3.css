@@ -262,16 +262,6 @@ body {
     z-index: 1000;
 }
 
-.menu-pausa-container h2{
-    color: rgb(255, 255, 255);
-}
-
-.menu-pausa-container button{
-    display: block;
-    margin-bottom: 10px;
-    color: rgb(3, 88, 17);
-    width: 290px;
-}
 
 .game-over-container{
     position: fixed;
@@ -287,17 +277,6 @@ body {
     display: flex; 
     flex-direction: column; 
     align-items: center; 
-}
-
-.game-over-container h2{
-    color: rgb(255, 255, 255);
-}
-
-.game-over-container button{
-    display: block;
-    margin-bottom: 10px;
-    color: rgb(3, 88, 17);
-    width: 290px;
 }
 
 .game-won-container{
@@ -316,11 +295,12 @@ body {
     align-items: center;
 }
 
-.game-won-container h2{
+/* Cosas en común en los menús */
+.menu-pausa-container h2, .game-over-container h2, .game-won-container h2{
     color: rgb(255, 255, 255);
 }
 
-.game-won-container button{
+.menu-pausa-container button, .game-over-container button, .game-won-container button{
     display: block;
     margin-bottom: 10px;
     color: rgb(3, 88, 17);

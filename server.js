@@ -567,6 +567,11 @@ io.on('connection', (socket) => {
     socket.broadcast.emit('juego3-reiniciar'); // Reenvía a todos menos al móvil
   }); 
 
+  socket.on('moverCienteAlMenu', () => {  // Enviamos solicitud al móvil
+    console.log('[SERVER.JS]📱 Señal mandada al móvil para ir al menú');
+    socket.broadcast.emit('moverCienteAlMenu'); 
+  }); 
+
   // NUEVO: Escuchar solicitud para cambiar la pantalla del servidor
   socket.on('requestDisplayChange', (data) => {
     console.log(`📱 Recibida petición de ${socket.id} para cambiar display a: ${data.targetPage}`);

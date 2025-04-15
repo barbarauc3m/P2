@@ -52,6 +52,11 @@ socketDisplayManager.on('closeGameDisplay', () => {
   }
 });
 
+socket.on('moverCienteAlMenu', () => {  
+  console.log('[CLIENTE] CLiente vuelve al menú');
+  window.location.href = './juegos.html';
+}); 
+
 function createGameContainer() {
   const container = document.createElement('div');
   container.id = 'game-display-container';
