@@ -15,6 +15,14 @@ document.addEventListener("DOMContentLoaded", function() {
         document.body.style.backgroundRepeat = "no-repeat";
     }
 
+    function pausarJuego(){
+        //juegoPerdido = true;
+        puedeLanzar = false;
+        //document.querySelector(".game-container").style.display = "none";
+        document.querySelector(".menu-pausa-container").style.display = "block";
+        document.querySelector("#pointer").style.display = "block";
+    }
+
     try {
         window.socket = io();
         const socket = window.socket;
@@ -22,14 +30,24 @@ document.addEventListener("DOMContentLoaded", function() {
       socket.on('connect', () => {
         console.log('✅ Ordenador conectado al servidor con socket ID:', socket.id);
       });
+
+      socket.on('juego3-empezar', () => {
+        iniciarJuego3();
+      });   
+      
+      socket.on('juego3-pausar', () => {
+        console.log("Pausa recibida desde móvil");
+        pausarJuego();
+      });
+
+      socket.on('juego3-reiniciar', () => {
+        console.log("Reinicio recibido desde móvil");
+        reiniciarJuego();
+      });
     
       socket.on('lanzar', () => {
         console.log("🚀 Lanzamiento recibido desde móvil");
         moverPrenda(); 
-      });
-    
-      socket.on('mensaje', (data) => {
-        console.log('📩 Mensaje desde móvil:', data);
       });
     
       socket.on('closeGameDisplay', (data) => {
@@ -37,16 +55,12 @@ document.addEventListener("DOMContentLoaded", function() {
         window.location.href = 'index.html';
       });
     
-      socket.on('juego3-empezar', () => {
-        console.log("🟢 Señal de empezar recibida desde el móvil");
-        iniciarJuego3();
-      });    
 
       socket.on('updatePointer', (x, y) => {  // Puntero
         const posX = (1024/2) + (((-x + 90) / 180) * window.innerWidth);
         const posY = (600/2) + (((-y + 90) / 180) * window.innerHeight);
         
-        console.log("Valores finales css { x, y }:", posX, posY);
+        //console.log("Valores finales css { x, y }:", posX, posY);
 
         pointer.style.left = `${posX}px`;
         pointer.style.top = `${posY}px`;
@@ -160,6 +174,7 @@ document.addEventListener("DOMContentLoaded", function() {
         juegoPerdido = true;
         document.querySelector(".game-container").style.display = "none";
         document.querySelector(".game-over-container").style.display = "block";
+        document.querySelector("#pointer").style.display = "block";
         
     }
 
@@ -167,6 +182,7 @@ document.addEventListener("DOMContentLoaded", function() {
         juegoGanado = true;   
         document.querySelector(".game-container").style.display = "none";
         document.querySelector(".game-won-container").style.display = "block";
+        document.querySelector("#pointer").style.display = "block";
         
     }
     
@@ -206,59 +222,71 @@ document.addEventListener("DOMContentLoaded", function() {
     }
 
     // Evento de teclado (CAMBIAR POR SEÑAL MÓVIL)
+    /*
     document.addEventListener('keydown', function(e) {
         if (e.code === 'Space' && puedeLanzar) {
             e.preventDefault();
             moverPrenda();
         }
-    });
+    });*/
 
     crearPrendaInicial();
 
     // Función para reiniciar el juego
-function reiniciarJuego() {
-    // 1. Restablece el estado del juego
-    prendas = [];
-    puedeLanzar = true;
-    juegoPerdido = false;
-    juegoGanado = false;
+    function reiniciarJuego() {
+        document.querySelector("#pointer").style.display = "none";
+        // 1. Restablece el estado del juego
+        prendas = [];
+        puedeLanzar = true;
+        juegoPerdido = false;
+        juegoGanado = false;
 
-    const viewportWidth = window.innerWidth;
-    const maxPrendas = Math.floor(viewportWidth / 120);
-    document.getElementById('contadorPrendas').textContent = maxPrendas;
+        const viewportWidth = window.innerWidth;
+        const maxPrendas = Math.floor(viewportWidth / 120);
+        document.getElementById('contadorPrendas').textContent = maxPrendas;
+        
+        // 2. Oculta el contenedor de Game Over
+        document.querySelector(".game-over-container").style.display = "none";
+        document.querySelector(".game-won-container").style.display = "none";
+        
+        // 3. Muestra el contenedor del juego
+        document.querySelector(".game-container").style.display = "block";
+        
+        // 4. Elimina todas las prendas del DOM excepto la primera
+        const todasLasPrendas = document.querySelectorAll('.ropa-container');
+        todasLasPrendas.forEach((prenda, index) => {
+            if (index > 0) {
+                prenda.remove();
+            }
+        });
     
-    // 2. Oculta el contenedor de Game Over
-    document.querySelector(".game-over-container").style.display = "none";
-    document.querySelector(".game-won-container").style.display = "none";
-    
-    // 3. Muestra el contenedor del juego
-    document.querySelector(".game-container").style.display = "block";
-    
-    // 4. Elimina todas las prendas del DOM excepto la primera
-    const todasLasPrendas = document.querySelectorAll('.ropa-container');
-    todasLasPrendas.forEach((prenda, index) => {
-        if (index > 0) {
-            prenda.remove();
-        }
-    });
-    
-    // 5. Reinicia la posición de la primera prenda
-    const prendaInicial = document.querySelector('.ropa-container');
-    prendaInicial.style.top = '900px';
-    prendaInicial.style.left = '50%';
-    prendaInicial.style.transform = 'translate(-50%, -50%)';
-    prendaInicial.style.animation = 'none';
-    
-    // 6. Actualiza la imagen de la prenda inicial
-    actualizarImagenPrenda(prendaInicial);
-    
-    // 7. Restablece el array de prendas y la prenda actual
-    prendas = [prendaInicial];
-    prendaActual = prendaInicial;
-}
+        // 5. Reinicia la posición de la primera prenda
+        const prendaInicial = document.querySelector('.ropa-container');
+        prendaInicial.style.top = '900px';
+        prendaInicial.style.left = '50%';
+        prendaInicial.style.transform = 'translate(-50%, -50%)';
+        prendaInicial.style.animation = 'none';
+        
+        // 6. Actualiza la imagen de la prenda inicial
+        actualizarImagenPrenda(prendaInicial);
+        
+        // 7. Restablece el array de prendas y la prenda actual
+        prendas = [prendaInicial];
+        prendaActual = prendaInicial;
+    }
+
+    function reanudarJuego(){
+        puedeLanzar = true;
+        document.querySelector(".game-container").style.display = "block";
+        document.querySelector(".menu-pausa-container").style.display = "none";
+        document.querySelector("#pointer").style.display = "none";
+    }
 
 // Asigna el evento al botón "VOLVER A JUGAR"
 document.querySelectorAll(".restart-button").forEach(button => {
     button.addEventListener("click", reiniciarJuego);
+});
+document.querySelectorAll(".resume-button").forEach(button => {
+    button.addEventListener("click", reanudarJuego);
 });
 });

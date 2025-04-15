@@ -10,8 +10,7 @@ socket.on('connect_error', (err) => {
 });
 
 document.addEventListener('DOMContentLoaded', function() {
-    //const socket = io();
-    
+        
     // Mostrar datos del juego
     document.getElementById('game-title').textContent = 
         localStorage.getItem('selectedGameTitle') || 'Juego';
@@ -20,6 +19,7 @@ document.addEventListener('DOMContentLoaded', function() {
     document.getElementById('game-description').textContent = 
         localStorage.getItem('selectedGameDescription') || 'Descripción del juego';
     */
+   
     // Configurar botón de salida
     document.getElementById('exit-button').addEventListener('click', function() {
         /*emit redirigir el servidor a index*/ 
@@ -33,14 +33,12 @@ document.addEventListener('DOMContentLoaded', function() {
     if (localStorage.getItem('selectedGameTitle') === 'El Rey del Tendedero') {
         console.log("Esperando a que el usuario agite.");
         agitarParaEmpezar3();
-        //juego3();
     }
 
     // Configurar controles específicos para "El Rey del Tendedero"
     if (localStorage.getItem('selectedGameTitle') === 'Atrapa la Ropa') {
         console.log("Esperando a que el usuario agite.");
         agitarParaEmpezar1();
-        //juego1();
     }
 });
 
@@ -80,7 +78,7 @@ function controlarMovimientoCarrito() {
   }
 
 
-/// FUNCIÓN: Activa el envío de puntero Wii remoto
+// Activa el envío de puntero Wii remoto
 function activarPunteroWii() {
     console.log("Dentro de la activarPunteroWii");
     if (typeof DeviceOrientationEvent !== 'undefined' && typeof DeviceOrientationEvent.requestPermission === 'function') {
@@ -93,19 +91,6 @@ function activarPunteroWii() {
     } else {
         controlarPuntero();
     }
-    /*
-    function iniciarEnvioOrientacion() {
-        window.addEventListener('deviceorientation', (event) => {
-            const { alpha, gamma } = event;
-
-            const x = (gamma);
-            const z = (alpha);
-
-            console.log("Haciendo emit de { x, y }",{ x, z });
-            socket.emit('orientationData', { x, z });
-        });
-    }
-        */
 }
 
 function juego1() {    
@@ -162,7 +147,7 @@ function juego3() {
         pauseButton.addEventListener("click", function() {
             console.log("😡 MÓVIL MANDA QUE SE PARE EL JUEGO");
             socket.emit('juego3-pausar');
-            alert("Juego pausado");
+            //alert("Juego pausado");
         });
     }
 

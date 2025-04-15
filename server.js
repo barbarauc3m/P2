@@ -527,7 +527,7 @@ io.on('connection', (socket) => {
   socket.on('orientationData', (data) => {  // Puntero juego3
     // Extrae x e y de data
     const { x, y } = data;
-    console.log("Posición procesada:", { x, y }); 
+    //console.log("Posición procesada:", { x, y }); 
 
     // Reenvía a todos los clientes (excepto al emisor)
     socket.broadcast.emit('updatePointer', x, y); 

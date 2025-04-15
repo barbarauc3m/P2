@@ -8,7 +8,7 @@
 <body>
     <h1 class="game-title">REY DEL TENDEDERO</h1>
 
-    <div id="pointer"></div>
+    <div id="pointer" style="display: none;"></div>
     
     <div class="game-start-container">
         <div class="game-rules">
@@ -36,7 +36,14 @@
         </div>
     </div>
 
-    
+    <div class="menu-pausa-container" style="display: none;">
+        <div class="menu-pausa">
+            <h2>JUEGO PAUSADO</h2>
+        </div>
+        
+        <button class="resume-button">REAUDAR</button><!--no es restart-->
+        <button class="start-button" onclick="window.location.href='./'">VOLVER AL MENÚ</button><!--cambiar por onclick en el js para meter ahi un emit al móvil-->
+    </div>    
     
     <div class="game-over-container" style="display: none;">
         <div class="game-rules">
