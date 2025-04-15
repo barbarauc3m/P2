@@ -1,201 +1,167 @@
+// public/server/script/my-programs-display.js
 
-document.addEventListener('DOMContentLoaded', () => {
-    const socketCategoriesClient = io();
+document.addEventListener('DOMContentLoaded', async () => {
+    console.log('🖥️ Script my-programs-display.js cargado');
 
-    socketCategoriesClient.on('connect', () => {
-        console.log('📱✅ Categorias Client Conectado:', socketCategoriesClient.id);
-    });
-    socketCategoriesClient.on('disconnect', () => {
-        console.log('📱 Categorias Client Desconectado');
-    });
+    // --- Elementos DOM (IDs del HTML my-programs-display.html) ---
+    const userDisplayElement = document.getElementById('my-programs-user');
+    const favContainer = document.getElementById('my-programs-favoritos');
+    const persContainer = document.getElementById('my-programs-personalizados');
+    const overlay = document.querySelector('.focus-overlay'); // Overlay para focus
 
-    // --- Lógica de Hover ---
-    const categoriasHover = document.querySelectorAll('.lavado-card[data-category-id]');
-    if (categoriasHover.length === 0) {
-        console.warn('📱 No se encontraron elementos para añadir listeners de hover.');
-    }
-    categoriasHover.forEach(card => {
-        const categoryId = card.dataset.categoryId;
-        if (!categoryId) return;
-        // console.log(`📱 Añadiendo listeners a tarjeta: ${categoryId}`); // Log opcional
-        card.addEventListener('mouseenter', () => {
-            // console.log(`➡️ MOUSE ENTER sobre tarjeta: ${categoryId}`); // Log opcional
-            socketCategoriesClient.emit('hoverCategory', { categoryId: categoryId });
-        });
-        card.addEventListener('mouseleave', () => {
-            // console.log(`⬅️ MOUSE LEAVE de tarjeta: ${categoryId}`); // Log opcional
-            socketCategoriesClient.emit('unhoverCategory', { categoryId: categoryId });
-        });
-    });
+    // --- Obtener Usuario de sessionStorage ---
+    const userId = sessionStorage.getItem('currentDisplayUserId');
 
-    // --- Lógica de Favoritos y Botones (integrada aquí) ---
-    const usuarioActual = localStorage.getItem('loggedInUser');
-    const corazones = document.querySelectorAll('.heart'); // Selecciona los corazones
-
-    if (!usuarioActual) {
-        console.log('📱 Usuario no logueado. Bloqueando corazones.');
-        corazones.forEach(corazon => {
-            corazon.style.cursor = 'not-allowed'; // Indica visualmente que no se puede hacer clic
-            corazon.addEventListener('click', (e) => {
-                e.preventDefault(); // Prevenir cualquier acción por defecto
-                alert("Debes registrarte o iniciar sesión para guardar lavados como favoritos");
-            });
-        });
-        // No necesitamos `return` aquí si el resto de la lógica está dentro del `if (usuarioActual)`
+    // --- Validaciones Iniciales ---
+    if (userDisplayElement) userDisplayElement.textContent = userId || 'Desconocido'; // Muestra el ID mientras carga
+    if (!userId || !favContainer || !persContainer || !overlay) {
+        console.error('🖥️ Error: Falta userId o elementos HTML (#my-programs-favoritos, #my-programs-personalizados, .focus-overlay) en my-programs-display.html');
+        // Mostrar error en ambos contenedores
+        const errorHtml = '<p class="error-message">Error al cargar la página.</p>';
+        if(favContainer) favContainer.innerHTML = errorHtml;
+        if(persContainer) persContainer.innerHTML = errorHtml;
+        return;
     }
 
-    // Solo añadir listeners y fetch si hay usuario
-    if (usuarioActual) {
-        console.log(`📱 Usuario logueado: ${usuarioActual}. Cargando y configurando favoritos.`);
-        fetch(`/api/users/${usuarioActual}/favoritos`)
-            .then(res => {
-                if (!res.ok) throw new Error('Error al obtener favoritos');
-                return res.json();
-            })
-            .then(favoritosData => {
-                let favoritos = favoritosData[usuarioActual] || []; // Array de favoritos del usuario
+    // Mensajes de carga
+    favContainer.innerHTML = '<p>Cargando favoritos...</p>';
+    persContainer.innerHTML = '<p>Cargando personalizados...</p>';
+    console.log(`🖥️ Cargando programas para ${userId}...`);
 
-                corazones.forEach(corazon => {
-                    // Encontrar el contenedor principal y el nombre del lavado
-                    const sectionLavado = corazon.closest('section.lavado'); // El elemento que tiene el H2
-                    if (!sectionLavado) {
-                        console.warn('No se encontró section.lavado para el corazón:', corazon);
-                        return;
-                    }
-                    const nombreLavado = sectionLavado.querySelector('h2')?.textContent.trim();
-                    if (!nombreLavado) {
-                         console.warn('No se encontró h2 para el corazón en:', sectionLavado);
-                         return;
-                    }
-                    const lavadoCard = sectionLavado.querySelector('.lavado-card'); // El div interno
+    // --- Función Sanitize ID (Importante que sea la misma que usa el cliente al emitir hover) ---
+    function sanitizeId(text) {
+         if (!text) return `item-${Math.random().toString(36).substr(2, 9)}`;
+         return text.toString().toLowerCase()
+                   .replace(/\s+/g, '-') // Reemplaza espacios con guiones
+                   .replace(/[^\w-]+/g, '') // Quita caracteres no alfanuméricos (excepto guion)
+                   .replace(/[:\/,]/g, '-'); // Quita caracteres problemáticos de fechas/horas
+    }
 
-                    // Establecer estado inicial del corazón
-                    const esFavoritoInicial = favoritos.some(lav => lav.nombre === nombreLavado);
-                    if (esFavoritoInicial) {
-                        corazon.src = '/images/cora_relleno.svg'; // Ruta absoluta
-                        corazon.classList.add('activo');
-                    } else {
-                        corazon.src = '/images/corazon.svg'; // Ruta absoluta
-                        corazon.classList.remove('activo');
-                    }
+    // --- Función Crear HTML (Estilo Tarjeta Categoría) ---
+     function createWashDisplayElement(lavado, type) {
+        const section = document.createElement('section');
+        section.className = 'category-display'; // <<< USA LA CLASE PARA EL ESTILO
 
-                    // Añadir listener de CLICK al corazón
-                    corazon.addEventListener('click', () => {
-                        let esFavoritoAhora; // Para saber qué estado se guardó
+        // Crear ID único para el hover (Debe coincidir con cómo lo genera el cliente que emite el hover)
+        // Si el hover viene de categorias-lavados.js, usa el ID de ahí.
+        // Si viene de lavados-favs.js, asegúrate que ese script también genera y usa un ID único.
+        // Asumiremos que el cliente envía un ID basado en el nombre para estos casos.
+        const uniqueId = sanitizeId(lavado.nombre || (type + '-' + Math.random())); // Usa nombre o fallback
+        section.dataset.categoryId = uniqueId; // ID para la animación
 
-                        if (corazon.classList.contains('activo')) {
-                            // --- Quitar de favoritos ---
-                            corazon.classList.remove('activo');
-                            corazon.src = '/images/corazon.svg';
-                            favoritos = favoritos.filter(lav => lav.nombre !== nombreLavado);
-                            esFavoritoAhora = false;
-                            console.log(`💔 "${nombreLavado}" quitado de favoritos localmente.`);
-                        } else {
-                            // --- Añadir a favoritos ---
-                            corazon.classList.add('activo');
-                            corazon.src = '/images/cora_relleno.svg';
-                            // Extraer info SOLO al añadir
-                            const descripcion = lavadoCard?.querySelector("p")?.textContent.trim() || "";
-                            const items = lavadoCard?.querySelectorAll("ul li");
-                            const imagen = lavadoCard?.querySelector("img.icon")?.getAttribute("src") || "";
-                            const infoLavado = {
-                                nombre: nombreLavado,
-                                descripcion: descripcion,
-                                temperatura: items?.[0]?.textContent.split(":")[1]?.trim() || "",
-                                duracion: items?.[1]?.textContent.split(":")[1]?.trim() || "",
-                                centrifugado: items?.[2]?.textContent.split(":")[1]?.trim() || "",
-                                detergente: items?.[3]?.textContent.split(":")[1]?.trim() || "",
-                                imagen: imagen // Ya debería ser ruta absoluta si corregiste HTML
-                            };
-                            favoritos.push(infoLavado);
-                            esFavoritoAhora = true;
-                            console.log(`❤️ "${nombreLavado}" añadido a favoritos localmente.`);
-                        }
+        let imagenSrc = '/images/default-wash.png';
+        let titulo = lavado.nombre || (type === 'personalizado' ? 'Personalizado' : 'Favorito');
 
-                        // Guardar en el servidor backend
-                        console.log(`💾 Guardando favoritos actualizados para ${usuarioActual} en backend...`);
-                        fetch('/guardar-favoritos', {
-                            method: 'POST',
-                            headers: { 'Content-Type': 'application/json' },
-                            body: JSON.stringify({ usuario: usuarioActual, favoritos: favoritos }) // Enviar la lista actualizada
-                        })
-                        .then(res => {
-                            if (!res.ok) throw new Error('Error al guardar favoritos en backend');
-                            return res.text();
-                        })
-                        .then(msg => {
-                            console.log(`✅ Backend dice: ${msg}`);
-                            // *** ¡¡NUEVO!! Emitir evento Socket.IO tras guardar con éxito ***
-                            console.log(`⚡ Emitiendo 'favoritesUpdated' para notificar a otros clientes.`);
-                            socketCategoriesClient.emit('favoritesUpdated', {
-                                userId: usuarioActual,
-                                changedWash: { // Opcional: enviar qué cambió
-                                    nombre: nombreLavado,
-                                    esFavorito: esFavoritoAhora
-                                }
-                            });
-                        })
-                        .catch(err => console.error('❌ Error en fetch /guardar-favoritos:', err));
-                    }); // Fin addEventListener click corazón
-                }); // Fin corazones.forEach
-            })
-            .catch(err => console.error('❌ Error inicial cargando favoritos:', err));
-    } // Fin if (usuarioActual)
-
-    // --- Lógica Botones EMPEZAR ---
-    const botones = document.querySelectorAll(".lavado-button .button");
-    botones.forEach((boton) => {
-      boton.addEventListener("click", () => {
-        const section = boton.closest(".lavado");
-        const card = section?.querySelector(".lavado-card"); // Buscar dentro de la sección
-        if (!section || !card) {
-            console.error("Error al encontrar sección o tarjeta para botón EMPEZAR");
-            return;
+        if (type === 'favorito') {
+             imagenSrc = lavado.imagen || imagenSrc;
+             // Corregir si la ruta viene mal
+             if (imagenSrc.startsWith('.')) imagenSrc = '/images/' + imagenSrc.split('/').pop();
+        } else if (type === 'personalizado') {
+             imagenSrc = '/images/personalizado.svg';
         }
-        const nombre = section.querySelector("h2")?.textContent.trim();
-        const descripcion = card.querySelector("p")?.textContent.trim() || "";
-        const items = card.querySelectorAll("ul li");
-        const imagen = card.querySelector("img.icon")?.getAttribute("src") || "";
-        if (!nombre) return; // Salir si no hay nombre
 
-        const lavado = { 
-            nombre: nombre,
-              descripcion,
-              temperatura: items[0]?.textContent.split(":")[1]?.trim() || "",
-              duracion: items[1]?.textContent.split(":")[1]?.trim() || "",
-              centrifugado: items[2]?.textContent.split(":")[1]?.trim() || "",
-              detergente: items[3]?.textContent.split(":")[1]?.trim() || "",
-              fechaInicio: new Date().toLocaleString("es-ES", {
-                dateStyle: "short",
-                timeStyle: "short"
-              }),
-              imagen
-        };
-        localStorage.setItem("lavadoSeleccionado", JSON.stringify(lavado));
-        window.location.href = "empezar-lavado.html";
-      });
+        // HTML interno simple para la tarjeta
+        section.innerHTML = `
+            <h2>${titulo}</h2>
+            <div class="lavado-card"> <img src="${imagenSrc}" class="icon" alt="${titulo}">
+                <div class="info">
+                    <p>${(type === 'favorito' ? lavado.descripcion : lavado.nivelSuciedad) || ''}</p>
+                    </div>
+            </div>
+        `;
+        return section;
+    }
+
+    // --- Fetch de Datos y Muestra ---
+    try {
+        const [favoritos, personalizados] = await Promise.all([
+            fetch(`/api/users/${userId}/favoritos`).then(res => res.ok ? res.json().catch(() => []) : Promise.reject(`Error ${res.status} fav`)),
+            fetch(`/api/users/${userId}/personalizados`).then(res => res.ok ? res.json().catch(() => []) : Promise.reject(`Error ${res.status} pers`))
+        ]);
+
+        // Mostrar Favoritos
+        favContainer.innerHTML = ''; // Limpiar
+        if (favoritos.length > 0) {
+            favoritos.forEach(fav => favContainer.appendChild(createWashDisplayElement(fav, 'favorito')));
+        } else {
+            favContainer.innerHTML = '<p>Sin favoritos</p>';
+        }
+
+        // Mostrar Personalizados
+        persContainer.innerHTML = ''; // Limpiar
+        if (personalizados.length > 0) {
+             personalizados.forEach(pers => persContainer.appendChild(createWashDisplayElement(pers, 'personalizado')));
+        } else {
+             persContainer.innerHTML = '<p>Sin personalizados</p>';
+        }
+
+    } catch (error) {
+        console.error("🖥️ Error cargando programas (favoritos o personalizados):", error);
+        favContainer.innerHTML = `<p class="error-message">Error: ${error.message || 'No se pudieron cargar'}</p>`;
+        persContainer.innerHTML = `<p class="error-message">Error: ${error.message || 'No se pudieron cargar'}</p>`;
+    }
+
+
+    // --- LÓGICA DE FOCUS/HOVER (Requerida en esta página) ---
+    const socketMyPrograms = io(); // Conexión para esta página específica
+    let intendedFocusId = null;
+    let focusTimeout = null;
+    // Contenedores donde buscar los elementos .category-display
+    const allContainers = document.querySelectorAll('.categories-container'); // Selecciona ambos contenedores
+
+    socketMyPrograms.on('connect', () => console.log('🖥️ Socket my-programs conectado.'));
+     socketMyPrograms.on('connect_error', (err) => console.error('🖥️❌ Error conexión Socket en my-programs:', err));
+
+    function applyFocus(categoryId) {
+        if (!overlay || allContainers.length === 0) return;
+        overlay.classList.add('active');
+        allContainers.forEach(c => c.classList.add('container-focused')); // Atenuar ambos
+
+        document.querySelectorAll('.category-display.focused').forEach(el => el.classList.remove('focused')); // Quitar foco previo
+
+        // Buscar en ambos contenedores
+        const elementToFocus = document.querySelector(`.category-display[data-category-id="${categoryId}"]`);
+        if (elementToFocus) {
+            elementToFocus.classList.add('focused');
+        } else {
+             console.log(`🖥️ Elemento ${categoryId} no encontrado para focus en my-programs.`);
+             removeFocus();
+        }
+    }
+
+    function removeFocus() {
+        if (!overlay || allContainers.length === 0) return;
+        intendedFocusId = null;
+        overlay.classList.remove('active');
+        allContainers.forEach(c => c.classList.remove('container-focused'));
+        document.querySelectorAll('.category-display.focused').forEach(el => el.classList.remove('focused'));
+    }
+
+    socketMyPrograms.on('highlightCategory', (data) => {
+         // Aplicar SOLO si estamos en esta página
+         if(window.location.pathname === '/display/my-programs') {
+            console.log(`🖥️ Recibido highlightCategory MY-PROGRAMS para: ${data.categoryId}`);
+            clearTimeout(focusTimeout);
+            intendedFocusId = data.categoryId;
+            applyFocus(data.categoryId);
+         }
     });
 
+    socketMyPrograms.on('unhighlightCategory', (data) => {
+        if(window.location.pathname === '/display/my-programs') {
+            console.log(`🖥️ Recibido unhighlightCategory MY-PROGRAMS para: ${data.categoryId}`);
+            if (data.categoryId === intendedFocusId) {
+                 focusTimeout = setTimeout(() => {
+                     if (intendedFocusId === data.categoryId) removeFocus();
+                 }, 50);
+            }
+        }
+    });
 
-    const backButton = document.querySelector("#back-button-categorias");
-    const homeButton = document.querySelector("#home-button-categorias");
+    overlay?.addEventListener('click', removeFocus);
+    socketMyPrograms.on('disconnect', () => {
+         console.log('🖥️ Socket my-programs desconectado');
+         removeFocus();
+    });
 
-    function navigateToHome(event) {
-      if (event) {
-        event.preventDefault(); // Evita la navegación normal del enlace
-      }
-
-      socketCategoriesClient.emit('requestDisplayChange', {
-        targetPage: '/',
-      });
-      window.location.href = '/mobile'; // Navega a la página de inicio
-
-    }
-    if (backButton) {
-      backButton.addEventListener("click", navigateToHome);
-    }
-    if (homeButton) {
-      homeButton.addEventListener("click", navigateToHome);
-    }
-
-}); // Fin DOMContentLoaded Principal
+}); // Fin DOMContentLoaded

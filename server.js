@@ -142,6 +142,10 @@ app.get('/display/categories', (req, res) => {
   res.sendFile(path.join(__dirname, 'public', 'server', 'categorias-lavados.html'));
 });
 
+app.get('/display/avados-favs', (req, res) => {
+  res.sendFile(path.join(__dirname, 'public', 'server', 'lavados-favs.html'));
+});
+
 
 // funciones que nos ayudan
 async function readUsers() {
@@ -440,6 +444,34 @@ app.post('/guardar-lavado-personalizado', async (req, res) => { // Convertida a 
   } catch (error) {
       console.error('❌ Error en /guardar-lavado-personalizado:', error);
       res.status(500).json({ message: 'Error interno al guardar lavado personalizado.' });
+  }
+});
+
+app.get('/api/users/:username', async (req, res) => {
+  const requestedUsername = req.params.username;
+  console.log(`API: Solicitud de datos para usuario: ${requestedUsername}`);
+
+  try {
+      const users = await readUsers(); // Usa tu función helper para leer usuarios.json
+
+      if (!users[requestedUsername]) {
+          // Usuario no encontrado
+          return res.status(404).json({ message: 'Usuario no encontrado.' });
+      }
+
+      // Usuario encontrado, preparar datos públicos para enviar
+      const publicUserData = {
+          username: users[requestedUsername].username,
+          email: users[requestedUsername].email, // Decide si quieres enviar el email
+          foto: users[requestedUsername].foto
+          // NUNCA incluyas hashedPassword aquí
+      };
+
+      res.status(200).json(publicUserData); // Enviar datos públicos
+
+  } catch (error) {
+      console.error(`❌ Error en /api/users/${requestedUsername}:`, error);
+      res.status(500).json({ message: 'Error interno al obtener datos del usuario.' });
   }
 });
 

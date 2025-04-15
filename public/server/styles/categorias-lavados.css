@@ -26,6 +26,13 @@
     margin: 4vh 0 0 0;
     font-size: 7vh;
     font-family: 'Super Cottage', sans-serif;
+    color: #f7f9fc;
+    text-align: center;
+  }
+
+  body{
+    background-color: #5d6b8b;
+
   }
 /* Contenedor principal */
 .categories-container {

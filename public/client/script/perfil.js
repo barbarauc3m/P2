@@ -1,10 +1,22 @@
 document.addEventListener("DOMContentLoaded", () => {
+  console.log("CARGANDO PERFIL...");
   const usuario = localStorage.getItem("loggedInUser");
-  if (!usuario) return;
+  const usernameElement = document.querySelector(".username");
+  const historialContainer = document.querySelector(".categoria-list");
+  const historialCountElement = document.querySelector(".completados");
+  // Asegúrate de tener estos elementos en tu HTML de perfil del cliente
+  const favBox = document.querySelector(".lavado-box");
+  const mensajeVacio = document.querySelector(".lavado-box-none");
+  const favoritosCountElement = document.querySelector(".favoritos");
+  // IDs de los enlaces 'ver más'
+  const verMasProgramasBtn = document.getElementById('ver-mas-programas');
+  const verMasHistorialLink = document.getElementById('historial');
 
-  const socketHistorial = io(); // Conexión específica para esta página
-  socketHistorial.on('connect', () => console.log('📱✅ Historial Client Conectado:', socketHistorial.id));
-  socketHistorial.on('connect_error', (err) => console.error('📱❌ Error conexión socket en historial.js:', err));
+  const socketPerfil = io();
+  socketPerfil.on('connect', () => console.log('📱✅ Socket de navegación conectado en perfil.js'));
+  socketPerfil.on('connect_error', (err) => console.error('📱❌ Error conexión socket en perfil.js:', err));
+  socketPerfil.on('disconnect', () => console.log('📱 Socket de navegación desconectado en perfil.js'));
+
 
   // Mostrar nombre del usuario
   document.querySelector(".username").textContent = usuario;
@@ -104,80 +116,74 @@ document.addEventListener("DOMContentLoaded", () => {
 
       favBox.appendChild(favDiv);
 
-      if (typeof io === 'undefined') { console.error('Perfil script: io no definido.'); return; }
-    const socketPerfil = io(); // O reutiliza una conexión existente
 
 
-    // --- NUEVA LÓGICA PARA "VER MÁS PROGRAMAS" ---
-    const verMasProgramasBtn = document.getElementById('ver-mas-programas');
+  // --- NUEVA LÓGICA PARA "VER MÁS PROGRAMAS" ---
+  const verMasProgramasBtn = document.getElementById('ver-mas-programas');
 
-    if (verMasProgramasBtn) {
-        verMasProgramasBtn.addEventListener('click', (event) => {
-            event.preventDefault(); // Prevenir navegación normal del enlace <a>
-            const usuario = localStorage.getItem("loggedInUser"); // Obtener usuario actual
+  if (verMasProgramasBtn) {
+      verMasProgramasBtn.addEventListener('click', (event) => {
+          event.preventDefault(); // Prevenir navegación normal del enlace <a>
+          const usuario = localStorage.getItem("loggedInUser"); // Obtener usuario actual
 
-            if (!usuario) {
-                alert("Debes iniciar sesión para ver tus programas.");
-                const loginPopup = document.getElementById('popup-login');
-                if (loginPopup) loginPopup.style.display = 'flex';
-                return;
-            }
+          if (!usuario) {
+              alert("Debes iniciar sesión para ver tus programas.");
+              const loginPopup = document.getElementById('popup-login');
+              if (loginPopup) loginPopup.style.display = 'flex';
+              return;
+          }
 
-            console.log(`📱 Botón 'Ver Más Programas' presionado por ${usuario}.`);
+          console.log(`📱 Botón 'Ver Más Programas' presionado por ${usuario}.`);
 
-            // 1. Notificar al servidor para que muestre la pantalla de "Mis Programas"
-            socketPerfil.emit('requestDisplayChange', {
-                targetPage: '/display/my-programs', // Nueva ruta para el servidor
-                userId: usuario
-            });
+          // 1. Notificar al servidor para que muestre la pantalla de "Mis Programas"
+          socketPerfil.emit('requestDisplayChange', {
+              targetPage: '/display/lavados-favs', // Nueva ruta para el servidor
+              userId: usuario
+          });
 
-            // 2. Navegar el cliente a su página de gestión (lavados-favs.html)
-            window.location.href = 'lavados-favs.html'; // O usa event.target.href si era un <a>
-        });
-        console.log("📱 Listener añadido a #ver-mas-programas.");
-    } else {
-        console.warn("Botón/Enlace #ver-mas-programas no encontrado.");
-    }
-
-    });
-
-    const verMasHistorialLink = document.getElementById('historial'); // El enlace <a>
-
-    if (verMasHistorialLink) {
-        verMasHistorialLink.addEventListener('click', (event) => {
-            event.preventDefault(); // Prevenir navegación normal del enlace
-            const usuario = localStorage.getItem("loggedInUser"); // Obtener usuario actual
-
-            if (!usuario) {
-                alert("Debes iniciar sesión para ver el historial completo.");
-                return;
-            }
-
-            console.log(`📱 Botón 'Ver Más Historial' presionado por ${usuario}.`);
-
-            // 1. Notificar al servidor para que muestre la pantalla de historial
-            // Asegúrate que tienes una conexión socket disponible (ej: socketPerfil)
-             if (typeof socketPerfil !== 'undefined' && socketPerfil.connected) {
-                 socketPerfil.emit('requestDisplayChange', {
-                    targetPage: '/display/historial', // Nueva ruta para el servidor
-                    userId: usuario
-                 });
-             } else {
-                 console.error("Socket no conectado en perfil.js para emitir requestDisplayChange");
-                 // Considera reconectar o mostrar error
-             }
-
-
-            // 2. Navegar el cliente a su página de historial completa
-            window.location.href = 'historial.html'; // Navega al HTML del cliente
-
-        });
-        console.log("📱 Listener añadido a #historial (ver más).");
-    } else {
-        console.warn("Enlace #historial no encontrado en perfil.html.");
-    }
-
+          // 2. Navegar el cliente a su página de gestión (lavados-favs.html)
+          window.location.href = 'lavados-favs.html'; // O usa event.target.href si era un <a>
+      });
+      console.log("📱 Listener añadido a #ver-mas-programas.");
+  } else {
+      console.warn("Botón/Enlace #ver-mas-programas no encontrado.");
+  }
 
   });
 
 
+  if (verMasHistorialLink) {
+      verMasHistorialLink.addEventListener('click', (event) => {
+          event.preventDefault(); // Prevenir navegación normal del enlace
+          const usuario = localStorage.getItem("loggedInUser"); // Obtener usuario actual
+
+          if (!usuario) {
+              alert("Debes iniciar sesión para ver el historial completo.");
+              return;
+          }
+
+          console.log(`📱 Botón 'Ver Más Historial' presionado por ${usuario}.`);
+
+          // 1. Notificar al servidor para que muestre la pantalla de historial
+          // Asegúrate que tienes una conexión socket disponible (ej: socketPerfil)
+          if (socketPerfil && socketPerfil.connected) {
+            socketPerfil.emit('requestDisplayChange', {
+                  targetPage: '/display/historial', // Nueva ruta para el servidor
+                  userId: usuario
+               });
+           } else {
+               console.error("Socket no conectado en perfil.js para emitir requestDisplayChange");
+               // Considera reconectar o mostrar error
+           }
+
+
+          // 2. Navegar el cliente a su página de historial completa
+          window.location.href = 'historial.html'; // Navega al HTML del cliente
+
+      });
+      console.log("📱 Listener añadido a #historial (ver más).");
+  } else {
+      console.warn("Enlace #historial no encontrado en perfil.html.");
+  }
+
+});

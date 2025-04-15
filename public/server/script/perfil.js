@@ -1,10 +1,7 @@
 // public/server/script/perfil.js
-// (Para la página public/server/perfil-display.html)
-
 document.addEventListener("DOMContentLoaded", async () => {
     console.log("🖥️ Script perfil-display.js cargado (para pantalla servidor).");
 
-    // --- 1. Obtener Usuario y Elementos DOM ---
     const userId = sessionStorage.getItem('currentDisplayUserId');
 
     const usernameElement = document.querySelector(".username");
@@ -49,7 +46,6 @@ document.addEventListener("DOMContentLoaded", async () => {
         } else {
              usernameElement.textContent = userId; // Fallback
              photoElement.src = '/images/persona_os.svg';
-             console.warn("No se pudieron cargar datos completos del usuario (API /api/users/:userId pendiente o falló).");
         }
 
         // --- Mostrar Historial (Máximo 4 - Estilo Tarjeta) ---
@@ -67,7 +63,7 @@ document.addEventListener("DOMContentLoaded", async () => {
                 // No necesitamos data-category-id aquí si no hay hover interactivo
 
                 // Corregir ruta de imagen si es necesario
-                let imagenHistorial = lavado.imagen || '/images/default-wash.png';
+                let imagenHistorial = lavado.imagen;
                 if (imagenHistorial.startsWith('.')) imagenHistorial = '/images/' + imagenHistorial.split('/').pop();
 
                 // *** Generar HTML con estructura similar a categorias-lavados ***
@@ -207,6 +203,46 @@ document.addEventListener("DOMContentLoaded", async () => {
         const meses = ['Enero', 'Febrero', 'Marzo', 'Abril', 'Mayo', 'Junio', 'Julio', 'Agosto', 'Septiembre', 'Octubre', 'Noviembre', 'Diciembre'];
         return `${dias[fecha.getDay()]}, ${fecha.getDate()} ${meses[fecha.getMonth()]}`;
     }
+
+    const socketDisplayManager = io();
+
+    socketDisplayManager.on('connect', () => {
+      console.log('🖥️ Display Manager Conectado:', socketDisplayManager.id, 'en', window.location.pathname);
+    });
+
+    socketDisplayManager.on('connect_error', (err) => {
+        console.error('🖥️❌ Error conexión Socket en Display Manager:', err);
+    });
+
+    socketDisplayManager.on('changeDisplay', (data) => {
+      // Comprobar si data y targetPage existen
+      if (!data || !data.targetPage) {
+          console.warn("🖥️ Recibido 'changeDisplay' sin targetPage:", data);
+          return;
+      }
+
+      console.log(`🖥️ Recibido 'changeDisplay' para: ${data.targetPage} (Usuario: ${data.userId})`);
+
+      // Guarda el userId si viene (útil para la página destino)
+      if (data.userId !== undefined) { // Comprobar si la propiedad existe
+          sessionStorage.setItem('currentDisplayUserId', data.userId);
+          console.log(`🖥️ Guardado userId en sessionStorage: ${data.userId}`);
+      } else {
+          // Si no viene explícitamente, no lo borres, podría ser necesario
+          // sessionStorage.removeItem('currentDisplayUserId');
+          console.log(`🖥️ No se recibió userId en este evento 'changeDisplay'.`);
+      }
+
+      // Navegar SOLO si la página destino es DIFERENTE a la actual
+      if (window.location.pathname !== data.targetPage) {
+        console.log(`🖥️ Navegando a ${data.targetPage}`);
+        window.location.href = data.targetPage; // Cambia la página actual del navegador
+      } else {
+        console.log(`🖥️ Ya estamos en ${data.targetPage}, no se navega.`);
+        // Podrías añadir lógica aquí para recargar datos si es necesario
+        // location.reload(); // O forzar recarga si es la misma página
+      }
+    });
 
 
 
