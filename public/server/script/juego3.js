@@ -22,14 +22,23 @@ document.addEventListener("DOMContentLoaded", function() {
       socket.on('connect', () => {
         console.log('✅ Ordenador conectado al servidor con socket ID:', socket.id);
       });
+
+      socket.on('juego3-empezar', () => {
+        iniciarJuego3();
+      });   
+      
+      socket.on('juego3-pausar', () => {
+        console.log("Pausa recibida desde móvil");
+      });
+
+      socket.on('juego3-reiniciar', () => {
+        console.log("Reinicio recibido desde móvil");
+        reiniciarJuego();
+      });
     
       socket.on('lanzar', () => {
         console.log("🚀 Lanzamiento recibido desde móvil");
         moverPrenda(); 
-      });
-    
-      socket.on('mensaje', (data) => {
-        console.log('📩 Mensaje desde móvil:', data);
       });
     
       socket.on('closeGameDisplay', (data) => {
@@ -37,10 +46,6 @@ document.addEventListener("DOMContentLoaded", function() {
         window.location.href = 'index.html';
       });
     
-      socket.on('juego3-empezar', () => {
-        console.log("🟢 Señal de empezar recibida desde el móvil");
-        iniciarJuego3();
-      });    
 
       socket.on('updatePointer', (x, y) => {  // Puntero
         const posX = (1024/2) + (((-x + 90) / 180) * window.innerWidth);
