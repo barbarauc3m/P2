@@ -1,37 +1,23 @@
-document.addEventListener('DOMContentLoaded', () => {
-    const socket = io();
-    const gameContainer = document.getElementById('game-container'); // Asegúrate de tener este elemento en tu HTML del servidor
 
-    socket.on('showGameOnServer', (data) => {
-        console.log(`🖥️ Mostrando juego en servidor: ${data.gameName}`);
-        
-        // Limpiar contenedor
-        gameContainer.innerHTML = '';
-        
-        // Crear iframe
-        const iframe = document.createElement('iframe');
-        iframe.src = data.gameFile;
-        iframe.style.width = '100%';
-        iframe.style.height = '100%';
-        iframe.style.border = 'none';
-        
-        // Añadir al contenedor
-        gameContainer.appendChild(iframe);
-        
-        // Mostrar contenedor (si estaba oculto)
-        gameContainer.style.display = 'block';
-    });
+document.addEventListener("DOMContentLoaded", function() {
+    console.log("Dentro de DOMContentLoaded");
 
-    // Botón para volver (opcional)
-    const backButton = document.createElement('button');
-    backButton.textContent = 'Volver';
-    backButton.style.position = 'fixed';
-    backButton.style.top = '20px';
-    backButton.style.left = '20px';
-    backButton.style.zIndex = '1000';
-    backButton.addEventListener('click', () => {
-        gameContainer.style.display = 'none';
-        gameContainer.innerHTML = '';
-    });
-    document.body.appendChild(backButton);
+    try {
+        window.socket = io();
+        const socket = window.socket;
+        console.log("Socket conectado en cliente del juego")
+    
+      socket.on('connect', () => {
+        console.log('✅ Ordenador conectado al servidor con socket ID:', socket.id);
+      });
+
+      socket.on('changeDisplay', (data) => {
+        console.log('El servidor vuelve a index', data);
+        window.location.href = 'index.html';
+      });
+
+    } catch (error) {
+      console.warn("No se pudo conectar a Socket.IO:", error);
+    }
+
 });

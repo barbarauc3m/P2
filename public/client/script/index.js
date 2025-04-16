@@ -24,6 +24,17 @@ function handleHover(indexHovered) {
   });
 }
 
+// Función para cargar el juego seleccionado
+function loadJuegos() {
+
+  console.log("Botón de mando pulsado");
+  socket.emit("abrir-juegos"); // Evento que el servidor recibirá
+
+  // 3. Redirigir en el móvil
+  window.location.href = 'pantalla-carga.html';
+}
+
+
 function handleLeave() {
   categorias.forEach(el => {
     el.classList.remove("mover-izquierda", "mover-derecha");
@@ -53,13 +64,6 @@ if (botonLanzar) {
         socket.emit('lanzar'); // Envía el evento 'lanzar'
     });
 }
-
-const botonMando = document.getElementById("boton-mando");
-
-botonMando.addEventListener("click", () => {
-    console.log("Botón de mando pulsado");
-    socket.emit("abrir-juegos"); // Evento que el servidor recibirá
-});
 
 // Ejemplo para recibir un evento desde el servidor
 socket.on('actualizarPantallaMobile', (data) => {
