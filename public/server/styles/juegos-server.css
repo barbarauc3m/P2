@@ -1,92 +1,108 @@
 @font-face {
-    font-family: 'Super Cottage';
-    src: url(../../../../fonts/Super\ Cottage.ttf);
-    font-weight: normal;
-    font-style: normal;
+  font-family: 'Super Cottage';
+  src: url(/fonts/Super\ Cottage.ttf);
+  font-weight: normal;
+  font-style: normal;
 }
 
 @font-face {
-  font-family: 'Janda';
-  src: url(../../../../fonts/JandaManateeSolid.ttf);
+  font-family: 'Super Lobster';
+  src: url(/fonts/Super\ Lobster.ttf);
+  font-weight: normal;
+  font-style: normal;
+}
+
+@font-face {
+  font-family: 'Super Peace';
+  src: url(/fonts/Super\ Peace.ttf);
   font-weight: normal;
   font-style: normal;
 }
 
 body {
-    margin: 0;
-    padding: 0;
-    font-family: sans-serif;
-    background-color: #f9fbff;
+  margin: 0;
+  padding: 0;
+  font-family: sans-serif;
+  background-color: #5d6b8b;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  min-height: 100vh; /* Para permitir scroll si hace falta */
+}
+
+.titulo {
+  font-family: 'Super Cottage', cursive;
+  font-size: 64px;
+  margin: 30px 0 40px 0;
+  text-align: center;
+  color: #f7f9fc;
+}
+
+.main-content {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  flex-grow: 1;
+  justify-content: center;
 }
 
 .cards-grid {
-  display: flex;
-  flex-direction: row;
-  gap: 20px;
-  padding: 20px;
-  justify-items: center;
-  align-items: center;
-  justify-content: center;
-  max-width: 800px;
-  margin: 0 auto;
+display: flex;
+flex-direction: row;
+gap: 60px; /* Aumentado para más separación */
+padding: 20px;
+justify-content: center;
+align-items: center;
+max-width: 1000px;
+flex-wrap: wrap;
 }
 
 .card-container {
-  position: relative;
-  width: 150px;
-  height: 200px;
-  perspective: 1000px;
-  cursor: pointer;
+position: relative;
+width: 240px; /* Aumentado el tamaño base */
+height: 320px;
+perspective: 1000px;
+cursor: pointer;
+transition: transform 0.2s ease;
 }
 
 .card {
-  position: relative;
-  width: 100%;
-  height: 100%;
-  border-radius: 20px;
-  transition: transform 0.3s ease, filter 0.3s ease;
-  transform-style: preserve-3d;
+position: relative;
+width: 100%;
+height: 100%;
+border-radius: 20px;
+transition: transform 0.3s ease, filter 0.3s ease;
+transform-style: preserve-3d;
+cursor: pointer;
 }
 
 .card::before {
-  content: '';
-  position: absolute;
-  width: 100%;
-  height: 100%;
-  border-radius: 20px;
-  background-size: cover;
-  background-position: center 1%;
-  background-repeat: no-repeat;
-  opacity: 0.8;
+content: '';
+position: absolute;
+width: 100%;
+height: 100%;
+border-radius: 20px;
+background-size: cover;
+background-position: center;
+background-repeat: no-repeat;
+opacity: 0.8;
 }
 
 #card1::before {
-  background-image: url(/images/atrapa-la-ropa.png);
+background-image: url(/images/atrapa-la-ropa.png);
 }
 #card2::before {
-  background-image: url(/images/el-rey-del-tendedero.png);
-}
-
-.card-container {
-  transition: transform 0.2s ease;
-}
-
-.card-container:active {
-  transform: scale(0.95);
-}
-
-.card {
-  cursor: pointer;
+background-image: url(/images/el-rey-del-tendedero.png);
 }
 
 @media screen and (min-width: 768px) {
-  .card-container {
-    width: 220px;
-    height: 300px;
-  }
+.card-container {
+  width: 280px; /* Más grande en pantallas grandes */
+  height: 380px;
+}
 
-  .cards-grid {
-    gap: 40px;
-    max-width: 1000px;
-  }
+.cards-grid {
+  gap: 80px;
+  max-width: 1200px;
+}
 }

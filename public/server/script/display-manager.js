@@ -32,7 +32,7 @@ socketDisplayManager.on('changeDisplay', (data) => {
 socketDisplayManager.on('loadGameOnDisplay', (data) => {
   console.log(`🖥️ Cargando juego: ${data.gameName}`);
   
-  const gameContainer = document.getElementById('game-display-container') || createGameContainer();
+  const gameContainer = document.getElementById('game-container') || createGameContainer();
   
   gameContainer.innerHTML = `
     <iframe src="${data.gameFile}" 
