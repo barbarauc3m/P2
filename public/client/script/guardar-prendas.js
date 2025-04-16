@@ -74,40 +74,63 @@ function checkCompatibility(scanResult, lavado) {
     // --- Compatibilidad de Color ---
     else if (scanResult.type === 'color') {
         const colorData = scanResult.data; // { hex, L, tone }
-        const L = parseFloat(colorData.L);
+        const L = parseFloat(colorData.L); // Luminosidad 0-100
 
-        // *** DETERMINAR TIPO DE COLADA ***
-        // Intenta obtenerlo de lavado.tipoColada (MEJOR OPCIÓN si lo añades al crear el lavado)
-        // Si no existe, intenta inferirlo del nombre (Opción Menos Fiable)
-        let tipoColada = 'colores'; // Por defecto
-        if (lavado.tipoColada) {
-             tipoColada = lavado.tipoColada; // blancos, colores, oscuros
-        } else if (lavado.nombre) {
-             const nombreLowerCase = lavado.nombre.toLowerCase();
-             if (nombreLowerCase.includes('blanco') || nombreLowerCase.includes('claro')) {
-                 tipoColada = 'blancos';
-             } else if (nombreLowerCase.includes('oscuro') || nombreLowerCase.includes('negro')) {
-                 tipoColada = 'oscuros';
-             }
+        // *** DETERMINAR TIPO DE COLADA (LÓGICA MEJORADA) ***
+        let tipoColada = 'colores'; // Valor por defecto
+
+        // 1. Buscar propiedad explícita (Ideal si la añades al crear/seleccionar lavado)
+        if (lavado.tipoColada && ['blancos', 'colores', 'oscuros'].includes(lavado.tipoColada)) {
+            tipoColada = lavado.tipoColada;
+            console.log("Tipo colada obtenido de propiedad explícita:", tipoColada);
         }
-         console.log("Tipo colada inferido para check:", tipoColada);
+        // 2. Buscar nombres de lavados programados específicos
+        else if (lavado.nombre === 'Lavado Ropa Blanca') {
+            tipoColada = 'blancos';
+            console.log("Tipo colada inferido por nombre 'lavado Ropa Blanca'");
+        } else if (lavado.nombre === 'Lavado Ropa Oscura') {
+            tipoColada = 'oscuros';
+            console.log("Tipo colada inferido por nombre 'lavado Ropa Oscura'");
+        }
+        // 3. Buscar propiedad 'tejido' de lavados personalizados
+        else if (lavado.tejido) { // Asegúrate de que guardas esta propiedad en el objeto 'lavado'
+            const tejidoSeleccionado = lavado.tejido.toLowerCase();
+            console.log("Evaluando 'tejido' para tipo colada:", tejidoSeleccionado);
+            if (tejidoSeleccionado === 'blanco') {
+                tipoColada = 'blancos';
+            } else if (tejidoSeleccionado === 'color') {
+                // Si selecciona "Color", lo tratamos como 'colores' (mixtos/oscuros)
+                tipoColada = 'colores';
+            } else {
+                // Para Algodón, Sintético, Lana, Mezcla, etc., asumimos 'colores' por defecto
+                tipoColada = 'colores';
+            }
+        } else {
+             console.log("No se encontró 'tipoColada', nombre específico ni 'tejido'. Usando 'colores' por defecto.");
+        }
+        // *** FIN DETERMINAR TIPO DE COLADA ***
 
-        // Reglas de compatibilidad de color
-        if (tipoColada === 'blancos' && L < LIGHT_L_THRESHOLD) {
+        console.log("Tipo colada final determinado:", tipoColada);
+
+        // --- Reglas de compatibilidad de color (Estas no cambian) ---
+        if (tipoColada === 'blancos' && L < LIGHT_L_THRESHOLD) { // Prenda no blanca/clara
+             // Añadimos el tipo de colada detectado al mensaje para claridad
              return { compatible: false, razon: `Color ${colorData.hex} (${colorData.tone}) podría desteñir en lavado de Blancos.` };
         }
-        if (tipoColada === 'oscuros' && L > DARK_L_THRESHOLD) {
+        if (tipoColada === 'oscuros' && L > DARK_L_THRESHOLD) { // Prenda clara/media
+             // Añadimos el tipo de colada detectado al mensaje para claridad
              return { compatible: false, razon: `Color claro ${colorData.hex} (${colorData.tone}) podría mancharse en lavado de Oscuros.` };
         }
-        // Añadir advertencia opcional para colores mixtos si es muy claro/oscuro?
+        // Para 'colores', por defecto es compatible.
+        // Podríamos añadir una advertencia si es MUY claro/oscuro, pero lo marcamos como compatible.
         if (tipoColada === 'colores' && (L < DARK_L_THRESHOLD || L > LIGHT_L_THRESHOLD)) {
-           console.log(`Info: Prenda (${colorData.hex} / ${colorData.tone}) es muy oscura/clara para 'Colores Mixtos'.`);
-           // Podríamos devolver compatible:true pero con una advertencia en la razón, o dejarlo compatible sin más.
-           // return { compatible: true, razon: `Color ${colorData.hex} (${colorData.tone}) es muy oscuro/claro. Añadir con precaución a 'Colores Mixtos'.` };
+            console.log(`Advertencia leve: Prenda (${colorData.hex} / ${colorData.tone}) es muy oscura/clara para 'Colores Mixtos'.`);
+             // Devolvemos compatible, pero la razón podría indicarlo si quieres:
+             // return { compatible: true, razon: `Color ${colorData.hex} (${colorData.tone}) es muy oscuro/claro. Añadir con precaución a '${tipoColada}'.` };
         }
 
-        // Si pasa los checks
-        return { compatible: true, razon: `Color ${colorData.hex} (${colorData.tone}) parece compatible con lavado de ${tipoColada}.` };
+        // Si pasa los checks o es tipo 'colores' (sin incompatibilidad directa)
+        return { compatible: true, razon: `Color ${colorData.hex} (${colorData.tone}) parece compatible con lavado de tipo '${tipoColada}'.` };
     }
     // --- Tipo Desconocido ---
     else {
@@ -240,7 +263,6 @@ document.addEventListener('DOMContentLoaded', () => {
     // Asegúrate de que estos IDs existen en tu HTML dentro del popup
     const btnAnadir = document.getElementById('btn-anadir-prenda');
     const btnCancelar = document.getElementById('btn-cancelar-prenda');
-    const closeBtn = document.querySelector('#popup-compatibilidad .close-btn'); // Asume un botón de cierre
 
     if (btnAnadir) {
         btnAnadir.addEventListener('click', anadirPrendaConfirmada);
@@ -254,11 +276,6 @@ document.addEventListener('DOMContentLoaded', () => {
         console.warn("Botón #btn-cancelar-prenda no encontrado.");
     }
 
-     if (closeBtn) {
-         closeBtn.addEventListener('click', cerrarPopupCompatibilidad);
-     } else {
-          console.warn("Botón .close-btn dentro de #popup-compatibilidad no encontrado.");
-     }
 
      // Listener para cerrar popup haciendo clic fuera (opcional pero útil)
      const popupCompatibilidad = document.getElementById("popup-compatibilidad");

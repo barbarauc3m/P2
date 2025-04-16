@@ -246,6 +246,13 @@ body {
     width: 80%;
   }
 
+
+  .popup-botones {
+    display: flex;
+    justify-content: space-between;
+    margin-top: 20px;
+  }
+
   /*NAVEGADOR MOVIL*/
 .button-nav {
   outline: 0 !important;

@@ -1,6 +1,74 @@
 {
   "albatello": [
     {
+      "nombre": "Lavado Rápido",
+      "descripcion": "Ideal para ropa poco sucia o uso diario.",
+      "temperatura": "30ºC",
+      "duracion": "30 min",
+      "centrifugado": "1200 rpm",
+      "detergente": "50 ml",
+      "fechaInicio": "16/4/25, 19:25",
+      "imagen": "../../../images/rapido.svg",
+      "usuario": "albatello"
+    },
+    {
+      "nombre": "Lavado Rápido",
+      "descripcion": "Ideal para ropa poco sucia o uso diario.",
+      "temperatura": "30ºC",
+      "duracion": "30 min",
+      "centrifugado": "1200 rpm",
+      "detergente": "50 ml",
+      "fechaInicio": "16/4/25, 19:24",
+      "imagen": "../../../images/rapido.svg",
+      "prendasEscaneadas": [
+        {
+          "id": "prenda1",
+          "scanType": "color",
+          "scanData": {
+            "hex": "#313131",
+            "L": "19",
+            "tone": "Tono Oscuro",
+            "fullPalette": [
+              {
+                "hex": "#313131",
+                "red": 49,
+                "green": 49,
+                "blue": 49,
+                "area": 0.10716238381629306,
+                "hue": 0,
+                "saturation": 0,
+                "lightness": 0.19215686274509805,
+                "intensity": 0
+              },
+              {
+                "hex": "#bbbbbb",
+                "red": 187,
+                "green": 187,
+                "blue": 187,
+                "area": 0.2362102632195579,
+                "hue": 0,
+                "saturation": 0,
+                "lightness": 0.7333333333333333,
+                "intensity": 0
+              },
+              {
+                "hex": "#6d686a",
+                "red": 109,
+                "green": 104,
+                "blue": 106,
+                "area": 0.656627352964149,
+                "hue": 0.933333333333333,
+                "saturation": 0.023474178403755853,
+                "lightness": 0.41764705882352937,
+                "intensity": 0.019607843137254888
+              }
+            ]
+          }
+        }
+      ],
+      "usuario": "albatello"
+    },
+    {
       "nombre": "Lavado Edredones",
       "descripcion": "Ideal para edredones.",
       "temperatura": "30ºC",

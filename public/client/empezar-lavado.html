@@ -5,8 +5,6 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Empezar Lavado</title>
   <link rel="stylesheet" href="styles/empezar-lavado.css" />
-
-
 </head>
 <body>
     <header class="top-bar">
@@ -91,23 +89,21 @@
     </button>
     </div>
     
-  <div id="popup-compatibilidad" class="popup-container" style="display: none; position: fixed; left: 0; top: 0; width: 100%; height: 100%; background-color: rgba(0,0,0,0.5); z-index: 1000; align-items: center; justify-content: center;">
-    <div class="container login-container" style="background-color: white; padding: 30px; border-radius: 8px; text-align: center; position: relative; max-width: 400px; box-shadow: 0 4px 15px rgba(0,0,0,0.2);">
-        <span class="close-btn" style="position: absolute; top: 10px; right: 15px; font-size: 24px; cursor: pointer; color: #aaa;">&times;</span>
-        <h2 class="popup-titulo" style="margin-top: 0; margin-bottom: 15px;">COMPATIBILIDAD</h2>
-        <p class="popup-mensaje" style="margin-bottom: 10px;">Analizando compatibilidad...</p>
-        <p class="popup-razon" style="font-size: 0.9em; color: grey; margin-bottom: 25px; min-height: 2.7em;"></p> <div class="popup-botones" style="display: flex; justify-content: space-around; gap: 15px;">
-            <button id="btn-anadir-prenda" class="cssbuttons-io-button" style="flex-grow: 1;">
+  <div id="popup-compatibilidad" class="popup-container" style="display: none;">
+    <div class="container login-container">
+      <span class="close-btn" id="btn-cancelar-prenda">&times;</span>
+        <h2 class="popup-titulo"">COMPATIBILIDAD</h2>
+        <p class="popup-mensaje">Analizando compatibilidad...</p>
+        <p class="popup-razon" ></p> 
+        <div class="popup-botones">
+            <button id="btn-anadir-prenda" class="añadir-button">
               <span>Añadir Prenda</span>
             </button>
-            <button id="btn-cancelar-prenda" class="cancel-button" style="flex-grow: 1; background-color: #6c757d; color: white; padding: 10px 15px; border: none; border-radius: 5px; cursor: pointer;">Cancelar</button>
         </div>
     </div>
 </div>
 
 <script src="script/empezar-lavado.js"></script>
-<script src="script/login.js"></script>
-<script src="script/register.js"></script>
 <script src="script/guardar-prendas.js"></script>
 
 </body>

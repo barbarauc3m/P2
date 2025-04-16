@@ -423,6 +423,84 @@ body {
   }
 
 
+  .popup-container{
+    position: fixed; 
+    left: 0; 
+    top: 0; 
+    width: 100%; 
+    height: 100%; 
+    background-color: rgba(0,0,0,0.5); 
+    z-index: 1000; 
+    align-items: center; 
+    justify-content: center;
+  }
+
+  .container{
+    background-color: white; 
+    padding: 30px; 
+    border-radius: 8px; 
+    text-align: center; 
+    position: relative; 
+    max-width: 400px; 
+    box-shadow: 0 4px 15px rgba(0,0,0,0.2);
+  }
+
+  .popup-botones{
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-top: 3vh;
+    gap: 2vh;
+  }
+
+  .popup-mensaje{
+    font-size: 2vh;
+    color: #5D6B8B;
+    margin-bottom: 3vh;
+  }
+
+  .popup-razon{
+    font-size: 1.5vh;
+    color: #5D6B8B;
+    margin-bottom: 3vh;
+  }
+
+  .close-btn{
+    position: absolute; 
+    top: 10px; 
+    right: 15px; 
+    font-size: 24px; 
+    cursor: pointer; 
+    color: #5E6C8C;
+  }
+
+
+  .añadir-button {
+    display: block;
+    width: 80%;
+    font-weight: bold;
+    background: linear-gradient(45deg, #8599C7 0%, #5E6C8C 100%);
+    color: white;
+    padding-block: 15px;
+    margin: 20px auto;
+    border-radius: 20px;
+    box-shadow:  #373F523f 0px 20px 10px -15px;
+    border: none;
+    transition: all 0.2s ease-in-out;
+  }
+  
+  .añadir-button:hover {
+    transform: scale(1.03);
+    box-shadow:  #373F523f 0px 23px 10px -20px;
+  }
+  
+  .añadir-button:active {
+    transform: scale(0.95);
+    box-shadow:  #373F523f 0px 15px 10px -10px;
+  }
+
+
+
     /*NAVEGADOR MOVIL*/
     .button-nav {
         outline: 0 !important;
@@ -448,5 +526,7 @@ body {
         height: 2.5vh;
       }
       
+
+
 
 
