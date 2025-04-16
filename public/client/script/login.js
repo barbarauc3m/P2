@@ -44,6 +44,15 @@ document.addEventListener('DOMContentLoaded', () => {
           // Si se hizo clic directamente en el overlay (fondo)
           if (e.target === loginPopup) {
                loginPopup.style.display = "none";
+
+               if (socketLogin && socketLogin.connected) {
+                const usuario = localStorage.getItem("loggedInUser"); // Puede ser null
+                console.log("Emitiendo requestDisplayChange a '/' al cerrar popup.");
+                socketLogin.emit('requestDisplayChange', {
+                    targetPage: '/', // <-- Ir a la home del servidor
+                    userId: usuario // Enviar por si acaso
+                });
+             }
           }
        });
    }
@@ -108,11 +117,6 @@ document.addEventListener('DOMContentLoaded', () => {
                       userId: result.username // Envía el username del usuario logueado
                   });
 
-                  // Opcional: Recargar la página actual del cliente o redirigir
-                  // location.reload(); // Recarga para reflejar estado logged-in en toda la página
-                  // window.location.href = '/mobile'; // O redirige a la home del móvil
-
-
               } else {
                   // --- LOGIN FALLIDO (Respuesta del Servidor) ---
                   console.warn('Login fallido:', result.message);
@@ -142,12 +146,11 @@ document.addEventListener('DOMContentLoaded', () => {
                window.location.href = 'perfil.html';
            } else {
                socketLogin.emit('requestDisplayChange', { 
-                targetPage: '/display/login-prompt', 
+                targetPage: '/display/login', 
                 userId: null });
                if(loginPopup) loginPopup.style.display = 'flex';
            }
        });
    }
-  
-
+   
 });

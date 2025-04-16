@@ -1,3 +1,66 @@
+// public/client/script/navigation.js
+
+document.addEventListener('DOMContentLoaded', () => {
+    console.log("Nav script cargado.");
+
+    // Conexión Socket.IO para la navegación global
+    if (typeof io === 'undefined') {
+        console.error('Navigation Script: io no definido.');
+        return;
+    }
+    const socketNav = io();
+    socketNav.on('connect', () => console.log('📱✅ Socket de Navegación Global conectado.'));
+    socketNav.on('connect_error', (err) => console.error('📱❌ Error conexión socket Nav Global:', err));
+
+
+    // --- Listener para Botón HOME ---
+    const homeButton = document.getElementById('nav-home-button');
+
+    if (homeButton) {
+        homeButton.addEventListener('click', (event) => {
+            event.preventDefault(); // Buena práctica para botones
+            console.log('📱 Botón Home presionado.');
+            const usuario = localStorage.getItem("loggedInUser"); // Obtener usuario (aunque no se use para ir a home)
+
+            // Verificar conexión antes de emitir
+            if (socketNav && socketNav.connected) {
+                console.log('   Socket conectado. Emitiendo para / ...');
+                socketNav.emit('requestDisplayChange', {
+                    targetPage: '/', // <-- Pantalla principal del servidor
+                    userId: usuario   // <-- Enviar por si acaso
+                });
+                // Navegar cliente a su página principal
+                window.location.href = '/mobile'; // <-- Página principal del cliente
+            } else {
+                console.error("Socket no conectado al intentar volver a home.");
+                alert("Error de conexión. Inténtalo de nuevo.");
+                // Fallback: Navegar solo cliente si falla el socket
+                // window.location.href = '/mobile';
+            }
+        });
+         console.log("📱 Listener añadido a #nav-home-button.");
+    } else {
+        // Es normal si alguna página no tiene este botón específico
+        // console.warn("Botón #nav-home-button no encontrado en esta página.");
+    }
+
+    // --- Listener para Botón de PERFIL (Puedes moverlo aquí si quieres centralizar) ---
+    const perfilButton = document.getElementById('perfil-boton');
+    if (perfilButton) {
+        perfilButton.addEventListener('click', () => {
+            // ... (Copiar aquí la lógica del profile-button-handler.js) ...
+            // Comprobar login, emitir requestDisplayChange para /display/profile o /display/login-prompt,
+            // navegar cliente a perfil.html o mostrar popup...
+        });
+        console.log("📱 Listener añadido a #perfil-boton (desde navigation.js).");
+    }
+
+     // --- Puedes añadir aquí listeners para OTROS botones comunes de la barra ---
+
+});
+
+
+
 window.addEventListener("pageshow", (event) => {
     if (event.persisted) {
       console.log("🧠 Página restaurada desde caché (bfcache)");

@@ -1,5 +1,9 @@
 document.addEventListener('DOMContentLoaded', () => {
 
+    socketRegister = io();
+    socketRegister.on('connect', () => console.log('✅ Socket conectado en register.js'));
+    socketRegister.on('connect_error', (err) => console.error('❌ Error conexión socket en register.js:', err));
+
   const registerForm = document.getElementById("register-form");
   const registerPopup = document.getElementById("popup-register");
   const loginPopup = document.getElementById("popup-login"); // Para mostrarlo después
@@ -26,6 +30,15 @@ document.addEventListener('DOMContentLoaded', () => {
       registerPopup.addEventListener("click", function (e) {
           if (e.target === registerPopup) { // Cierra solo si se hace clic en el fondo
               registerPopup.style.display = "none";
+
+              if (socketRegister && socketRegister.connected) {
+                const usuario = localStorage.getItem("loggedInUser"); // Puede ser null
+                console.log("Emitiendo requestDisplayChange a '/' al cerrar popup.");
+                socketRegister.emit('requestDisplayChange', {
+                    targetPage: '/', // <-- Ir a la home del servidor
+                    userId: usuario
+                });
+             }
           }
       });
   }

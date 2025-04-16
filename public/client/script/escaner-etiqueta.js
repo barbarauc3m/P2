@@ -51,9 +51,7 @@ async function startCamera() {
             audio: false,
             video: {
                 facingMode: 'environment', // 'user' para cámara frontal
-                // Podrías añadir constraints de resolución si lo necesitas
-                // width: { ideal: 1280 },
-                // height: { ideal: 720 }
+
             }
         };
         stream = await navigator.mediaDevices.getUserMedia(constraints);

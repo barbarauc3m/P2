@@ -77,3 +77,33 @@ function createGameContainer() {
   document.body.appendChild(container);
   return container;
 }
+
+socketDisplayManager.on('serverNotification', (data) => {
+  console.log(`🖥️ Notificación recibida:`, data);
+  displayNotification(data.message, data.type); // Llama a una función para mostrarla
+});
+
+// --- Función para mostrar la notificación (añadir al final del script) ---
+function displayNotification(message, type = 'info') {
+  const container = document.getElementById('server-notification-container') || document.body; // Usar contenedor específico o body
+
+  const notificationDiv = document.createElement('div');
+  notificationDiv.className = `server-notification ${type}`; // Clases para CSS: server-notification success, server-notification error, etc.
+  notificationDiv.textContent = message;
+
+  container.appendChild(notificationDiv);
+
+  // Fade-in
+  setTimeout(() => { notificationDiv.style.opacity = '1'; }, 10); // Pequeño delay para asegurar transición
+
+  // Fade-out y eliminar después de unos segundos
+  setTimeout(() => {
+      notificationDiv.style.opacity = '0';
+      // Eliminar del DOM después de que la transición termine
+      setTimeout(() => {
+          if (notificationDiv.parentNode) {
+               notificationDiv.parentNode.removeChild(notificationDiv);
+          }
+      }, 500); // Coincide con la duración de la transición de opacidad
+  }, 4000); // Mostrar durante 4 segundos
+}

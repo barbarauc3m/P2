@@ -7,6 +7,7 @@
   <link rel="stylesheet" href="styles/perfil.css" />
   <link rel="stylesheet" href="styles/login.css" />
   <script src="/socket.io/socket.io.js"></script>
+  <script src="script/navegacion.js"></script>
 
 </head>
 <body>
@@ -64,7 +65,7 @@
   </section>
 
   <div class="button-container">
-    <button class="button-nav" onclick="window.location.href='index.html'">
+    <button class="button-nav" id="nav-home-button" onclick="window.location.href='index.html'">
       <img src="../../../images/casa_blanca.svg" alt="Casa" class="icon-img" />
     </button>
     <button class="button-nav" onclick="window.location.href='juegos.html'">
