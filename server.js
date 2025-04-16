@@ -146,6 +146,14 @@ app.get('/display/avados-favs', (req, res) => {
   res.sendFile(path.join(__dirname, 'public', 'server', 'lavados-favs.html'));
 });
 
+app.get('/display/login', (req, res) => {
+  res.sendFile(path.join(__dirname, 'public/server/login.html'));
+});
+app.get('/display/register', (req, res) => {
+  res.sendFile(path.join(__dirname, 'public/server/register.html'));
+});
+
+
 
 // funciones que nos ayudan
 async function readUsers() {

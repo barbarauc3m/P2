@@ -1,0 +1,22 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Iniciar Sesión</title>
+    <style>
+        body { font-family: sans-serif; display: flex; justify-content: center; align-items: center; height: 100vh; background-color: #5D6B8B; color: white; text-align: center;}
+        .prompt-box { background: rgba(0,0,0,0.2); padding: 40px; border-radius: 10px; }
+        #server-notification { /* Estilos para notificación */ }
+    </style>
+    <script src="/socket.io/socket.io.js"></script>
+</head>
+<body>
+    <div class="prompt-box">
+        <h1>Iniciar Sesión</h1>
+        <p>Por favor, usa tu dispositivo móvil para iniciar sesión.</p>
+    </div>
+    <div id="server-notification-container"></div>
+    <script src="/server/script/display-manager.js"></script>
+</body>
+</html>
