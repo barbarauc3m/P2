@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Juegos</title>
+  <link rel="stylesheet" href="styles/juegos-server.css" />
+  <script src="/socket.io/socket.io.js"></script>
+</head>
+<body>
+
+  <main class="main-content">
+    <div class="cards-grid">
+      <!-- Tarjeta 1: Atrapa la Ropa -->
+      <div class="card-container" onclick="loadGame(0)">
+          <div class="card" id="card1">
+              <div class="card-content">
+                  
+              </div>
+          </div>
+      </div>
+      
+      <!-- Tarjeta 2: El Rey del Tendedero -->
+      <div class="card-container" onclick="loadGame(2)">
+          <div class="card" id="card2">
+              <div class="card-content">
+                  
+              </div>
+          </div>
+      </div>
+  </div>
+
+  </main>
+  
+  <script src="script/juegos-server.js"></script>
+      
+</body>
+</html>

@@ -12,18 +12,6 @@
   font-style: normal;
 }
 
-
-h1{
-  font-family: 'Super Cottage', sans-serif;  
-  font-size: 3vh;
-}
-
-h2{
-  margin-left: 2vh;
-  font-size: 2.5vh;
-  font-family: 'Super Cottage', sans-serif;  
-}
-
 body {
     margin: 0;
     padding: 0;
@@ -31,35 +19,9 @@ body {
     background-color: #f9fbff;
 }
 
-.top-bar {
-  display: flex;
-  align-items: center;
-  padding: 16px;
-}
-
-.top-bar .back-button {
-  text-decoration: none;
-  color: #3c3c6e;
-  background: none;
-  border: none;
-  font-size: 24px;
-  cursor: pointer;
-  margin-right: 12px;
-}
-
-.top-bar h1 {
-  color: #3c3c6e;
-  font-weight: bold;
-  margin-top: 2vw;
-}
-
-.header-subtitulo {
-  text-align: center;
-}
-
 .cards-grid {
   display: flex;
-  flex-direction: column;
+  flex-direction: row;
   gap: 20px;
   padding: 20px;
   justify-items: center;
@@ -117,41 +79,14 @@ body {
   cursor: pointer;
 }
 
-.button-container {
-  position: fixed;
-  bottom: 0;
-  left: 0;
-  width: 100%;
-  background-color: #5D6B8B;
-  height: 6vh;
-  display: flex;
-  align-items: center;
-  justify-content: space-around;
-  z-index: 1000; /* Para que esté por encima de todo */
-}
+@media screen and (min-width: 768px) {
+  .card-container {
+    width: 220px;
+    height: 300px;
+  }
 
-
-/*NAVEGADOR MOVIL*/
-.button-nav {
-  outline: 0 !important;
-  border: 0 !important;
-  width: 40px;
-  height: 40px;
-  border-radius: 50%;
-  background-color: transparent;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  color: #fff;
-  transition: all ease-in-out 0.3s;
-  cursor: pointer;
-}
-
-.button-nav:hover {
-  transform: translateY(-3px);
-}
-
-.icon-img {
-  width: auto;
-  height: 2.5vh;
+  .cards-grid {
+    gap: 40px;
+    max-width: 1000px;
+  }
 }

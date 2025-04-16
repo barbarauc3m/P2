@@ -17,23 +17,11 @@ const gamesMap = [
         mobilePage: "jugando.html",
         serverPage: "../server/juego1.html"
     },
-    {   
-        title: "Duelo de Doblado",
-        description: "Se el más rápido en doblar la ropa",
-        mobilePage: "jugando.html",
-        serverPage: "../server/juego2.html" 
-    },
     { 
         title: "El Rey del Tendedero",
         description: "Pon la ropa en el tendedero. CUIDADO, que no se toquen entre sí",
         mobilePage: "jugando.html",
-        serverPage: "../server/juego3.html"
-    },
-    { 
-        title: "Combo de Manchas",
-        description: "Combina manchas para ganar puntos",
-        mobilePage: "jugando.html",
-        serverPage: "../server/juego4.html" 
+        serverPage: "../server/juego2.html"
     }
 ];
 
@@ -69,8 +57,8 @@ document.addEventListener("DOMContentLoaded", function() {
 
     // Configurar sensores si es El Rey del Tendedero
     if (selectedGame === 'El Rey del Tendedero') { // AÑADIR QUE SEA CUANDO SE ESTÉ JUGANDO (variables esas)
-        console.log('🧭 SE PRENDEN SENSORES PARA JUEGO3 (deviceOrientation y botones emiten)!!!');
-        juego3();
+        console.log('🧭 SE PRENDEN SENSORES PARA JUEGO2 (deviceOrientation y botones emiten)!!!');
+        juego2();
     }
 
     /*

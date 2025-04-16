@@ -117,25 +117,17 @@ app.get('/escaner-color.html', (req, res) => {
   res.sendFile(path.join(__dirname, 'public/client/escaner-color.html'));
 });
 
-app.get('/juego3.html', (req, res) => {
-  res.sendFile(path.join(__dirname, 'public/client/juego3.html'));
-});
-
 // LADO SERVIDOR
+
+app.get('/juegos-server.html', (req, res) => {
+  res.sendFile(path.join(__dirname, 'public/server/juegos-server.html'));
+});
 app.get('/juego1.html', (req, res) => {
   res.sendFile(path.join(__dirname, 'public/server/juego1.html'));
 });
 
 app.get('/juego2.html', (req, res) => {
   res.sendFile(path.join(__dirname, 'public/server/juego2.html'));
-});
-
-app.get('/juego3.html', (req, res) => {
-  res.sendFile(path.join(__dirname, 'public/server/juego3.html'));
-});
-
-app.get('/juego4.html', (req, res) => {
-  res.sendFile(path.join(__dirname, 'public/server/juego4.html'));
 });
 
 app.get('/display/categories', (req, res) => {
@@ -524,7 +516,7 @@ io.on('connection', (socket) => {
     socket.broadcast.emit('mensaje', data);
   });
 
-  socket.on('orientationData', (data) => {  // Puntero juego3
+  socket.on('orientationData', (data) => {  // Puntero
     // Extrae x e y de data
     const { x, y } = data;
     //console.log("Posición procesada:", { x, y }); 
@@ -562,19 +554,19 @@ io.on('connection', (socket) => {
     socket.broadcast.emit('juego1-reiniciar'); // Reenvía a todos menos al móvil
   }); 
 
-  socket.on('juego3-empezar', () => {  // Llega solicitud desde el móvil
+  socket.on('juego2-empezar', () => {  // Llega solicitud desde el móvil
     console.log('[SERVER.JS] Empieza el juego 3');
-    socket.broadcast.emit('juego3-empezar'); // Reenvía a todos menos al móvil
+    socket.broadcast.emit('juego2-empezar'); // Reenvía a todos menos al móvil
   }); 
 
-  socket.on('juego3-pausar', () => {  // Llega solicitud desde el móvil
+  socket.on('juego2-pausar', () => {  // Llega solicitud desde el móvil
     console.log('[SERVER.JS]📱 Pausa recibida desde móvil');
-    socket.broadcast.emit('juego3-pausar'); // Reenvía a todos menos al móvil
+    socket.broadcast.emit('juego2-pausar'); // Reenvía a todos menos al móvil
   }); 
 
-  socket.on('juego3-reiniciar', () => {  // Llega solicitud desde el móvil
+  socket.on('juego2-reiniciar', () => {  // Llega solicitud desde el móvil
     console.log('[SERVER.JS]📱 Petición reinicio recibida desde móvil');
-    socket.broadcast.emit('juego3-reiniciar'); // Reenvía a todos menos al móvil
+    socket.broadcast.emit('juego2-reiniciar'); // Reenvía a todos menos al móvil
   }); 
 
   socket.on('moverCienteAlMenu', () => {  // Enviamos solicitud al móvil
@@ -620,6 +612,15 @@ io.on('connection', (socket) => {
         gameFile: data.gameFile,
         gameName: data.gameName
     });
+  });
+
+  // Manejar la solicitud de abrir la pantalla de juegos
+  socket.on("abrir-juegos", () => {
+    console.log("Se pidió abrir la pantalla de juegos");
+
+    // Aquí podrías emitir a una tablet, pantalla o navegador específico
+    // Por ejemplo: emitir a todos los clientes excepto el que emitió
+    socket.broadcast.emit('redirigir-a-juegos');
   });
 
   // Manejar controles del juego

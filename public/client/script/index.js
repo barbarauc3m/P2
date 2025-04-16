@@ -54,6 +54,13 @@ if (botonLanzar) {
     });
 }
 
+const botonMando = document.getElementById("boton-mando");
+
+botonMando.addEventListener("click", () => {
+    console.log("Botón de mando pulsado");
+    socket.emit("abrir-juegos"); // Evento que el servidor recibirá
+});
+
 // Ejemplo para recibir un evento desde el servidor
 socket.on('actualizarPantallaMobile', (data) => {
     console.log('Móvil: Recibido evento desde servidor:', data);
