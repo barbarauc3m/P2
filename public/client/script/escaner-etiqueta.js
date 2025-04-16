@@ -180,26 +180,34 @@ function interpretPredictions(predictions) {
 
 // --- 5. Mostrar Resultados en Popup (¡MODIFICADO!) ---
 function displayResults(probabilities, interpreted) {
-  // 1. Construir el mensaje para el popup
-  let alertMessage = 'Instrucciones de Lavado Detectadas:\n\n'; // Título y saltos de línea
-
-  for(const [cat, result] of Object.entries(interpreted)) {
-      // Añadir cada resultado interpretado al mensaje
-      alertMessage += `${cat}: ${result.symbol} (Confianza: ${(result.probability * 100).toFixed(1)}%)\n`;
+    // 1. Construir el objeto de resultado estructurado
+    const resultadoParaGuardar = {
+        type: 'etiqueta',
+        data: interpreted // El objeto con { 'Temperatura/Metodo': {symbol, prob}, ... }
+    };
+  
+    // 2. Mostrar detalles en consola (opcional, para depuración)
+    console.log('Resultado Interpretado para guardar:', resultadoParaGuardar);
+    console.log('\n--- Probabilidades Detalladas (Solo Consola) ---');
+     for(let i=0; i < probabilities.length; i++) {
+         console.log(`${CLASS_NAMES[i]}: ${probabilities[i].toFixed(4)}`);
+     }
+  
+    // 3. Guardar en sessionStorage para la página anterior
+    try {
+        sessionStorage.setItem('ultimoResultadoScan', JSON.stringify(resultadoParaGuardar));
+        console.log("Resultado guardado en sessionStorage.");
+        // 4. Volver a la página anterior (o a una específica)
+        // window.history.back(); // Opción 1: Volver atrás
+        window.location.href = 'empezar-lavado.html'; // Opción 2: Ir a página específica
+    } catch (e) {
+        console.error("Error al guardar en sessionStorage (quizás demasiado grande?):", e);
+        alert("Error al procesar el resultado. Vuelve manualmente e inténtalo de nuevo.");
+    }
+  
+    // Ya no actualizamos el <pre> ni mostramos alert aquí
+    // resultOutput.textContent = 'Predicción completada. Volviendo...';
   }
-
-  // 2. Mostrar el popup con el mensaje
-  alert(alertMessage);
-
-  // 3. (Opcional) Actualizar el <pre> para indicar que se completó
-  resultOutput.textContent = 'Predicción completada. Resultados mostrados.';
-
-  // 4. (Opcional) Mantener los detalles en la consola para depuración
-  console.log('\n--- Probabilidades Detalladas (Solo Consola) ---');
-   for(let i=0; i < probabilities.length; i++) {
-       console.log(`${CLASS_NAMES[i]}: ${probabilities[i].toFixed(4)}`);
-   }
-}
 
 // --- Iniciar Carga del Modelo al cargar la página ---
 loadModel();

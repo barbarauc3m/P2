@@ -97,23 +97,28 @@ async function captureAndAnalyze() {
                 toneDescription = "Tono Claro";
             }
 
-            // Preparar el mensaje para el alert
-            const resultMessage = `Análisis de Color:\n` +
-                                  `--------------------\n` +
-                                  `Color Dominante (HEX): ${dominantColor.hex}\n` +
-                                  `Tono General: ${toneDescription} (L: ${l}%)\n` +
-                                  `--------------------\n` +
-                                  `Detalle HSL: \n` +
-                                  `  - Tono (H): ${h}°\n` +
-                                  `  - Saturación (S): ${s}%\n` +
-                                  `  - Luminosidad (L): ${l}%`;
+            const resultadoParaGuardar = {
+                type: 'color',
+                data: {
+                    hex: dominantColor.hex,
+                    L: l, // Guardamos L como número 0-100
+                    tone: toneDescription,
+                    fullPalette: colors // Opcional: guardar toda la paleta por si acaso
+                }
+            };
+            console.log('Resultado de color para guardar:', resultadoParaGuardar);
 
-            // Mostrar el resultado en un alert
-            alert(resultMessage);
-
-            // Actualizar también el elemento <pre> si quieres
-            resultado.textContent = `Color: ${dominantColor.hex}, Tono: ${toneDescription} (L: ${l}%)`;
-            scanText.textContent = "¡Análisis completado! Puedes capturar otra vez.";
+             // --- Guardar en sessionStorage y volver ---
+            try {
+                sessionStorage.setItem('ultimoResultadoScan', JSON.stringify(resultadoParaGuardar));
+                console.log("Resultado guardado en sessionStorage.");
+                // Volver a la página anterior (o a una específica)
+                // window.history.back(); // Opción 1: Volver atrás
+                window.location.href = 'empezar-lavado.html'; // Opción 2: Ir a página específica
+            } catch (e) {
+                console.error("Error al guardar en sessionStorage:", e);
+                alert("Error al procesar el resultado. Vuelve manualmente e inténtalo de nuevo.");
+            }
 
         } else {
             alert("No se pudieron detectar colores predominantes en la captura. Intenta con mejor luz o un enfoque más cercano.");
