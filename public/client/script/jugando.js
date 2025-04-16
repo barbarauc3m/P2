@@ -37,7 +37,7 @@ document.addEventListener('DOMContentLoaded', function() {
     // Configurar controles específicos para "El Rey del Tendedero"
     if (localStorage.getItem('selectedGameTitle') === 'El Rey del Tendedero') {
         console.log("Esperando a que el usuario agite.");
-        agitarParaEmpezar3();
+        agitarParaEmpezar2();
     }
 
     // Configurar controles específicos para "El Rey del Tendedero"
@@ -119,7 +119,7 @@ function juego1() {
     }
 }
 
-function juego3() {    
+function juego2() {    
     console.log('🧭 Activando puntero Wii remoto desde móvil');
     activarPunteroWii();
 
@@ -152,7 +152,7 @@ function juego3() {
     if (pauseButton) {
         pauseButton.addEventListener("click", function() {
             console.log("😡 MÓVIL MANDA QUE SE PARE EL JUEGO");
-            socket.emit('juego3-pausar');
+            socket.emit('juego2-pausar');
             //alert("Juego pausado");
         });
     }
@@ -162,14 +162,14 @@ function juego3() {
     if (restartButton) {
         restartButton.addEventListener("click", function() {
             console.log("😱 MÓVIL MANDA QUE SE REINICIE EL JUEGO");
-            socket.emit('juego3-reiniciar');
+            socket.emit('juego2-reiniciar');
             //alert("Juego reiniciado");
         });
     }
 }
 
 
-function agitarParaEmpezar3() {
+function agitarParaEmpezar2() {
     let shakeCount = 0;
     let lastShakeTime = 0;
     let lastUpdate = 0;
@@ -207,10 +207,10 @@ function agitarParaEmpezar3() {
                 
                 if (shakeCount >= REQUIRED_SHAKES) {
                     console.log("📳 ¡Agitado!");
-                    socket.emit('juego3-empezar');
+                    socket.emit('juego2-empezar');
                     juegoIniciado = true;
                     window.removeEventListener('devicemotion', onDeviceMotion);
-                    juego3();
+                    juego2();
                 }
                     
             }

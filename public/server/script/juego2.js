@@ -3,8 +3,8 @@ const pointer = document.getElementById('pointer');
 document.addEventListener("DOMContentLoaded", function() {
     console.log("Dentro de DOMContentLoaded");
 
-    function iniciarJuego3() {
-        console.log("Dentro de IniciarJuego3");
+    function iniciarJuego2() {
+        console.log("Dentro de IniciarJuego2");
         document.querySelector(".game-title").style.display = "none";
         document.querySelector(".game-start-container").style.display = "none";
         document.querySelector(".game-container").style.display = "block";
@@ -31,16 +31,16 @@ document.addEventListener("DOMContentLoaded", function() {
         console.log('✅ Ordenador conectado al servidor con socket ID:', socket.id);
       });
 
-      socket.on('juego3-empezar', () => {
-        iniciarJuego3();
+      socket.on('juego2-empezar', () => {
+        iniciarJuego2();
       });   
       
-      socket.on('juego3-pausar', () => {
+      socket.on('juego2-pausar', () => {
         console.log("Pausa recibida desde móvil");
         pausarJuego();
       });
 
-      socket.on('juego3-reiniciar', () => {
+      socket.on('juego2-reiniciar', () => {
         console.log("Reinicio recibido desde móvil");
         reiniciarJuego();
       });
