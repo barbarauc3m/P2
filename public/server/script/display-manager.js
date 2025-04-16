@@ -96,12 +96,12 @@ function displayNotification(message, type = 'info') {
   notificationDiv.style.top = '20px';
   notificationDiv.style.left = '50%';
   notificationDiv.style.transform = 'translateX(-50%)';
-  notificationDiv.style.padding = '15px 25px';
+  notificationDiv.style.padding = '2vh 10vh';
   notificationDiv.style.borderRadius = '5px';
   notificationDiv.style.zIndex = '2000';
   notificationDiv.style.backgroundColor = type === 'success' ? '#4CAF50' : (type === 'error' ? '#f44336' : '#2196F3'); // Verde, Rojo, Azul
   notificationDiv.style.color = 'white';
-  notificationDiv.style.boxShadow = '0 2px 10px rgba(0,0,0,0.2)';
+  notificationDiv.style.boxShadow = '0 4px 20px rgba(0,0,0,0.2)';
   notificationDiv.style.opacity = '0'; // Empezar invisible para fade-in
   notificationDiv.style.transition = 'opacity 0.5s ease-in-out';
 

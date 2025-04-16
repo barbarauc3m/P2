@@ -44,7 +44,7 @@ document.addEventListener('DOMContentLoaded', () => {
           // Si se hizo clic directamente en el overlay (fondo)
           if (e.target === loginPopup) {
                loginPopup.style.display = "none";
-               
+
                if (socketLogin && socketLogin.connected) {
                 const usuario = localStorage.getItem("loggedInUser"); // Puede ser null
                 console.log("Emitiendo requestDisplayChange a '/' al cerrar popup.");
@@ -152,6 +152,5 @@ document.addEventListener('DOMContentLoaded', () => {
            }
        });
    }
-  
-
+   
 });
