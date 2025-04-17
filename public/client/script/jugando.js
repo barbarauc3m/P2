@@ -47,19 +47,59 @@ document.addEventListener('DOMContentLoaded', function() {
     }
 });
 
+
 function controlarPuntero() { // controlar puntero
-  if (window.DeviceOrientationEvent) {
-    window.addEventListener('deviceorientation', (event) => {
-        // Obtenemos pitch y roll (nota: dependiendo del dispositivo y navegador, podrías usar event.beta y event.gamma)
-        const x = event.alpha;   // Inclinación lateral
-        const y = event.beta;   // Inclinación frontal
-        
-        
-        // Enviar los datos al servidor
-        socket.emit('orientationData', { x, y });
-    });
+    if (window.DeviceOrientationEvent) {
+      window.addEventListener('deviceorientation', (event) => {
+          // Obtenemos pitch y roll (nota: dependiendo del dispositivo y navegador, podrías usar event.beta y event.gamma)
+          const x = event.alpha;   // Inclinación lateral
+          const y = event.beta;   // adelante/atrás (-180 a 180)
+          
+          
+          // Enviar los datos al servidor
+          socket.emit('orientationData', { x, y });
+      });
+      } else {
+          console.log("Tu navegador no soporta DeviceOrientationEvent");
+      }
+  }
+
+// Activa el envío de puntero Wii remoto
+function activarPunteroWii() {
+    console.log("Dentro de la activarPunteroWii");
+    if (typeof DeviceOrientationEvent !== 'undefined' && typeof DeviceOrientationEvent.requestPermission === 'function') {
+        // iOS necesita pedir permiso
+        DeviceOrientationEvent.requestPermission().then(response => {
+            if (response === 'granted') {
+                controlarPuntero();
+            }
+        }).catch(console.error);
     } else {
-        console.log("Tu navegador no soporta DeviceOrientationEvent");
+        controlarPuntero();
+    }
+}
+
+
+// ====================== JUEGO 1 ==========================
+
+function juego1() {    
+    console.log('🚗 Activando controles de movimiento para el carrito');
+    controlarMovimientoCarrito();
+
+    // Configurar botones de pausa/reinicio si es necesario
+    const pauseButton = document.getElementById("pause-button");
+    if (pauseButton) {
+        pauseButton.addEventListener("click", function() {
+            console.log("Pausa solicitada desde el móvil");
+            socket.emit('juego1-pausar');
+        });
+    }
+
+    const restartButton = document.getElementById("restart-button");
+    if (restartButton) {
+        restartButton.addEventListener("click", function() {
+            socket.emit('juego1-reiniciar');
+        });
     }
 }
 
@@ -83,41 +123,7 @@ function controlarMovimientoCarrito() {
   }
 
 
-// Activa el envío de puntero Wii remoto
-function activarPunteroWii() {
-    console.log("Dentro de la activarPunteroWii");
-    if (typeof DeviceOrientationEvent !== 'undefined' && typeof DeviceOrientationEvent.requestPermission === 'function') {
-        // iOS necesita pedir permiso
-        DeviceOrientationEvent.requestPermission().then(response => {
-            if (response === 'granted') {
-                controlarPuntero();
-            }
-        }).catch(console.error);
-    } else {
-        controlarPuntero();
-    }
-}
-
-function juego1() {    
-    console.log('🚗 Activando controles de movimiento para el carrito');
-    controlarMovimientoCarrito();
-
-    // Configurar botones de pausa/reinicio si es necesario
-    const pauseButton = document.getElementById("pause-button");
-    if (pauseButton) {
-        pauseButton.addEventListener("click", function() {
-            console.log("Pausa solicitada desde el móvil");
-            socket.emit('juego1-pausar');
-        });
-    }
-
-    const restartButton = document.getElementById("restart-button");
-    if (restartButton) {
-        restartButton.addEventListener("click", function() {
-            socket.emit('juego1-reiniciar');
-        });
-    }
-}
+// ====================== JUEGO 2 ==========================
 
 function juego2() {    
     console.log('🧭 Activando puntero Wii remoto desde móvil');
@@ -168,7 +174,8 @@ function juego2() {
     }
 }
 
-
+// ==================== OTROS (agitar, puntero) ==================
+activarPunteroWii();
 function agitarParaEmpezar2() {
     let shakeCount = 0;
     let lastShakeTime = 0;
@@ -278,3 +285,5 @@ function agitarParaEmpezar1() {
 
     window.addEventListener('devicemotion', onDeviceMotion);
 }
+
+

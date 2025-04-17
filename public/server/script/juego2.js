@@ -1,4 +1,4 @@
-const pointer = document.getElementById('pointer');
+//const pointer = document.getElementById('pointer');
 
 document.addEventListener("DOMContentLoaded", function() {
     console.log("Dentro de DOMContentLoaded");
@@ -60,11 +60,12 @@ document.addEventListener("DOMContentLoaded", function() {
         const posX = (1024/2) + (((-x + 90) / 180) * window.innerWidth);
         const posY = (600/2) + (((-y + 90) / 180) * window.innerHeight);
         
-        //console.log("Valores finales css { x, y }:", posX, posY);
+        console.log("Valores finales css { x, y }:", posX, posY);
 
         pointer.style.left = `${posX}px`;
         pointer.style.top = `${posY}px`;
       });
+      
 
     } catch (error) {
       console.warn("No se pudo conectar a Socket.IO:", error);
