@@ -106,3 +106,28 @@ function displayNotification(message, type = 'info') {
       }, 500); // Coincide con la duración de la transición de opacidad
   }, 4000); // Mostrar durante 4 segundos
 }
+
+// Para animar los juegos si inclinas el móvil a un lado o a otro
+socketDisplayManager.on("expandir-juego1", () => {  
+  console.log("Expandir juego1 recibido");
+  const card1 = document.getElementById('card1');
+  const card2 = document.getElementById('card2');
+  
+  card1.style.transition = 'transform 0.3s ease-in-out';
+  card2.style.transition = 'transform 0.3s ease-in-out';
+  
+  card2.style.transform = 'scale(0.95)';
+  card1.style.transform = 'scale(1.05)';
+});
+
+socketDisplayManager.on("expandir-juego2", () => {  
+  console.log("Expandir juego2 recibido");
+  const card1 = document.getElementById('card1');
+  const card2 = document.getElementById('card2');
+  
+  card1.style.transition = 'transform 0.3s ease-in-out';
+  card2.style.transition = 'transform 0.3s ease-in-out';
+  
+  card1.style.transform = 'scale(0.95)';
+  card2.style.transform = 'scale(1.05)';
+});

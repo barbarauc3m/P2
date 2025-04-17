@@ -582,6 +582,15 @@ io.on('connection', (socket) => {
     socket.broadcast.emit('moverCienteAlMenu'); 
   }); 
 
+  socket.on("expandir-juego1", () => {  
+    console.log("Server: Expandir juego1 recibido");
+    socket.broadcast.emit('expandir-juego1'); 
+  });
+  socket.on("expandir-juego2", () => {  
+    console.log("Server: Expandir juego2 recibido");
+    socket.broadcast.emit('expandir-juego2'); 
+  });
+
   // NUEVO: Escuchar solicitud para cambiar la pantalla del servidor
   socket.on('requestDisplayChange', (data) => {
     console.log(`📱 Recibida petición de ${socket.id} para cambiar display a: ${data.targetPage}`);

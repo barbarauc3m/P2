@@ -136,3 +136,35 @@ document.addEventListener("DOMContentLoaded", function() {
     });
 });
 
+// Para animar los juegos si inclinas el móvil a un lado o a otro
+// Sensibilidad mínima para que haya efecto (en grados)
+const gammaThreshold = 10;
+
+// Escala activa y clase personalizada
+const activeTransform = 'scale(1.05)';
+
+// Función para resetear el estilo
+function resetTransforms() {
+document.getElementById('card1').style.transform = '';
+document.getElementById('card2').style.transform = '';
+}
+
+window.addEventListener('deviceorientation', function (event) {
+    const gamma = event.gamma;
+
+    // Primero reseteamos por si hay cambios
+    resetTransforms();
+
+    if (gamma < -gammaThreshold) {
+        // Inclinado a la izquierda
+        //document.getElementById('card1').style.transform = activeTransform;
+        console.log("Inclinado a la izquierda");
+        socket.emit('expandir-juego1');
+    } else if (gamma > gammaThreshold) {
+        // Inclinado a la derecha
+        //document.getElementById('card2').style.transform = activeTransform;
+        console.log("Inclinado a la derecha");
+        socket.emit('expandir-juego2');
+    }
+    // Si está centrado, no se aplica ningún efecto
+});
