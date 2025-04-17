@@ -625,9 +625,6 @@ io.on('connection', (socket) => {
   // Manejar la solicitud de abrir la pantalla de juegos
   socket.on("abrir-juegos", () => {
     console.log("Se pidió abrir la pantalla de juegos");
-
-    // Aquí podrías emitir a una tablet, pantalla o navegador específico
-    // Por ejemplo: emitir a todos los clientes excepto el que emitió
     socket.broadcast.emit('redirigir-a-juegos');
   });
 

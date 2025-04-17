@@ -1,4 +1,4 @@
-
+/*
 document.addEventListener("DOMContentLoaded", function() {
     console.log("Dentro de DOMContentLoaded");
 
@@ -21,3 +21,4 @@ document.addEventListener("DOMContentLoaded", function() {
     }
 
 });
+*/

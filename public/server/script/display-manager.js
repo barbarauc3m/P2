@@ -57,13 +57,11 @@ socketDisplayManager.on('moverCienteAlMenu', () => {
   //window.location.href = './juegos.html';
   socket.broadcast.emit('moverCienteAlMenu'); 
 }); 
-/*
-socketDisplayManager.on("redirigir-a-juegos", () => {
-  console.log("Redirigiendo a juegos...");
-  window.location.href = "/juegos-server.html";
-});
-*/
 
+socketDisplayManager.on("redirigir-a-juegos", () => {  
+  console.log("Redirigiendo a juegos...");
+  window.location.href = "/juegos-server.html"; 
+});
 
 function createGameContainer() {
   const container = document.createElement('div');
