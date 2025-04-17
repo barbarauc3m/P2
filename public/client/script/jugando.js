@@ -47,7 +47,36 @@ document.addEventListener('DOMContentLoaded', function() {
     }
 });
 
+function handleMotion(event) {
+  const acc = event.accelerationIncludingGravity;
+  
+  if (!acc) return; // Protege contra null/undefined
 
+  const x = acc.x;
+  const y = acc.y;
+  const z = acc.z;
+
+  console.log("Enviando accelerationData", x, y);
+  socket.emit('accelerationData', { x, y });
+}
+
+if (typeof DeviceMotionEvent.requestPermission === 'function') {
+  // iOS 13+ (requiere permiso)
+  DeviceMotionEvent.requestPermission()
+    .then(permissionState => {
+      if (permissionState === 'granted') {
+        window.addEventListener('devicemotion', handleMotion);
+      } else {
+        alert("Permiso denegado para usar el acelerómetro");
+      }
+    })
+    .catch(console.error);
+} else {
+  // Android o navegadores que no requieren permiso
+  window.addEventListener('devicemotion', handleMotion);
+}
+
+/*
 function controlarPuntero() { // controlar puntero
     if (window.DeviceOrientationEvent) {
       window.addEventListener('deviceorientation', (event) => {
@@ -77,7 +106,7 @@ function activarPunteroWii() {
     } else {
         controlarPuntero();
     }
-}
+}*/
 
 
 // ====================== JUEGO 1 ==========================
@@ -126,8 +155,7 @@ function controlarMovimientoCarrito() {
 // ====================== JUEGO 2 ==========================
 
 function juego2() {    
-    console.log('🧭 Activando puntero Wii remoto desde móvil');
-    activarPunteroWii();
+    //console.log('🧭 Activando puntero Wii remoto desde móvil');
 
     let lastBeta = null;
     let lastTime = null;
@@ -175,7 +203,7 @@ function juego2() {
 }
 
 // ==================== OTROS (agitar) ==================
-activarPunteroWii();
+//activarPunteroWii();
 function agitarParaEmpezar2() {
     let shakeCount = 0;
     let lastShakeTime = 0;

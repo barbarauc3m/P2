@@ -54,13 +54,24 @@ document.addEventListener("DOMContentLoaded", function() {
         console.log('El servidor vuelve a index', data);
         window.location.href = 'index.html';
       });
-    
+    /*
       socket.on('updatePointer', ({x, y}) => {  // Puntero
         const posX = (1024/2) + (((-x + 90) / 180) * window.innerWidth);
         const posY = (600/2) + (((-y + 90) / 180) * window.innerHeight);
         
         console.log("Valores finales css { x, y }:", posX, posY);
 
+        pointer.style.left = `${posX}px`;
+        pointer.style.top = `${posY}px`;
+      });*/
+
+      socket.on('updatePointer', ({ x, y }) => {
+        const pointer = document.getElementById('pointer');
+        const sensitivity = 50;
+      
+        const posX = window.innerWidth / 2 + x * sensitivity;
+        const posY = window.innerHeight / 2 + y * sensitivity;
+      
         pointer.style.left = `${posX}px`;
         pointer.style.top = `${posY}px`;
       });
