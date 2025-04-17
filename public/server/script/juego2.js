@@ -23,6 +23,31 @@ document.addEventListener("DOMContentLoaded", function() {
         document.querySelector("#pointer").style.display = "block";
     }
 
+    // Variables para suavizado
+    let targetX = window.innerWidth / 2;
+    let targetY = window.innerHeight / 2;
+    const smoothingFactor = 0.1; // Ajusta este valor (0.01 a 0.2)
+    let animationFrameId = null;
+
+    // Función de animación suavizada
+    function smoothMovePointer() {
+    const pointer = document.getElementById('pointer');
+    const currentX = parseFloat(pointer.style.left || targetX);
+    const currentY = parseFloat(pointer.style.top || targetY);
+    
+    // Interpolación lineal suavizada
+    const newX = currentX + (targetX - currentX) * smoothingFactor;
+    const newY = currentY + (targetY - currentY) * smoothingFactor;
+    
+    pointer.style.left = `${newX}px`;
+    pointer.style.top = `${newY}px`;
+    
+    animationFrameId = requestAnimationFrame(smoothMovePointer);
+    }
+
+    // Iniciar la animación
+    smoothMovePointer();
+
     try {
         window.socket = io();
         const socket = window.socket;
@@ -64,7 +89,7 @@ document.addEventListener("DOMContentLoaded", function() {
         pointer.style.left = `${posX}px`;
         pointer.style.top = `${posY}px`;
       });*/
-
+/*
       socket.on('updatePointer', ({ x, y }) => {
         const pointer = document.getElementById('pointer');
         const sensitivity = 50;
@@ -74,6 +99,19 @@ document.addEventListener("DOMContentLoaded", function() {
       
         pointer.style.left = `${posX}px`;
         pointer.style.top = `${posY}px`;
+      });*/
+      socket.on('updatePointer', ({ x, y }) => {
+        const sensitivity = 50;
+        
+        // Actualizar las coordenadas objetivo (no las visuales directamente)
+        targetX = window.innerWidth / 2 - x * sensitivity;
+        targetY = window.innerHeight / 2 - y * sensitivity;
+        
+        // Resetear si la ventana cambia de tamaño
+        window.addEventListener('resize', () => {
+          targetX = window.innerWidth / 2 + x * sensitivity;
+          targetY = window.innerHeight / 2 + y * sensitivity;
+        });
       });
       
 
