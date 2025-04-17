@@ -582,6 +582,7 @@ io.on('connection', (socket) => {
     socket.broadcast.emit('moverCienteAlMenu'); 
   }); 
 
+  // Para animar los juegos si inclinas el móvil a un lado o a otro
   socket.on("expandir-juego1", () => {  
     console.log("Server: Expandir juego1 recibido");
     socket.broadcast.emit('expandir-juego1'); 
@@ -655,7 +656,7 @@ server.listen(PORT, () => {
   console.log(`Servidor HTTPS con Socket.IO en https://localhost:${PORT}`);
   console.log(`Accede a la pantalla del servidor en: https://localhost:${PORT}/`);
   console.log(`Accede a la pantalla del móvil en: https://localhost:${PORT}/mobile`);
-  // Puedes añadir: console.log(`Pantalla servidor (categorías): https://localhost:${PORT}/display/categories`);
+  // Se puede añadir: console.log(`Pantalla servidor (categorías): https://localhost:${PORT}/display/categories`);
 });
 
 

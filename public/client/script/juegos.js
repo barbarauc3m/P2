@@ -136,35 +136,56 @@ document.addEventListener("DOMContentLoaded", function() {
     });
 });
 
-// Para animar los juegos si inclinas el móvil a un lado o a otro
-// Sensibilidad mínima para que haya efecto (en grados)
-const gammaThreshold = 10;
+// Para animar los juegos si inclinas el móvil a un lado o a otro 
+// Configuración
+const gammaThreshold = 13; // Sensibilidad de inclinación (grados)
+const accelerationThreshold = 3; // Sensibilidad del golpe en seco (m/s²)
+let currentTilt = null; // 'left', 'right', or null
 
-// Escala activa y clase personalizada
-const activeTransform = 'scale(1.05)';
-
-// Función para resetear el estilo
+// Resetear estilos de las tarjetas
 function resetTransforms() {
-document.getElementById('card1').style.transform = '';
-document.getElementById('card2').style.transform = '';
+  document.getElementById('card1').style.transform = '';
+  document.getElementById('card2').style.transform = '';
 }
 
-window.addEventListener('deviceorientation', function (event) {
-    const gamma = event.gamma;
+// --------------- INCLINACIÓN 
+window.addEventListener('deviceorientation', (event) => {
+  const gamma = event.gamma;
+  resetTransforms();
 
-    // Primero reseteamos por si hay cambios
-    resetTransforms();
+  if (gamma < -gammaThreshold) {
+    currentTilt = 'left';
+    console.log("Inclinado a la izquierda (Juego 1 seleccionado)");
+    socket.emit('expandir-juego1');
+  } 
+  else if (gamma > gammaThreshold) {
+    currentTilt = 'right';
+    console.log("Inclinado a la derecha (Juego 2 seleccionado)");
+    socket.emit('expandir-juego2');
+  } 
+  else {
+    currentTilt = null; // Centrado
+  }
+});
 
-    if (gamma < -gammaThreshold) {
-        // Inclinado a la izquierda
-        //document.getElementById('card1').style.transform = activeTransform;
-        console.log("Inclinado a la izquierda");
-        socket.emit('expandir-juego1');
-    } else if (gamma > gammaThreshold) {
-        // Inclinado a la derecha
-        //document.getElementById('card2').style.transform = activeTransform;
-        console.log("Inclinado a la derecha");
-        socket.emit('expandir-juego2');
+// --------------- GOLPE SECO HACIA ARRIBA PARA ABRIR 
+window.addEventListener('devicemotion', (event) => {
+  const accelerationY = event.acceleration.y; // Aceleración vertical (m/s²)
+
+  // Si hay un golpe brusco hacia arriba
+  if (Math.abs(accelerationY) > accelerationThreshold && accelerationY < 0) {
+    console.log("¡Golpe seco detectado!", accelerationY);
+
+    // Se ejecuta loadGame() según la inclinación actual
+    console.log("Cargando Juego 1 (loadGame(0))");
+    if (currentTilt === 'left') {
+      loadGame(0); // Juego 1
+      
+    } 
+    else if (currentTilt === 'right') {
+      console.log("Cargando Juego 2 (loadGame(1))");
+      loadGame(1); // Juego 2
+      
     }
-    // Si está centrado, no se aplica ningún efecto
+  }
 });
