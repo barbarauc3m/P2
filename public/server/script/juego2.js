@@ -277,7 +277,7 @@ document.addEventListener("DOMContentLoaded", function() {
         console.log("se envía el emit");
         juegoPerdido = true;
         socket.emit("moverCienteAlMenu");
-        window.location.href = './index.html';
+        window.location.href = './juegos-server.html';
     }
 
 // Asigna el evento al botón "VOLVER A JUGAR"

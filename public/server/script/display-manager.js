@@ -54,14 +54,15 @@ socketDisplayManager.on('closeGameDisplay', () => {
 
 socketDisplayManager.on('moverCienteAlMenu', () => {  
   console.log('[CLIENTE] CLiente vuelve al menú');
-  window.location.href = './juegos.html';
+  //window.location.href = './juegos.html';
+  socket.broadcast.emit('moverCienteAlMenu'); 
 }); 
-
+/*
 socketDisplayManager.on("redirigir-a-juegos", () => {
   console.log("Redirigiendo a juegos...");
   window.location.href = "/juegos-server.html";
 });
-
+*/
 
 
 function createGameContainer() {
