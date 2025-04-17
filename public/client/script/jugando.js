@@ -174,7 +174,7 @@ function juego2() {
     }
 }
 
-// ==================== OTROS (agitar, puntero) ==================
+// ==================== OTROS (agitar) ==================
 activarPunteroWii();
 function agitarParaEmpezar2() {
     let shakeCount = 0;

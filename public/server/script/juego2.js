@@ -55,8 +55,7 @@ document.addEventListener("DOMContentLoaded", function() {
         window.location.href = 'index.html';
       });
     
-
-      socket.on('updatePointer', (x, y) => {  // Puntero
+      socket.on('updatePointer', ({x, y}) => {  // Puntero
         const posX = (1024/2) + (((-x + 90) / 180) * window.innerWidth);
         const posY = (600/2) + (((-y + 90) / 180) * window.innerHeight);
         
