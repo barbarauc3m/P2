@@ -36,6 +36,20 @@
     "personalizados": [
       {
         "nivelSuciedad": "Manchas visibles",
+        "temperatura": "50°C",
+        "centrifugado": "Bajo: 600 rpm",
+        "duracion": "60 min",
+        "detergente": "25 ml",
+        "tejido": [
+          "Blanco"
+        ],
+        "favorito": false,
+        "nombre": "Lavado personalizado 3",
+        "index": 3,
+        "fechaGuardado": "2025-04-18T09:35:55.811Z"
+      },
+      {
+        "nivelSuciedad": "Manchas visibles",
         "temperatura": "60°C",
         "centrifugado": "Bajo: 600 rpm",
         "duracion": "105 min",
