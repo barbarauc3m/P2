@@ -35,15 +35,6 @@ body {
     overflow: hidden;  /* nuevo para meter puntero */
 }
 
-#pointer {
-    width: 20px;
-    height: 20px;
-    background: red;
-    border-radius: 50%;
-    position: fixed;
-    z-index: 3000;
-}
-
 .game-title {
     font-size: 4em;
     margin-bottom: 20px;
