@@ -1,213 +1,230 @@
 // --- script/escaner-etiqueta.js ---
-const MODEL_URL = '/client/tfjs_graph_model_final/model.json';
-const IMG_SIZE = 128; // Tamaño de imagen esperado por el modelo (128x128)
-const NUM_CLASSES = 13; // Número de clases de símbolos
-const CLASS_NAMES = ['lavado_30', 'lavado_40', 'lavado_50', 'lavado_60', 'lavado_70', 'lavado_95', 'lavado_a_mano', 'lavado_delicado', 'lavado_muy_delicado', 'lavado_no', 'lavado_normal', 'lejia_no', 'lejia_si']; // ¡EN EL MISMO ORDEN QUE AL ENTRENAR!
-const PREDICTION_THRESHOLD = 0.5; // Umbral para considerar una predicción como positiva
 
-// Categorías para interpretación (¡REVISA QUE LOS ÍNDICES SEAN CORRECTOS!)
-// Asegúrate de que estos índices corresponden a la posición en CLASS_NAMES
-const CATEGORIAS = {
-    "Temperatura/Metodo": { indices: [0, 1, 2, 3, 4, 5, 6, 9] }, // lavado_30..95, a_mano, no
-    "Delicadeza": { indices: [7, 8, 10] },                      // delicado, muy_delicado, normal
-    "Lejia": { indices: [11, 12] }                             // no, si
+// Asegúrate de incluir en tu HTML:
+// <script src="https://cdn.jsdelivr.net/npm/@tensorflow/tfjs@4.20.0/dist/tf.min.js"></script>
+
+const MODEL_URL = '/client/tfjs_from_saved_model/model.json';
+const IMG_SIZE  = 380;
+const PREDICTION_THRESHOLD = 0.5;
+
+const CLASS_NAMES = [
+  'lavado_30','lavado_40','lavado_50','lavado_60','lavado_70','lavado_95',
+  'lavado_a_mano','lavado_delicado','lavado_muy_delicado','lavado_no','lavado_normal',
+  'lejia_no','lejia_si'
+];
+
+const SYMBOL_TO_CATEGORY = {
+    'lavado_30': 'Temperatura', 'lavado_40': 'Temperatura', 'lavado_50': 'Temperatura',
+    'lavado_60': 'Temperatura', 'lavado_70': 'Temperatura', 'lavado_95': 'Temperatura',
+    'lavado_a_mano': 'Delicadeza', 'lavado_delicado': 'Delicadeza', 'lavado_muy_delicado': 'Delicadeza',
+    'lavado_no': 'Delicadeza', 'lavado_normal': 'Delicadeza',
+    'lejia_no': 'Lejía', 'lejia_si': 'Lejía'
 };
 
-let model; // Variable global para el modelo cargado
-let stream; // Variable global para el stream de la cámara
 
-// Obtener elementos del HTML
-const video = document.getElementById('video');
-const canvas = document.getElementById('canvas'); // Canvas oculto para procesar el frame
-const snapButton = document.getElementById('snap');
-const resultOutput = document.getElementById('resultado'); // El tag <pre> para mostrar texto
 
-// --- 1. Cargar el Modelo Asíncronamente ---
+let model, stream;
+const video        = document.getElementById('video');
+const canvas       = document.getElementById('canvas');
+const snapButton   = document.getElementById('snap');
+const resultOutput = document.getElementById('resultado');
+
 async function loadModel() {
-  resultOutput.textContent = 'Cargando modelo (formato grafo)...';
-  console.log('Cargando modelo (formato grafo)...');
-  try {
-      model = await tf.loadGraphModel(MODEL_URL); // ¡GraphModel!
-      console.log('Modelo Graph cargado con éxito.');
-      resultOutput.textContent = 'Modelo cargado. Iniciando cámara...';
-      await startCamera();
-  } catch (error) {
-      console.error('Error al cargar el modelo graph:', error);
-      resultOutput.textContent = 'Error al cargar el modelo graph. Revisa la consola.';
-      snapButton.disabled = true;
-  }
-}
-
-// --- 2. Iniciar la Cámara ---
-async function startCamera() {
-    // Detener stream previo si existe
-    if (stream) {
-        stream.getTracks().forEach(track => track.stop());
-    }
-    console.log('Iniciando cámara...');
+    resultOutput.textContent = 'Cargando modelo…';
     try {
-        // Pedir acceso a la cámara trasera preferiblemente
-        const constraints = {
-            audio: false,
-            video: {
-                facingMode: 'environment', // 'user' para cámara frontal
-
-            }
-        };
-        stream = await navigator.mediaDevices.getUserMedia(constraints);
-        video.srcObject = stream;
-        video.play(); // Reproducir el video
-
-        // Esperar a que el video tenga dimensiones para habilitar el botón
-        video.onloadedmetadata = () => {
-            console.log('Cámara iniciada:', video.videoWidth, 'x', video.videoHeight);
-            resultOutput.textContent = 'Cámara lista. Apunta a la etiqueta y pulsa Capturar.';
-            snapButton.disabled = false; // Habilitar botón AHORA
-        };
-
-    } catch (err) {
-        console.error("Error al acceder a la cámara: ", err);
-        resultOutput.textContent = `Error al acceder a la cámara: ${err.message}.\nAsegúrate de dar permiso en el navegador.`;
+        console.log(`Cargando modelo desde: ${MODEL_URL}`);
+        //model = await tf.loadLayersModel(MODEL_URL);
+        model = await tf.loadGraphModel(MODEL_URL); 
+        console.log('Modelo cargado:', model);
+        // Calentamiento opcional del modelo (puede mejorar rendimiento de la primera predicción)
+        tf.tidy(() => {
+             model.predict(tf.zeros([1, IMG_SIZE, IMG_SIZE, 3]));
+        });
+        console.log('Modelo calentado.');
+        resultOutput.textContent = 'Modelo cargado. Iniciando cámara…';
+        await startCamera();
+    } catch (e) {
+        console.error('Error cargando modelo:', e);
+        resultOutput.textContent = 'Error cargando modelo.';
         snapButton.disabled = true;
     }
 }
 
-// --- 3. Evento del Botón Capturar ---
-snapButton.addEventListener('click', async () => {
-    if (!model) {
-        resultOutput.textContent = 'Error: El modelo no está cargado.';
-        return;
-    }
-    if (!stream || !video.srcObject || video.paused || video.ended) {
-         resultOutput.textContent = 'Error: La cámara no está activa.';
-         return;
-    }
-
-    resultOutput.textContent = 'Capturando y procesando...';
-    console.log('Capturando frame...');
-
-    // Ajustar tamaño del canvas al del video actual para capturar el frame
-    canvas.width = video.videoWidth;
-    canvas.height = video.videoHeight;
-    const context = canvas.getContext('2d');
-    // Dibujar el frame actual del video en el canvas oculto
-    context.drawImage(video, 0, 0, canvas.width, canvas.height);
-
-    // --- Preprocesamiento y Predicción (usando tf.tidy para limpiar memoria) ---
-    try {
-         const { probabilities, interpreted } = tf.tidy(() => {
-            const imgTensor = tf.browser.fromPixels(canvas);
-            console.log("Tensor crudo - Forma:", imgTensor.shape, "Tipo:", imgTensor.dtype); // Ej: [480, 640, 3]
-
-            const resizedTensor = imgTensor.resizeNearestNeighbor([IMG_SIZE, IMG_SIZE]);
-            console.log("Tensor redimensionado - Forma:", resizedTensor.shape, "Tipo:", resizedTensor.dtype); // Ej: [128, 128, 3]
-
-            const floatTensor = resizedTensor.toFloat();
-            console.log("Tensor float - Min:", floatTensor.min().dataSync()[0], "Max:", floatTensor.max().dataSync()[0]); // Debería ser ~0 a ~255
-
-            // Preprocesamiento: Escalar píxeles a [-1, 1]
-            const processedTensor = floatTensor.div(tf.scalar(127.5)).sub(tf.scalar(1.0));
-            console.log("Tensor preprocesado - Min:", processedTensor.min().dataSync()[0], "Max:", processedTensor.max().dataSync()[0]); // <<< ¡¡DEBERÍA ser ~-1 a ~1 !!
-            console.log("Tensor preprocesado - Forma:", processedTensor.shape, "Tipo:", processedTensor.dtype);
-
-            const batchedTensor = processedTensor.expandDims(0);
-            console.log("Tensor en batch - Forma:", batchedTensor.shape); // Ej: [1, 128, 128, 3]
-
-            // Predicción (igual que antes)
-            console.log('Realizando predicción (execute)...');
-            const predictionTensor = model.execute(batchedTensor);
-            const probabilitiesArray = predictionTensor.dataSync();
-
-             // --- ¡MOVER LA INTERPRETACIÓN AQUÍ DENTRO! ---
-            const interpretedResults = interpretPredictions(probabilitiesArray); 
-
-            // Devolver resultados como arrays/objetos normales para sacarlos de tf.tidy
-            return {probabilities: Array.from(probabilitiesArray), interpreted: interpretedResults}; 
-        });
-
-        displayResults(probabilities, interpreted); // Mostrar resultados
-
-    } catch(error) {
-         console.error("Error durante la predicción:", error);
-         resultOutput.textContent = `Error durante la predicción: ${error.message}`;
-    }
-});
-
-// --- 4. Interpretar Predicciones ---
-// --- 4. Interpretar Predicciones (CORREGIDA) ---
-function interpretPredictions(predictions) {
-  let interpreted = {};
-  console.log('\nInterpretación por Categorías:');
-
-  for (const [categoria, data] of Object.entries(CATEGORIAS)) {
-      const indicesCat = data.indices;
-      let maxProb = -1; // Variable declarada con P mayúscula
-      let predictedClassIndex = -1;
-
-      // Encontrar el símbolo más probable DENTRO de la categoría
-      for (const index of indicesCat) {
-          // Comprobación de seguridad por si los índices no son válidos
-          if (index >= 0 && index < predictions.length) {
-               if (predictions[index] > maxProb) { // Usando maxProb
-                  maxProb = predictions[index];   // Asignando a maxProb
-                  predictedClassIndex = index;
-              }
-          } else {
-               console.warn(`Índice ${index} fuera de rango para la categoría ${categoria}`);
-          }
-      }
-
-      // Asignar resultado si se encontró un índice válido
-      if (predictedClassIndex !== -1) {
-          const nombreClaseGanadora = CLASS_NAMES[predictedClassIndex];
-          // Solo considerar la predicción si supera el umbral
-          if (maxProb >= PREDICTION_THRESHOLD) { // Usando maxProb
-              console.log(`- ${categoria}: ${nombreClaseGanadora} (Prob: ${maxProb.toFixed(3)})`); // Usando maxProb
-              interpreted[categoria] = { symbol: nombreClaseGanadora, probability: maxProb }; // Usando maxProb
-          } else {
-              // ¡CORREGIDO AQUÍ! Usar maxProb con P mayúscula
-              console.log(`- ${categoria}: No detectado (Prob máx: ${maxProb.toFixed(3)} < ${PREDICTION_THRESHOLD})`); 
-              interpreted[categoria] = { symbol: "No detectado", probability: maxProb }; // Usando maxProb
-          }
-      } else {
-           console.log(`- ${categoria}: No se encontraron clases válidas.`);
-           interpreted[categoria] = { symbol: "Error/Vacío", probability: 0 };
-      }
+async function startCamera() {
+  if (stream) stream.getTracks().forEach(t => t.stop());
+  try {
+    stream = await navigator.mediaDevices.getUserMedia({ video: { facingMode:'environment' }, audio:false });
+    video.srcObject = stream;
+    await video.play();
+    snapButton.disabled = false;
+    resultOutput.textContent = 'Cámara lista. Pulsa Capturar.';
+  } catch (e) {
+    console.error('Error accediendo a la cámara:', e);
+    resultOutput.textContent = 'Error accediendo a la cámara.';
+    snapButton.disabled = true;
   }
-  console.log('\nObjeto Interpretado:', interpreted);
-  return interpreted;
 }
 
-// --- 5. Mostrar Resultados en Popup (¡MODIFICADO!) ---
-function displayResults(probabilities, interpreted) {
-    // 1. Construir el objeto de resultado estructurado
-    const resultadoParaGuardar = {
-        type: 'etiqueta',
-        data: interpreted // El objeto con { 'Temperatura/Metodo': {symbol, prob}, ... }
-    };
-  
-    // 2. Mostrar detalles en consola (opcional, para depuración)
-    console.log('Resultado Interpretado para guardar:', resultadoParaGuardar);
-    console.log('\n--- Probabilidades Detalladas (Solo Consola) ---');
-     for(let i=0; i < probabilities.length; i++) {
-         console.log(`${CLASS_NAMES[i]}: ${probabilities[i].toFixed(4)}`);
-     }
-  
-    // 3. Guardar en sessionStorage para la página anterior
-    try {
-        sessionStorage.setItem('ultimoResultadoScan', JSON.stringify(resultadoParaGuardar));
-        console.log("Resultado guardado en sessionStorage.");
-        // 4. Volver a la página anterior (o a una específica)
-        // window.history.back(); // Opción 1: Volver atrás
-        window.location.href = 'empezar-lavado.html'; // Opción 2: Ir a página específica
-    } catch (e) {
-        console.error("Error al guardar en sessionStorage (quizás demasiado grande?):", e);
-        alert("Error al procesar el resultado. Vuelve manualmente e inténtalo de nuevo.");
-    }
-  
-    // Ya no actualizamos el <pre> ni mostramos alert aquí
-    // resultOutput.textContent = 'Predicción completada. Volviendo...';
+snapButton.addEventListener('click', async () => {
+  if (!model) {
+    resultOutput.textContent = 'Modelo no cargado.';
+    return;
   }
+  // Capturar frame en canvas
+  canvas.width  = video.videoWidth;
+  canvas.height = video.videoHeight;
+  const ctx = canvas.getContext('2d');
+  ctx.drawImage(video, 0, 0, canvas.width, canvas.height);
 
-// --- Iniciar Carga del Modelo al cargar la página ---
-loadModel();
+  resultOutput.textContent = 'Procesando…';
+
+  // 1) Preprocesamiento dentro de tf.tidy (síncrono)
+  const imgTensor = tf.tidy(() => {
+    // 1) Preprocesamiento: Debe coincidir EXACTAMENTE con Python
+    console.log(`Preprocesando: ${canvas.width}x${canvas.height} -> ${IMG_SIZE}x${IMG_SIZE}`);
+    const tensor = tf.browser.fromPixels(canvas)
+        .resizeNearestNeighbor([IMG_SIZE, IMG_SIZE]) // <<< USA IMG_SIZE (380)
+        .toFloat(); // <<< Convertir a float32. Asume [0, 255] si no hubo otra normalización en Python
+
+    // Normalización (SOLO si se hizo en Python antes del base_model):
+    // Si Python usó [-1, 1]: .div(tf.scalar(127.5)).sub(tf.scalar(1.0))
+    // Si Python usó [0, 1]: .div(tf.scalar(255.0))
+    // Si Python no normalizó (usó [0, 255]): NO AÑADIR NADA MÁS AQUÍ
+
+    return tensor.expandDims(0); // Añadir dimensión de batch: [1, 380, 380, 3]
+});
+
+console.log('Tensor de entrada creado:', imgTensor.shape, imgTensor.dtype);
+
+try {
+    // 2) Predicción (puede ser asíncrona internamente)
+    console.time('Predicción'); // Medir tiempo
+    predictionTensor = model.predict(imgTensor);
+    console.timeEnd('Predicción');
+
+    // Verificar la salida (debería ser un único tensor)
+    if (Array.isArray(predictionTensor)) {
+         console.warn("El modelo devolvió un array, se usará el primer elemento. Verifica la conversión.");
+         predictionTensor = predictionTensor[0];
+    }
+    console.log('Tensor de predicción recibido:', predictionTensor.shape, predictionTensor.dtype); // Esperado: [1, 13]
+
+    // 3) Extraer datos (asíncrono es mejor)
+    const probabilities = await predictionTensor.data(); // Obtiene Float32Array
+    console.log('Probabilidades crudas:', probabilities);
+
+    // 4) Interpretar resultados (nueva lógica)
+    const interpreted = interpretSingleOutput(probabilities);
+    console.log('Resultados interpretados:', interpreted);
+
+    // 5) Mostrar resultados
+    displayResults(interpreted);
+
+} catch (e) {
+    console.error('Error en la predicción:', e);
+    resultOutput.textContent = 'Error en la predicción.';
+} finally {
+    // 6) Liberar tensores SIEMPRE
+    imgTensor.dispose();
+    if (predictionTensor) {
+        // Si es un array (inesperado), liberar todos
+         if (Array.isArray(predictionTensor)) {
+             predictionTensor.forEach(t => t.dispose());
+         } else {
+             predictionTensor.dispose();
+         }
+    }
+    console.log('Tensores liberados.');
+}
+});
+
+function interpretSingleOutput(probabilities) {
+    // probabilities: un array (Float32Array) de 13 elementos con valores entre 0 y 1
+
+    const detectedSymbols = [];
+    for (let i = 0; i < probabilities.length; i++) {
+        if (probabilities[i] >= PREDICTION_THRESHOLD) {
+            // Añadir el símbolo detectado y su probabilidad
+            detectedSymbols.push({
+                name: CLASS_NAMES[i],
+                probability: probabilities[i]
+            });
+        }
+    }
+
+    // Ordenar por probabilidad descendente (opcional, pero puede ser útil)
+    detectedSymbols.sort((a, b) => b.probability - a.probability);
+
+    // Agrupar por categoría final
+    const categorizedOutput = {
+        'Temperatura': 'No detectado',
+        'Delicadeza': 'No detectado',
+        'Lejía': 'No detectado'
+    };
+    const bestMatchPerCategory = { // Para almacenar la mejor probabilidad por categoría
+        'Temperatura': { probability: -1 },
+        'Delicadeza': { probability: -1 },
+        'Lejía': { probability: -1 }
+    };
+
+
+    for (const symbol of detectedSymbols) {
+        const category = SYMBOL_TO_CATEGORY[symbol.name];
+        if (category) {
+             // Quedarse con el de mayor probabilidad dentro de la categoría
+             if(symbol.probability > bestMatchPerCategory[category].probability) {
+                 bestMatchPerCategory[category] = symbol;
+                 categorizedOutput[category] = `${symbol.name} (${symbol.probability.toFixed(2)})`;
+             } else if (categorizedOutput[category] === 'No detectado'){
+                // Caso borde si el umbral es bajo y hay varios con prob < -1 (no debería pasar)
+                bestMatchPerCategory[category] = symbol;
+                categorizedOutput[category] = `${symbol.name} (${symbol.probability.toFixed(2)})`;
+             }
+        }
+    }
+
+     // Devolver un objeto con la mejor predicción (o 'No detectado') para cada categoría
+     return categorizedOutput;
+
+
+    // Alternativa: devolver todos los detectados agrupados
+    /*
+    const categorizedAll = {'Temperatura': [], 'Delicadeza': [], 'Lejía': []};
+    for (const symbol of detectedSymbols) {
+        const category = SYMBOL_TO_CATEGORY[symbol.name];
+        if (category) {
+            categorizedAll[category].push(`${symbol.name} (${symbol.probability.toFixed(2)})`);
+        }
+    }
+     // Unir los símbolos detectados por categoría o poner 'No detectado'
+     for (const cat in categorizedAll) {
+         categorizedAll[cat] = categorizedAll[cat].length > 0 ? categorizedAll[cat].join(', ') : 'No detectado';
+     }
+     return categorizedAll;
+     */
+
+}
+
+function displayResults(interpreted) {
+    // Construir mensaje con la nueva estructura de 'interpreted'
+    const message =
+        `Temperatura: ${interpreted['Temperatura']}\n` +
+        `Delicadeza:  ${interpreted['Delicadeza']}\n` +
+        `Lejía:       ${interpreted['Lejía']}`;
+
+    // Mostrar alerta (o actualizar un elemento en la página)
+    alert(message);
+    resultOutput.textContent = message.replace(/\n/g, '<br>'); // Mostrar en página también
+
+    // Guardar en sessionStorage y redirigir (sin cambios aquí)
+    sessionStorage.setItem('ultimoResultadoScan', JSON.stringify({
+        type: 'etiqueta',
+        data: interpreted // Guardar el objeto interpretado
+    }));
+    // Descomenta la redirección si la necesitas habilitada
+    // window.location.href = 'empezar-lavado.html';
+}
+
+// --- Inicialización ---
+// Ignora el 404 de favicon.ico; no afecta al script
+loadModel(); // Cargar el modelo al iniciar
