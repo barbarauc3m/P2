@@ -6,14 +6,6 @@ let juegoPausado = false; // Nueva bandera para estado de pausa
 document.addEventListener("DOMContentLoaded", function() {
     console.log("Dentro de DOMContentLoaded");
 
-    let canvas, ctx;
-    let carritoImg;
-    let carritoX;
-    let carritoY;
-    let carritoAncho = 80;
-    let carritoAlto = 50;
-    let canvasAncho = 600;
-    let canvasAlto = 400;
     let juegoTerminado = false;  
 
     // Prendas del juego
@@ -65,10 +57,6 @@ document.addEventListener("DOMContentLoaded", function() {
         caidaInterval = setInterval(crearObjeto, 1500);
         // Moverlos cada 50ms
         gameInterval = setInterval(moverObjetos, 50);
-
-        canvas = document.getElementById('game-canvas');
-        canvas.width = 600;
-        canvas.height = 400;
 
         // Mostrar carrito
         const carrito = document.getElementById('carrito-img');
