@@ -147,7 +147,7 @@ document.addEventListener("DOMContentLoaded", function() {
 // Para animar los juegos si inclinas el móvil a un lado o a otro 
 // Configuración
 const gammaThreshold = 13; // Sensibilidad de inclinación (grados)
-const accelerationThreshold = 3; // Sensibilidad del golpe en seco (m/s²)
+const accelerationThreshold = 4; // Sensibilidad del golpe en seco (m/s²) (más alto, más cuesta)
 let currentTilt = null; // 'left', 'right', or null
 
 // Resetear estilos de las tarjetas

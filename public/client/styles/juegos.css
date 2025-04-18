@@ -16,6 +16,8 @@
 h1{
   font-family: 'Super Cottage', sans-serif;  
   font-size: 3vh;
+  padding-top: 6px;
+  padding-left: 13px;
 }
 
 h2{
@@ -34,7 +36,9 @@ body {
 .top-bar {
   display: flex;
   align-items: center;
-  padding: 16px;
+  margin-top: 13px;
+  padding-left: 15px;
+  /*padding: 16px;*/
 }
 
 .top-bar .back-button {
@@ -50,7 +54,7 @@ body {
 .top-bar h1 {
   color: #3c3c6e;
   font-weight: bold;
-  margin-top: 2vw;
+  /*margin-top: 2vw;*/
 }
 
 .header-subtitulo {
