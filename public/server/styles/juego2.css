@@ -20,7 +20,7 @@
 }
 
 body {
-    background-color: #5d6b8b; /* Azul principal */
+    background-color: #EDF2FB; /* Azul principal */
     font-family: 'Super Peace', sans-serif;
     color: #F8F9FA; /* Blanco ligeramente cálido */
     text-align: center;
@@ -49,22 +49,19 @@ body {
     margin-bottom: 20px;
     position: relative;
     z-index: 2;
-    color: #FFD166; /* Amarillo dorado complementario */
+    color: #5D6B8B;
     text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.3);
 }
 
 .game-start-container {
+    text-align: center;
     width: 80%;
     max-width: 700px;
     background-color: rgba(93, 107, 139, 0.9); /* Fondo semitransparente */
     border-radius: 20px;
     padding: 30px;
-    box-shadow: 
-        0 10px 30px rgba(0, 0, 0, 0.4),
-        inset 0 0 20px rgba(255, 255, 255, 0.1);
     position: relative;
     z-index: 1;
-    backdrop-filter: blur(5px);
 }
 
 .game-start-container::before {
@@ -75,8 +72,8 @@ body {
     right: -2px;
     bottom: -2px;
     background: linear-gradient(135deg, 
-                rgba(255,209,102,0.1) 0%, 
-                rgba(106,168,79,0.1) 100%);
+              rgba(255,209,102,0.1) 0%, 
+              rgba(106,168,79,0.1) 100%);
     border-radius: 22px;
     z-index: -1;
     filter: blur(5px);
@@ -93,7 +90,7 @@ body {
 
 .game-rules h2 {
     text-align: center;
-    color: #FFD166; /* Amarillo dorado */
+    color: #F8F9FA;
     font-size: 1.8em;
     margin-bottom: 20px;
     text-shadow: 1px 1px 3px rgba(0,0,0,0.3);
@@ -121,8 +118,9 @@ body {
 }
 
 .start-button {
-    background: linear-gradient(to right, #FFD166, #FFB347); /* Degradado dorado */
-    color: #5d6b8b; /* Color del texto igual al fondo */
+    background: linear-gradient(to bottom, #c7d2e0, #a2afc2);
+    color: #2f3e4f;
+    border: 2px solid rgba(93, 107, 139, 0.3);
     border: none;
     padding: 15px 50px;
     font-size: 1.5em;
@@ -136,36 +134,12 @@ body {
     position: relative;
     overflow: hidden;
     font-weight: bold;
-    border: 2px solid rgba(93, 107, 139, 0.3);
-}
-
+  }
+  
 .start-button:hover {
-    transform: translateY(-3px);
-    box-shadow: 0 8px 25px rgba(0,0,0,0.4);
-    color: #3A4750; /* Color de texto más oscuro al hover */
-}
-
-.start-button:active {
-    transform: translateY(1px);
-    box-shadow: 0 3px 10px rgba(0,0,0,0.3);
-}
-
-.start-button::after {
-    content: '';
-    position: absolute;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    background: linear-gradient(to right, 
-                rgba(255,255,255,0.4), 
-                rgba(255,255,255,0));
-    transform: translateX(-100%);
-    transition: transform 0.4s;
-}
-
-.start-button:hover::after {
-    transform: translateX(100%);
+    background: linear-gradient(to bottom, #b6c5d8, #8fa0b5);
+    transform: translateY(-2px);
+    box-shadow: 0 6px 16px rgba(0,0,0,0.2);
 }
 
 
@@ -304,10 +278,10 @@ body {
     display: block;
     margin-bottom: 10px;
     color: rgb(3, 88, 17);
-    width: 290px;
+    width: 300px;
 }
 
-.restart-button, .resume-button {
+.restart-button, .resume-button, .backtoMenu-button {
     background: linear-gradient(to right, #FFD166, #FFB347); /* Degradado dorado */
     color: #5d6b8b; /* Color del texto igual al fondo */
     border: none;
@@ -326,18 +300,18 @@ body {
     border: 2px solid rgba(93, 107, 139, 0.3);
 }
 
-.restart-button:hover, .resume-button:hover {
+.restart-button:hover, .resume-button:hover, .backtoMenu-button:hover {
     transform: translateY(-3px);
     box-shadow: 0 8px 25px rgba(0,0,0,0.4);
     color: #3A4750; /* Color de texto más oscuro al hover */
 }
 
-.restart-button:active, .resume-button:active {
+.restart-button:active, .resume-button:active, .backtoMenu-button:active {
     transform: translateY(1px);
     box-shadow: 0 3px 10px rgba(0,0,0,0.3);
 }
 
-.restart-button::after, .resume-button::after {
+.restart-button::after, .resume-button::after, .backtoMenu-button::after {
     content: '';
     position: absolute;
     top: 0;
@@ -351,6 +325,6 @@ body {
     transition: transform 0.4s;
 }
 
-.restart-button:hover::after, .resume-button:hover::after {
+.restart-button:hover::after, .resume-button:hover::after, .backtoMenu-button:hover::after {
     transform: translateX(100%);
 }

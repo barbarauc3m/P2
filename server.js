@@ -567,6 +567,11 @@ io.on('connection', (socket) => {
     socket.broadcast.emit('juego1-reiniciar'); // Reenvía a todos menos al móvil
   }); 
 
+  socket.on('juego1-reanudar', () => {
+    console.log("📱 Juego 1 reanudado desde servidor");
+    io.emit('juego1-reanudado');
+  });
+
   socket.on('juego2-empezar', () => {  // Llega solicitud desde el móvil
     console.log('[SERVER.JS] Empieza el juego 3');
     socket.broadcast.emit('juego2-empezar'); // Reenvía a todos menos al móvil
@@ -581,6 +586,11 @@ io.on('connection', (socket) => {
     console.log('[SERVER.JS]📱 Petición reinicio recibida desde móvil');
     socket.broadcast.emit('juego2-reiniciar'); // Reenvía a todos menos al móvil
   }); 
+
+  socket.on('juego2-reanudar', () => {
+    console.log("📱 Juego 2 reanudado desde servidor");
+    io.emit('juego2-reanudado');
+  });
 
   socket.on('moverCienteAlMenu', () => {  // Enviamos solicitud al móvil
     console.log('[SERVER.JS]📱 Señal mandada al móvil para ir al menú');

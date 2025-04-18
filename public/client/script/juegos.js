@@ -80,6 +80,14 @@ document.addEventListener("DOMContentLoaded", function() {
         window.location.href = 'index.html';
     });
 
+    document.getElementById('home-button').addEventListener('click', function() {
+      /*emit redirigir el servidor a index*/ 
+      socket.emit('requestDisplayChange', { targetPage: '/' });
+      
+      // Redirigir a la página de juegos
+      window.location.href = 'index.html';
+  });
+
     // Configurar efecto 3D mejorado para las cartas (solo en juegos.html)
     document.querySelectorAll('.card-container').forEach((container, index) => {
         container.addEventListener('mousemove', (e) => {

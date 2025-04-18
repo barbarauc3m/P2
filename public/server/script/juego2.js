@@ -334,7 +334,12 @@ document.querySelectorAll(".restart-button").forEach(button => {
     button.addEventListener("click", reiniciarJuego);
 });
 document.querySelectorAll(".resume-button").forEach(button => {
-    button.addEventListener("click", reanudarJuego);
+    button.addEventListener("click", function() {
+        console.log("Se ha pulsado reanudar");
+        reanudarJuego();
+        // Emitir evento de reanudación al servidor
+        socket.emit("juego2-reanudar");
+    });
 });
 document.querySelectorAll(".start-button").forEach(button => { // volver al menú de inicio y cambiar la pantalla del móvil tmb
     button.addEventListener("click", backtoMenu);

@@ -1,3 +1,17 @@
+@font-face {
+    font-family: 'Super Cottage';
+    src: url(../../../../fonts/Super\ Cottage.ttf);
+    font-weight: normal;
+    font-style: normal;
+}
+
+@font-face {
+  font-family: 'Janda';
+  src: url(../../../../fonts/JandaManateeSolid.ttf);
+  font-weight: normal;
+  font-style: normal;
+}
+
 /* Estilos generales */
 body {
     font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
@@ -97,4 +111,85 @@ body {
 
 .control-button:hover {
     background-color: #3a5a80;
+}
+
+.shake-popup {
+    display: none;
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.8);
+    z-index: 1000;
+    justify-content: center;
+    align-items: center;
+}
+
+.popup-content {
+    background-color: #f7f9fc;
+    padding: 20px;
+    border-radius: 15px;
+    text-align: center;
+    animation: fadeIn 0.3s ease-out;
+    color: #3a5a80;
+    font-size: 4vw;
+    font-family: 'Super Cottage', sans-serif;
+}
+
+@keyframes fadeIn {
+    from { opacity: 0; transform: scale(0.9); }
+    to { opacity: 1; transform: scale(1); }
+}
+
+.shake-icon {
+    width: 80px;
+    height: 80px;
+    margin: 15px 0;
+    animation: pulse 1.5s infinite;
+}
+
+/* Animación de puntos de espera en popup pausa */
+/* Animación de puntos pulsantes - Versión modificada */
+.pulse-animation {
+    display: flex;
+    justify-content: center;
+    gap: 12px; /* Un poco más de espacio entre puntos */
+    margin-top: 25px;
+}
+
+.pulse-animation::before,
+.pulse-animation::after,
+.pulse-animation::after {
+    content: "";
+    width: 18px; /* Un poco más grandes */
+    height: 18px;
+    background-color: #3a5a80; /* Azul que coincide con tus botones */
+    border-radius: 50%;
+    animation: pulse 1.8s infinite ease-in-out;
+    box-shadow: 0 0 5px rgba(74, 111, 165, 0.5); /* Sutil brillo azul */
+}
+
+/* Configuración de animación escalonada para 3 puntos */
+.pulse-animation::before {
+    animation-delay: 0s;
+}
+
+.pulse-animation::after {
+    animation-delay: 0.6s;
+}
+
+.pulse-animation::after {
+    animation-delay: 0.3s;
+}
+
+@keyframes pulse {
+    0%, 100% { 
+        transform: scale(0.85); 
+        opacity: 0.7; 
+    }
+    50% { 
+        transform: scale(1.15); 
+        opacity: 1;
+    }
 }

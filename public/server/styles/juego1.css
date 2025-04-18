@@ -39,7 +39,7 @@ body {
     margin-bottom: 20px;
     position: relative;
     z-index: 2;
-    color: #5D6B8B; /* Amarillo dorado complementario */
+    color: #5D6B8B;
     text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.3);
 }
 
@@ -107,7 +107,7 @@ body {
     top: -3px;
 }
 
-.start-button, .backtoMenu-button {
+.start-button {
   background: linear-gradient(to bottom, #c7d2e0, #a2afc2);
   color: #2f3e4f;
   border: 2px solid rgba(93, 107, 139, 0.3);
@@ -255,7 +255,7 @@ body {
   display: block;
   margin-bottom: 10px;
   color: #345678;
-  width: 290px;
+  width: 300px;
 }
 
 .restart-button, .resume-button, .backtoMenu-button{
@@ -302,6 +302,6 @@ body {
   transition: transform 0.4s;
 }
 
-.restart-button:hover::after, .resume-button:hover::after {
+.restart-button:hover::after, .resume-button:hover::after, .backtoMenu-button:hover::after {
   transform: translateX(100%);
 }

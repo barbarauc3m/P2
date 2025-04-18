@@ -202,6 +202,7 @@ document.addEventListener("DOMContentLoaded", function() {
         juegoPausado = true;
         
         console.log("Juego pausado: intervalos detenidos");
+
     }
 
     function reanudarJuego() {
@@ -263,8 +264,8 @@ document.addEventListener("DOMContentLoaded", function() {
       });
 
       socket.on('closeGameDisplay', (data) => {
-        console.log('El servidor vuelve a index', data);
-        window.location.href = 'index.html';
+        console.log('El servidor vuelve a menu de juegos', data);
+        window.location.href = 'juegos-server.html';
       });
 
     } catch (error) {
@@ -340,7 +341,7 @@ document.addEventListener("DOMContentLoaded", function() {
         console.log("se envía el emit");
         juegoPerdido = true;
         socket.emit("moverCienteAlMenu");
-        window.location.href = './index.html';
+        window.location.href = './juegos-server.html';
     }
 
     // Asigna el evento al botón "VOLVER A JUGAR"
@@ -348,8 +349,12 @@ document.addEventListener("DOMContentLoaded", function() {
         button.addEventListener("click", reiniciarJuego);
     });
     document.querySelectorAll(".resume-button").forEach(button => {
-        console.log("Se ha pulsado reanudar");
-        button.addEventListener("click", reanudarJuego);
+        button.addEventListener("click", function() {
+            console.log("Se ha pulsado reanudar");
+            reanudarJuego();
+            // Emitir evento de reanudación al servidor
+            socket.emit("juego1-reanudar");
+        });
     });
     document.querySelectorAll(".backtoMenu-button").forEach(button => { // volver al menú de inicio y cambiar la pantalla del móvil tmb
         button.addEventListener("click", backtoMenu);

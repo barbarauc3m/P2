@@ -24,6 +24,23 @@
         <button id="restart-button" class="control-button">Reiniciar</button>
     </div>
 
+    <!-- Popup de "Agita para empezar" -->
+    <div id="shake-popup" class="shake-popup">
+        <div class="popup-content">
+            <h2>¡Agita para empezar!</h2>
+            <img src="/images/agitar.png" alt="Agitar" class="shake-icon">
+        </div>
+    </div>
+
+    <!-- Popup de Pausa -->
+    <div id="pause-popup" class="shake-popup" style="display: none;">
+        <div class="popup-content">
+            <h2>JUEGO PAUSADO</h2>
+            <p>Seleccione una opción en la pantalla principal</p>
+            <div class="pulse-animation"></div> <!-- Animación de espera -->
+        </div>
+    </div>
+
     <script src="/script/jugando.js"></script>
 </body>
 </html>
