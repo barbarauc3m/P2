@@ -1,3 +1,4 @@
+const socket = io(); // Conecta al servidor
 const categorias = document.querySelectorAll(".categoria");
 
 function handleHover(indexHovered) {
@@ -29,7 +30,7 @@ function loadJuegos() {
 
   console.log("Botón de mando pulsado");
   socket.emit("abrir-juegos"); // Evento que el servidor recibirá
-
+  /*socket.emit("redirigir-a-juegos"); */// Evento que el servidor recibirá
   // 3. Redirigir en el móvil
   window.location.href = 'pantalla-carga.html';
 }
@@ -50,7 +51,7 @@ categorias.forEach((categoria, index) => {
 
 
 // Al principio de /client/script/index.js (o un archivo dedicado)
-const socket = io(); // Conecta al servidor
+//const socket = io(); // Conecta al servidor
 
 socket.on('connect', () => {
     console.log('Conectado al servidor (Móvil) con ID:', socket.id);

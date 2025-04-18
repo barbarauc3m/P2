@@ -523,14 +523,19 @@ io.on('connection', (socket) => {
     console.log('Mensaje recibido:', data);
     socket.broadcast.emit('mensaje', data);
   });
-
+  /*
   socket.on('orientationData', (data) => {  // Puntero
     // Extrae x e y de data
     const { x, y } = data;
-    //console.log("Posición procesada:", { x, y }); 
+    console.log("Posición procesada:", { x, y }); 
 
     // Reenvía a todos los clientes (excepto al emisor)
-    socket.broadcast.emit('updatePointer', x, y); 
+    socket.broadcast.emit('updatePointer', { x, y }); 
+  });*/
+
+  socket.on('accelerationData', ({ x, y }) => {
+    console.log("📥 Datos recibidos del acelerómetro:", x, y);
+    socket.broadcast.emit('updatePointer', { x, y });
   });
 
   socket.on('lanzar', () => {  // Juego 3
@@ -582,6 +587,16 @@ io.on('connection', (socket) => {
     socket.broadcast.emit('moverCienteAlMenu'); 
   }); 
 
+  // Para animar los juegos si inclinas el móvil a un lado o a otro
+  socket.on("expandir-juego1", () => {  
+    console.log("Server: Expandir juego1 recibido");
+    socket.broadcast.emit('expandir-juego1'); 
+  });
+  socket.on("expandir-juego2", () => {  
+    console.log("Server: Expandir juego2 recibido");
+    socket.broadcast.emit('expandir-juego2'); 
+  });
+
   // NUEVO: Escuchar solicitud para cambiar la pantalla del servidor
   socket.on('requestDisplayChange', (data) => {
     console.log(`📱 Recibida petición de ${socket.id} para cambiar display a: ${data.targetPage}`);
@@ -625,9 +640,6 @@ io.on('connection', (socket) => {
   // Manejar la solicitud de abrir la pantalla de juegos
   socket.on("abrir-juegos", () => {
     console.log("Se pidió abrir la pantalla de juegos");
-
-    // Aquí podrías emitir a una tablet, pantalla o navegador específico
-    // Por ejemplo: emitir a todos los clientes excepto el que emitió
     socket.broadcast.emit('redirigir-a-juegos');
   });
 
@@ -649,7 +661,7 @@ server.listen(PORT, () => {
   console.log(`Servidor HTTPS con Socket.IO en https://localhost:${PORT}`);
   console.log(`Accede a la pantalla del servidor en: https://localhost:${PORT}/`);
   console.log(`Accede a la pantalla del móvil en: https://localhost:${PORT}/mobile`);
-  // Puedes añadir: console.log(`Pantalla servidor (categorías): https://localhost:${PORT}/display/categories`);
+  // Se puede añadir: console.log(`Pantalla servidor (categorías): https://localhost:${PORT}/display/categories`);
 });
 
 
