@@ -11,15 +11,32 @@
 <body>
   <header class="top-bar">
     <a class="back-button" id="back-button" href="index.html">←</a>
-    <h1>MINIJUEGOS</h1>
+    <h1>Juegazos</h1>
   </header>
 
-  <div class="game-content">
-    <div class="game-placeholder">
-      <p>Inclina el móvil a la izquierda o derecha para elegir juego.</p>
-        <img src="/images/mando_oscuro.svg" alt="Jugando">
-        <p>Sube el móvil para seleccionarlo.</p>
-    </div>
+  <div class="header-subtitulo">
+    <p>Si la ropa se entretiene, por qué tú no...</p>
+  </div>
+
+  <main class="main-content">
+    <div class="cards-grid">
+      <!-- Tarjeta 1: Atrapa la Ropa -->
+      <div class="card-container" onclick="loadGame(0)">
+          <div class="card" id="card1">
+              <div class="card-content">
+                  
+              </div>
+          </div>
+      </div>
+      
+      <!-- Tarjeta 2: El Rey del Tendedero -->
+      <div class="card-container" onclick="loadGame(1)">
+          <div class="card" id="card2">
+              <div class="card-content">
+                  
+              </div>
+          </div>
+      </div>
   </div>
 
     <div class="button-container">

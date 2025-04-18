@@ -151,15 +151,16 @@ const accelerationThreshold = 3; // Sensibilidad del golpe en seco (m/s²)
 let currentTilt = null; // 'left', 'right', or null
 
 // Resetear estilos de las tarjetas
+/*
 function resetTransforms() {
   document.getElementById('card1').style.transform = '';
   document.getElementById('card2').style.transform = '';
-}
+}*/
 
 // --------------- INCLINACIÓN 
 window.addEventListener('deviceorientation', (event) => {
   const gamma = event.gamma;
-  resetTransforms();
+  //resetTransforms();
 
   if (gamma < -gammaThreshold) {
     currentTilt = 'left';

@@ -84,5 +84,13 @@
     "foto": "/images/persona_cla.svg",
     "favoritos": [],
     "personalizados": []
+  },
+  "babiism": {
+    "username": "babiism",
+    "email": "barbara2004@movistar.es",
+    "hashedPassword": "$2b$10$dwmPVlhV/ka04awCf7XAAeGZGVHvo9f1jGkcx1DgMOhB.Oh8/./ym",
+    "foto": "/images/persona_cla.svg",
+    "favoritos": [],
+    "personalizados": []
   }
 }
