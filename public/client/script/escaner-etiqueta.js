@@ -118,7 +118,7 @@ try {
     console.log('Resultados interpretados:', interpreted);
 
     // 5) Mostrar resultados
-    displayResults(interpreted);
+    handleScanResult(interpreted);
 
 } catch (e) {
     console.error('Error en la predicción:', e);
@@ -205,24 +205,34 @@ function interpretSingleOutput(probabilities) {
 
 }
 
-function displayResults(interpreted) {
-    // Construir mensaje con la nueva estructura de 'interpreted'
-    const message =
-        `Temperatura: ${interpreted['Temperatura']}\n` +
-        `Delicadeza:  ${interpreted['Delicadeza']}\n` +
-        `Lejía:       ${interpreted['Lejía']}`;
+function handleScanResult(interpreted) {
+    console.log("Resultado interpretado a guardar:", interpreted);
 
-    // Mostrar alerta (o actualizar un elemento en la página)
-    alert(message);
-    resultOutput.textContent = message.replace(/\n/g, '<br>'); // Mostrar en página también
+    // Ya no mostramos alerta ni actualizamos el texto aquí
+    // const message = ...
+    // alert(message);
+    // resultOutput.textContent = ...
 
-    // Guardar en sessionStorage y redirigir (sin cambios aquí)
-    sessionStorage.setItem('ultimoResultadoScan', JSON.stringify({
-        type: 'etiqueta',
-        data: interpreted // Guardar el objeto interpretado
-    }));
-    // Descomenta la redirección si la necesitas habilitada
-    // window.location.href = 'empezar-lavado.html';
+    try {
+        // Guardar en sessionStorage para que la otra página lo recoja
+        sessionStorage.setItem('ultimoResultadoScan', JSON.stringify({
+            type: 'etiqueta', // Asegurarse de que el tipo es correcto
+            data: interpreted // Guardar el objeto interpretado
+        }));
+        console.log("Resultado guardado en sessionStorage.");
+
+        // Redirigir a la página donde está guardar-prendas.js
+        // Puedes usar history.back() si siempre vienes de ahí,
+        // o una URL específica si es más seguro.
+        console.log("Redirigiendo a empezar-lavado.html...");
+        window.location.href = 'empezar-lavado.html';
+        // window.history.back(); // Alternativa
+
+    } catch (e) {
+        console.error("Error al guardar en sessionStorage o redirigir:", e);
+        alert("Hubo un error al procesar el resultado. Vuelve manualmente e inténtalo de nuevo.");
+        snapButton.disabled = false; // Rehabilitar botón en caso de error aquí
+    }
 }
 
 // --- Inicialización ---
