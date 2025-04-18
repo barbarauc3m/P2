@@ -1,5 +1,3 @@
-//const pointer = document.getElementById('pointer');
-
 document.addEventListener("DOMContentLoaded", function() {
     console.log("Dentro de DOMContentLoaded");
 
@@ -20,33 +18,7 @@ document.addEventListener("DOMContentLoaded", function() {
         puedeLanzar = false;
         //document.querySelector(".game-container").style.display = "none";
         document.querySelector(".menu-pausa-container").style.display = "block";
-        document.querySelector("#pointer").style.display = "block";
     }
-
-    // Variables para suavizado
-    let targetX = window.innerWidth / 2;
-    let targetY = window.innerHeight / 2;
-    const smoothingFactor = 0.1; // Ajusta este valor (0.01 a 0.2)
-    let animationFrameId = null;
-
-    // Función de animación suavizada
-    function smoothMovePointer() {
-    const pointer = document.getElementById('pointer');
-    const currentX = parseFloat(pointer.style.left || targetX);
-    const currentY = parseFloat(pointer.style.top || targetY);
-    
-    // Interpolación lineal suavizada
-    const newX = currentX + (targetX - currentX) * smoothingFactor;
-    const newY = currentY + (targetY - currentY) * smoothingFactor;
-    
-    pointer.style.left = `${newX}px`;
-    pointer.style.top = `${newY}px`;
-    
-    animationFrameId = requestAnimationFrame(smoothMovePointer);
-    }
-
-    // Iniciar la animación
-    smoothMovePointer();
 
     try {
         window.socket = io();
@@ -78,42 +50,7 @@ document.addEventListener("DOMContentLoaded", function() {
       socket.on('closeGameDisplay', (data) => {
         console.log('El servidor vuelve a index', data);
         window.location.href = 'index.html';
-      });
-    /*
-      socket.on('updatePointer', ({x, y}) => {  // Puntero
-        const posX = (1024/2) + (((-x + 90) / 180) * window.innerWidth);
-        const posY = (600/2) + (((-y + 90) / 180) * window.innerHeight);
-        
-        console.log("Valores finales css { x, y }:", posX, posY);
-
-        pointer.style.left = `${posX}px`;
-        pointer.style.top = `${posY}px`;
-      });*/
-/*
-      socket.on('updatePointer', ({ x, y }) => {
-        const pointer = document.getElementById('pointer');
-        const sensitivity = 50;
-      
-        const posX = window.innerWidth / 2 + x * sensitivity;
-        const posY = window.innerHeight / 2 + y * sensitivity;
-      
-        pointer.style.left = `${posX}px`;
-        pointer.style.top = `${posY}px`;
-      });*/
-      socket.on('updatePointer', ({ x, y }) => {
-        const sensitivity = 50;
-        
-        // Actualizar las coordenadas objetivo (no las visuales directamente)
-        targetX = window.innerWidth / 2 - x * sensitivity;
-        targetY = window.innerHeight / 2 - y * sensitivity;
-        
-        // Resetear si la ventana cambia de tamaño
-        window.addEventListener('resize', () => {
-          targetX = window.innerWidth / 2 + x * sensitivity;
-          targetY = window.innerHeight / 2 + y * sensitivity;
-        });
-      });
-      
+      });      
 
     } catch (error) {
       console.warn("No se pudo conectar a Socket.IO:", error);
@@ -223,7 +160,6 @@ document.addEventListener("DOMContentLoaded", function() {
         juegoPerdido = true;
         document.querySelector(".game-container").style.display = "none";
         document.querySelector(".game-over-container").style.display = "block";
-        document.querySelector("#pointer").style.display = "block";
         
     }
 
@@ -231,7 +167,6 @@ document.addEventListener("DOMContentLoaded", function() {
         juegoGanado = true;   
         document.querySelector(".game-container").style.display = "none";
         document.querySelector(".game-won-container").style.display = "block";
-        document.querySelector("#pointer").style.display = "block";
         
     }
     
@@ -274,7 +209,6 @@ document.addEventListener("DOMContentLoaded", function() {
 
     // Función para reiniciar el juego
     function reiniciarJuego() {
-        document.querySelector("#pointer").style.display = "none";
         // 1. Restablece el estado del juego
         prendas = [];
         puedeLanzar = true;
@@ -319,7 +253,6 @@ document.addEventListener("DOMContentLoaded", function() {
         puedeLanzar = true;
         document.querySelector(".game-container").style.display = "block";
         document.querySelector(".menu-pausa-container").style.display = "none";
-        document.querySelector("#pointer").style.display = "none";
     }
 
     function backtoMenu(){
@@ -329,19 +262,19 @@ document.addEventListener("DOMContentLoaded", function() {
         window.location.href = './juegos-server.html';
     }
 
-// Asigna el evento al botón "VOLVER A JUGAR"
-document.querySelectorAll(".restart-button").forEach(button => {
-    button.addEventListener("click", reiniciarJuego);
-});
-document.querySelectorAll(".resume-button").forEach(button => {
-    button.addEventListener("click", function() {
-        console.log("Se ha pulsado reanudar");
-        reanudarJuego();
-        // Emitir evento de reanudación al servidor
-        socket.emit("juego2-reanudar");
+    // Asigna el evento al botón "VOLVER A JUGAR"
+    document.querySelectorAll(".restart-button").forEach(button => {
+        button.addEventListener("click", reiniciarJuego);
     });
-});
-document.querySelectorAll(".start-button").forEach(button => { // volver al menú de inicio y cambiar la pantalla del móvil tmb
-    button.addEventListener("click", backtoMenu);
-});
+    document.querySelectorAll(".resume-button").forEach(button => {
+        button.addEventListener("click", function() {
+            console.log("Se ha pulsado reanudar");
+            reanudarJuego();
+            // Emitir evento de reanudación al servidor
+            socket.emit("juego2-reanudar");
+        });
+    });
+    document.querySelectorAll(".backtoMenu-button").forEach(button => { // volver al menú de inicio y cambiar la pantalla del móvil tmb
+        button.addEventListener("click", backtoMenu);
+    });
 });

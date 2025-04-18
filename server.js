@@ -523,20 +523,6 @@ io.on('connection', (socket) => {
     console.log('Mensaje recibido:', data);
     socket.broadcast.emit('mensaje', data);
   });
-  /*
-  socket.on('orientationData', (data) => {  // Puntero
-    // Extrae x e y de data
-    const { x, y } = data;
-    console.log("Posición procesada:", { x, y }); 
-
-    // Reenvía a todos los clientes (excepto al emisor)
-    socket.broadcast.emit('updatePointer', { x, y }); 
-  });*/
-
-  socket.on('accelerationData', ({ x, y }) => {
-    console.log("📥 Datos recibidos del acelerómetro:", x, y);
-    socket.broadcast.emit('updatePointer', { x, y });
-  });
 
   socket.on('lanzar', () => {  // Juego 3
     console.log('[SERVER.JS] Movimiento recibido desde móvil');

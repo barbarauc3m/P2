@@ -84,7 +84,6 @@ document.addEventListener("DOMContentLoaded", function() {
         juegoTerminado = true;
         document.getElementById("game-container").style.display = "none";
         document.querySelector(".game-finished-container").style.display = "block";
-        //document.querySelector("#pointer").style.display = "block";   
     }
     function iniciarTemporizador(tiempoInicial = 60) {
         let tiempo = tiempoInicial;
@@ -251,16 +250,6 @@ document.addEventListener("DOMContentLoaded", function() {
       socket.on('juego1-reiniciar', () => {
         console.log("Reinicio recibido desde móvil");
         reiniciarJuego();
-      });
-
-      socket.on('updatePointer', (x, y) => {  // Puntero
-        const posX = (1024/2) + (((-x + 90) / 180) * window.innerWidth);
-        const posY = (600/2) + (((-y + 90) / 180) * window.innerHeight);
-        
-        console.log("Valores finales css { x, y }:", posX, posY);
-
-        pointer.style.left = `${posX}px`;
-        pointer.style.top = `${posY}px`;
       });
 
       socket.on('closeGameDisplay', (data) => {
