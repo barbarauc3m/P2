@@ -6,7 +6,17 @@ const DARK_L_THRESHOLD = 35;  // % de Luminosidad por debajo = Oscuro
 const LIGHT_L_THRESHOLD = 75; // % de Luminosidad por encima = Claro
 
 
-// --- Lógica de Compatibilidad ---
+// (Asegúrate de que la función auxiliar getSymbolName esté definida antes)
+function getSymbolName(detectedString) {
+    if (!detectedString || typeof detectedString !== 'string' || detectedString === 'No detectado') {
+        return null;
+    }
+    // Extraer el nombre antes del primer espacio (ej: "lavado_40" de "lavado_40 (0.95)")
+    // O devolver el string completo si no hay espacio (por si acaso)
+    const parts = detectedString.split(' ');
+    return parts[0];
+}
+
 
 function checkCompatibility(scanResult, lavado) {
     if (!lavado) return { compatible: false, razon: "Error: No se encontró el lavado seleccionado." };
@@ -15,124 +25,128 @@ function checkCompatibility(scanResult, lavado) {
 
     // --- Compatibilidad de Etiqueta ---
     if (scanResult.type === 'etiqueta') {
-        const simbolos = scanResult.data;
+        const simbolosDetectados = scanResult.data; // Ej: {'Temperatura': 'lavado_40 (0.95)', 'Delicadeza': 'lavado_delicado (0.88)', ...}
         let razonesIncompatibilidad = [];
 
-        // 1. Comprobar "No Lavar"
-        if (simbolos['Temperatura/Metodo']?.symbol === 'lavado_no') {
+        // 1. Comprobar "No Lavar" (Sin Cambios)
+        const tempSymbolName = getSymbolName(simbolosDetectados['Temperatura']);
+        if (tempSymbolName === 'lavado_no') {
             razonesIncompatibilidad.push("La etiqueta indica 'No Lavar'.");
-            // Si no se puede lavar, el resto de checks no importan tanto
             return { compatible: false, razon: razonesIncompatibilidad.join(' ') };
         }
 
-        // 2. Comprobar Temperatura
-        const tempSimbolo = simbolos['Temperatura/Metodo']?.symbol; // ej: "lavado_40", "lavado_a_mano"
-        const tempLavado = parseInt(lavado.temperatura); // ej: 40
-
-        if (tempSimbolo && tempSimbolo.startsWith('lavado_') && !tempSimbolo.includes('mano')) {
-            const tempMaxSimbolo = parseInt(tempSimbolo.split('_')[1]);
-            if (!isNaN(tempLavado) && !isNaN(tempMaxSimbolo) && tempLavado > tempMaxSimbolo) {
-                razonesIncompatibilidad.push(`Temperatura del lavado (${tempLavado}°) supera la máxima de la etiqueta (${tempMaxSimbolo}°).`);
+        // 2. Comprobar Temperatura (Sin Cambios)
+        const tempLavado = parseInt(lavado.temperatura);
+        if (tempSymbolName && tempSymbolName.startsWith('lavado_') && !tempSymbolName.includes('mano') && tempSymbolName !== 'lavado_no' && tempSymbolName !== 'lavado_normal') {
+            try {
+                 const tempMaxSimbolo = parseInt(tempSymbolName.split('_')[1]);
+                 if (!isNaN(tempLavado) && !isNaN(tempMaxSimbolo) && tempLavado > tempMaxSimbolo) {
+                     razonesIncompatibilidad.push(`Temperatura del lavado (${tempLavado}°) supera la máxima de la etiqueta (${tempMaxSimbolo}°).`);
+                 }
+            } catch (e) {
+                 console.error("Error parseando temperatura del símbolo:", tempSymbolName, e);
             }
         }
-        // Considerar lavado a mano? Si el lavado no es a mano, sería incompatible? Depende de tu lógica.
+        // Advertencia sobre lavado a mano (Sin Cambios)
+        if (tempSymbolName === 'lavado_a_mano' && lavado.nombre?.toLowerCase() !== 'lavado a mano') {
+             console.warn("Advertencia: Etiqueta indica lavado a mano, programa seleccionado no lo es explícitamente.");
+        }
 
-        // 3. Comprobar Lejía
-        const lejiaSimbolo = simbolos['Lejia']?.symbol; // ej: "lejia_no", "lejia_si"
-        // Necesitamos saber si el lavado USA lejía. Asumimos que 'detergente' puede indicarlo?
-        // Esto es una suposición, deberías tener una propiedad más clara como 'usaLejia: true/false'
-        const usaLejiaLavado = lavado.detergente?.toLowerCase().includes('lejía') || lavado.detergente?.toLowerCase().includes('bleach'); // Suposición simple
 
-        if (lejiaSimbolo === 'lejia_no' && usaLejiaLavado) {
+        // 3. Comprobar Lejía (Sin Cambios)
+        const lejiaSymbolName = getSymbolName(simbolosDetectados['Lejía']);
+        const usaLejiaLavado = lavado.detergente?.toLowerCase().includes('lejía') || lavado.detergente?.toLowerCase().includes('bleach');
+
+        if (lejiaSymbolName === 'lejia_no' && usaLejiaLavado) {
             razonesIncompatibilidad.push("La etiqueta indica 'No usar Lejía', pero el lavado parece incluirla.");
         }
-        if (lejiaSimbolo === 'lejia_si' && !usaLejiaLavado) {
-            // Esto no es necesariamente 'incompatible', quizás solo una observación
+        if (lejiaSymbolName === 'lejia_si' && !usaLejiaLavado) {
             console.log("Info: Etiqueta permite lejía, pero el lavado no la incluye.");
         }
 
-        // 4. Comprobar Delicadeza (Requiere mapeo o info extra en 'lavado')
-        const delicadezaSimbolo = simbolos['Delicadeza']?.symbol; // ej: "lavado_delicado", "lavado_muy_delicado", "lavado_normal"
-        // Necesitamos saber qué tan delicado es el programa del 'lavado' actual.
-        // Ejemplo: si lavado.programa es "Sintéticos" podría ser delicado, "Algodón" normal...
-        // Añade tu lógica aquí si tienes cómo comparar la delicadeza.
-        // Ejemplo simple (necesitarás ajustar):
-        /*
-        const esLavadoDelicado = lavado.programa?.toLowerCase().includes('delicado') || lavado.programa?.toLowerCase().includes('sintetico');
-        if (delicadezaSimbolo === 'lavado_muy_delicado' && !esLavadoDelicado) { // Asumiendo que un lavado no delicado daña ropa muy delicada
-            razonesIncompatibilidad.push("Programa de lavado podría ser demasiado agresivo para etiqueta 'Muy Delicado'.");
-        }
-        */
+        // --- 4. Comprobar Delicadeza vs Centrifugado (RPM) ---
+        const delicadezaSymbolName = getSymbolName(simbolosDetectados['Delicadeza']);
 
-        // Resultado final para etiqueta
+        const rpmLavadoStr = lavado.centrifugado; // Obtener el valor de RPM del objeto lavado
+        let rpmLavado = NaN;
+
+        if (rpmLavadoStr !== undefined && rpmLavadoStr !== null) {
+            // Intentar convertir a número (quitando "rpm" si lo tuviera)
+            rpmLavado = parseInt(String(rpmLavadoStr).replace(/[^0-9]/g, ''), 10);
+        }
+
+        console.log(`Check Delicadeza: Simbolo='${delicadezaSymbolName}', RPM Lavado='${rpmLavadoStr}' (parsed as ${rpmLavado})`);
+
+        // Solo realizar el check si tenemos ambos datos: símbolo de delicadeza y un RPM válido
+        if (delicadezaSymbolName && !isNaN(rpmLavado)) {
+            const maxRpmPermitidoDelicado = 700; // Límite definido
+
+            // Lista de símbolos que requieren centrifugado bajo
+            const simbolosDelicados = ['lavado_delicado', 'lavado_muy_delicado', 'lavado_a_mano'];
+
+            if (simbolosDelicados.includes(delicadezaSymbolName)) {
+                // Si el símbolo es delicado y las RPM superan el límite
+                if (rpmLavado > maxRpmPermitidoDelicado) {
+                    // Añadir razón de incompatibilidad
+                    razonesIncompatibilidad.push(`Centrifugado (${rpmLavado} RPM) es demasiado alto para etiqueta '${delicadezaSymbolName}' (máx ${maxRpmPermitidoDelicado} RPM).`);
+                }
+            }
+            // Si el símbolo es 'lavado_normal', no hacemos nada, es compatible con todo.
+            else if (delicadezaSymbolName === 'lavado_normal') {
+                 console.log("Símbolo 'lavado_normal' detectado, compatible con cualquier RPM.");
+            }
+        } else if (delicadezaSymbolName && isNaN(rpmLavado)) {
+            // Si tenemos símbolo pero no RPM, podríamos mostrar advertencia o no hacer nada
+            console.warn(`No se pudo determinar el RPM del lavado ('${rpmLavadoStr}') para comprobar compatibilidad con símbolo '${delicadezaSymbolName}'.`);
+        } else if (!delicadezaSymbolName) {
+            console.log("No se detectó símbolo de delicadeza claro para comprobar RPM.");
+        }
+        // --- Fin Sección 4 ---
+
+
+        // Resultado final para etiqueta (Sin Cambios)
         if (razonesIncompatibilidad.length > 0) {
             return { compatible: false, razon: razonesIncompatibilidad.join(' ') };
         } else {
+             const algunSimboloUtil = tempSymbolName || getSymbolName(simbolosDetectados['Delicadeza']) || lejiaSymbolName;
+             if (!algunSimboloUtil || algunSimboloUtil === 'No detectado') {
+                  return { compatible: true, razon: "No se detectaron símbolos claros, compatibilidad asumida." };
+             }
             return { compatible: true, razon: "Símbolos de etiqueta parecen compatibles." };
         }
     }
-    // --- Compatibilidad de Color ---
+    // --- Compatibilidad de Color (SIN CAMBIOS aquí) ---
     else if (scanResult.type === 'color') {
-        const colorData = scanResult.data; // { hex, L, tone }
-        const L = parseFloat(colorData.L); // Luminosidad 0-100
-
-        // *** DETERMINAR TIPO DE COLADA (LÓGICA MEJORADA) ***
-        let tipoColada = 'colores'; // Valor por defecto
-
-        // 1. Buscar propiedad explícita (Ideal si la añades al crear/seleccionar lavado)
+        // ... (tu lógica de color existente, sin cambios) ...
+        const colorData = scanResult.data;
+        const L = parseFloat(colorData.L);
+        let tipoColada = 'colores';
         if (lavado.tipoColada && ['blancos', 'colores', 'oscuros'].includes(lavado.tipoColada)) {
             tipoColada = lavado.tipoColada;
-            console.log("Tipo colada obtenido de propiedad explícita:", tipoColada);
         }
-        // 2. Buscar nombres de lavados programados específicos
-        else if (lavado.nombre === 'Lavado Ropa Blanca') {
-            tipoColada = 'blancos';
-            console.log("Tipo colada inferido por nombre 'lavado Ropa Blanca'");
-        } else if (lavado.nombre === 'Lavado Ropa Oscura') {
-            tipoColada = 'oscuros';
-            console.log("Tipo colada inferido por nombre 'lavado Ropa Oscura'");
-        }
-        // 3. Buscar propiedad 'tejido' de lavados personalizados
-        else if (lavado.tejido) { // Asegúrate de que guardas esta propiedad en el objeto 'lavado'
+        else if (lavado.nombre === 'Lavado Ropa Blanca') tipoColada = 'blancos';
+        else if (lavado.nombre === 'Lavado Ropa Oscura') tipoColada = 'oscuros';
+        else if (lavado.tejido) {
             const tejidoSeleccionado = lavado.tejido.toLowerCase();
-            console.log("Evaluando 'tejido' para tipo colada:", tejidoSeleccionado);
-            if (tejidoSeleccionado === 'blanco') {
-                tipoColada = 'blancos';
-            } else if (tejidoSeleccionado === 'color') {
-                // Si selecciona "Color", lo tratamos como 'colores' (mixtos/oscuros)
-                tipoColada = 'colores';
-            } else {
-                // Para Algodón, Sintético, Lana, Mezcla, etc., asumimos 'colores' por defecto
-                tipoColada = 'colores';
-            }
+            if (tejidoSeleccionado === 'blanco') tipoColada = 'blancos';
+            else if (tejidoSeleccionado === 'color') tipoColada = 'colores';
+            else tipoColada = 'colores';
         } else {
-             console.log("No se encontró 'tipoColada', nombre específico ni 'tejido'. Usando 'colores' por defecto.");
+             console.log("Usando 'colores' por defecto para tipo colada.");
         }
-        // *** FIN DETERMINAR TIPO DE COLADA ***
-
         console.log("Tipo colada final determinado:", tipoColada);
-
-        // --- Reglas de compatibilidad de color (Estas no cambian) ---
-        if (tipoColada === 'blancos' && L < LIGHT_L_THRESHOLD) { // Prenda no blanca/clara
-             // Añadimos el tipo de colada detectado al mensaje para claridad
+        if (tipoColada === 'blancos' && L < LIGHT_L_THRESHOLD) {
              return { compatible: false, razon: `Color ${colorData.hex} (${colorData.tone}) podría desteñir en lavado de Blancos.` };
         }
-        if (tipoColada === 'oscuros' && L > DARK_L_THRESHOLD) { // Prenda clara/media
-             // Añadimos el tipo de colada detectado al mensaje para claridad
+        if (tipoColada === 'oscuros' && L > DARK_L_THRESHOLD) {
              return { compatible: false, razon: `Color claro ${colorData.hex} (${colorData.tone}) podría mancharse en lavado de Oscuros.` };
         }
-        // Para 'colores', por defecto es compatible.
-        // Podríamos añadir una advertencia si es MUY claro/oscuro, pero lo marcamos como compatible.
         if (tipoColada === 'colores' && (L < DARK_L_THRESHOLD || L > LIGHT_L_THRESHOLD)) {
             console.log(`Advertencia leve: Prenda (${colorData.hex} / ${colorData.tone}) es muy oscura/clara para 'Colores Mixtos'.`);
-             // Devolvemos compatible, pero la razón podría indicarlo si quieres:
-             // return { compatible: true, razon: `Color ${colorData.hex} (${colorData.tone}) es muy oscuro/claro. Añadir con precaución a '${tipoColada}'.` };
         }
-
-        // Si pasa los checks o es tipo 'colores' (sin incompatibilidad directa)
         return { compatible: true, razon: `Color ${colorData.hex} (${colorData.tone}) parece compatible con lavado de tipo '${tipoColada}'.` };
     }
-    // --- Tipo Desconocido ---
+    // --- Tipo Desconocido (Sin Cambios) ---
     else {
         return { compatible: false, razon: "Tipo de escaneo desconocido." };
     }
