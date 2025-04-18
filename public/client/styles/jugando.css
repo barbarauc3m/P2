@@ -19,7 +19,7 @@ body {
     color: white;
     margin: 0;
     padding: 0;
-    min-height: 100vh; /* CAMBIO AQUÍ */
+    max-height: 100vh; /* CAMBIO AQUÍ */
     display: flex;
     flex-direction: column;
     font-size: 5vw;
@@ -72,6 +72,10 @@ body {
 .game-placeholder {
     margin-top: 20px;
     width: 100%;
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
 }
 
 .game-placeholder img {
@@ -87,7 +91,10 @@ body {
 
 /* Controles */
 .game-controls {
-    flex: none; /* Evita que crezca */
+    position: fixed;  /* Estas 4 cosas para colocarlo al fondo de la pantalla */
+    bottom: 0;        
+    left: 0;          /* Alinearlo a la izquierda */
+    right: 0;         /* Que ocupe todo el ancho disponible */
     display: flex;
     flex-direction: column;
     justify-content: center;
