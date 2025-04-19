@@ -40,6 +40,12 @@ class VoiceRecognition {
                 window.location.href = './juegos.html';
             }
 
+            if (transcript.includes("volver")) {
+                console.log("Comando de voz 'Volver a jugar' detectado");
+                voiceControl.stop();
+                this.socket.emit('juego2-reiniciar');  // supongo que es equivalente a volver a jugar xd
+            }
+
         };
 
         this.recognition.onerror = (event) => {
