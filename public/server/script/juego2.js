@@ -71,6 +71,7 @@ document.addEventListener("DOMContentLoaded", function() {
 
     const viewportWidth = window.innerWidth;
     const maxPrendas = Math.floor(viewportWidth / 120);
+    // const maxPrendas = 1;  // para pruebassssssss
     document.getElementById('contadorPrendas').textContent = maxPrendas;
     
     const gameContainer = document.querySelector('.game-container');
@@ -169,14 +170,15 @@ document.addEventListener("DOMContentLoaded", function() {
         juegoPerdido = true;
         document.querySelector(".game-container").style.display = "none";
         document.querySelector(".game-over-container").style.display = "block";
-        
+        console.log("Se hace socket.broadcast.emit del voiceControl-start.");
+        socket.emit("voiceControl-start");  // activar voiceControl.start(). enviamos esto a server y server manda otro mensaje a cliente
     }
 
     function gameWon() { 
         juegoGanado = true;   
         document.querySelector(".game-container").style.display = "none";
         document.querySelector(".game-won-container").style.display = "block";
-        
+        socket.emit("voiceControl-start");
     }
     
 
