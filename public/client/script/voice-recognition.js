@@ -31,6 +31,16 @@ class VoiceRecognition {
                 voiceControl.stop();
                 this.socket.emit('juego2-reanudar');
             }
+
+            if (transcript.includes("volver")) {
+                console.log("Comando de voz 'Volver al menú' detectado");
+                voiceControl.stop();
+                this.socket.emit('juego2-volver');
+                console.log('Cliente vuelve al menú');
+                //pausePopup.style.display = 'none'; 
+                window.location.href = './juegos.html';
+            }
+
         };
 
         this.recognition.onerror = (event) => {

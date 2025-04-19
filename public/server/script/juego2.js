@@ -41,6 +41,11 @@ document.addEventListener("DOMContentLoaded", function() {
         reanudarJuego();
       });
 
+      socket.on('juego2-backtoMenu', () => {
+        console.log("Se vuelve al menú");
+        backtoMenu();
+      });
+
       socket.on('juego2-reiniciar', () => {
         console.log("Reinicio recibido desde móvil");
         reiniciarJuego();

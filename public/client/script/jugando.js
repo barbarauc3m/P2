@@ -17,11 +17,17 @@ socket.on('connect', () => {
 socket.on('connect_error', (err) => {
     console.error('❌ Error de conexión con el servidor de Socket.IO:', err.message);
 });
-
+/*
 socket.on('moverCienteAlMenu', (err) => {
     console.error('Cliente vuelve al menú');
     window.location.href = './juegos.html';
-});
+});*/
+/*
+socket.on('moverCienteAlMenu', () => {
+    console.log('Cliente vuelve al menú');
+    pausePopup.style.display = 'none';  // redudante pero yo que se no va
+    window.location.href = './juegos.html';
+});*/
 
 socket.on('juego1-reanudado', () => {
     console.log("Juego 1 reanudado");

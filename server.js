@@ -578,10 +578,16 @@ io.on('connection', (socket) => {
     io.emit('juego2-reanudado');
   });
 
-  socket.on('moverCienteAlMenu', () => {  // Enviamos solicitud al móvil
+  socket.on('juego2-volver', () => {
+    console.log("Recibido 'volver'");
+    //io.emit('moverCienteAlMenu');
+    socket.broadcast.emit('juego2-backtoMenu');
+  });
+/*
+  socket.on('moverClienteAlMenu', () => {  
     console.log('[SERVER.JS]📱 Señal mandada al móvil para ir al menú');
-    socket.broadcast.emit('moverCienteAlMenu'); 
-  }); 
+    io.emit('moverCienteAlMenu'); 
+  }); */
 
   // Para animar los juegos si inclinas el móvil a un lado o a otro
   socket.on("expandir-juego1", () => {  
