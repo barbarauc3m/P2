@@ -169,7 +169,8 @@ document.addEventListener("DOMContentLoaded", function() {
         juegoPerdido = true;
         document.querySelector(".game-container").style.display = "none";
         document.querySelector(".game-over-container").style.display = "block";
-        
+        console.log("Se hace socket.broadcast.emit del voiceControl-start.");
+        socket.emit("voiceControl-start");  // activar voiceControl.start()
     }
 
     function gameWon() { 

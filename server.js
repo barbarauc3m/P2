@@ -597,6 +597,11 @@ io.on('connection', (socket) => {
     //io.emit('moverCienteAlMenu');
     socket.broadcast.emit('juego2-backtoMenu');
   });
+
+  socket.on('voiceControl-start', () => {
+    console.log("voiceControl-start recibido por el servidor. Lo reenvía al cliente");
+    io.emit('voiceControl-start');
+  });
 /*
   socket.on('moverClienteAlMenu', () => {  
     console.log('[SERVER.JS]📱 Señal mandada al móvil para ir al menú');
