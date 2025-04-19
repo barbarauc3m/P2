@@ -1,9 +1,62 @@
+const socket = io();
 const usuarioActual = localStorage.getItem('loggedInUser');
+
+// 1. Cada vez que el usuario elige un nivel de suciedad:
+document.querySelectorAll('.suciedad .dropdown-menu input[type=checkbox]')
+  .forEach(chk => chk.addEventListener('change', e => {
+    if (!e.target.checked) return;
+    const valor = e.target.parentElement.textContent.trim();
+    console.log(valor);
+    socket.emit('updatePersonalizadoOption', { category: 'suciedad', value: valor });
+  }));
+
+// 2. Temperatura (rango):
+const tempSlider = document.getElementById('temperatura');
+tempSlider.addEventListener('input', () => {
+  const v = `${tempSlider.value}°C`;
+
+  socket.emit('updatePersonalizadoOption', { category: 'temperatura', value: v });
+});
+
+// 3. Centrifugado:
+document.querySelectorAll('.centrifugado .dropdown-menu input[type=checkbox]')
+  .forEach(chk => chk.addEventListener('change', e => {
+    if (!e.target.checked) return;
+    socket.emit('updatePersonalizadoOption', {
+      category: 'centrifugado',
+      value: e.target.parentElement.textContent.trim()
+    });
+  }));
+
+// 4. Duración:
+const durSlider = document.getElementById('duracion');
+durSlider.addEventListener('input', () => {
+  const v = `${durSlider.value} min`;
+  socket.emit('updatePersonalizadoOption', { category: 'duracion', value: v });
+});
+
+// 5. Detergente:
+const detSlider = document.getElementById('detergente');
+detSlider.addEventListener('input', () => {
+  const v = `${detSlider.value} ml`;
+  socket.emit('updatePersonalizadoOption', { category: 'detergente', value: v });
+});
+
+// 6. Tejido:
+document.querySelectorAll('.tejido .dropdown-menu input[type=checkbox]')
+  .forEach(chk => chk.addEventListener('change', e => {
+    if (!e.target.checked) return;
+    socket.emit('updatePersonalizadoOption', {
+      category: 'tejido',
+      value: e.target.parentElement.textContent.trim()
+    });
+  }));
 
 document.addEventListener("DOMContentLoaded", function () {
     const favButton = document.getElementById("favButton");
     const favKey = "lavadoPersonalizadoFavorito";
 
+    socket.emit('requestDisplayChange', { targetPage: '/display/lavado-personalizado' });
 
     // Actualizar icono según estado
     function actualizarIconoFavorito(esFavorito) {
@@ -68,6 +121,7 @@ document.addEventListener("DOMContentLoaded", function () {
             tejido,
             favorito: esFavorito
           };
+
       
         // Enviar al backend
         fetch('/guardar-lavado-personalizado', {
@@ -77,13 +131,20 @@ document.addEventListener("DOMContentLoaded", function () {
           })
           .then(res => res.text())
           .then(msg => {
-            alert(msg);
-            window.location.href = "/index.html";
+            // primero notificamos al display
+            socket.emit('personalizadoSaved');
+            setTimeout(() => {
+              window.location.href = "/index.html";
+            }, 500);
+            
           })
           .catch(err => {
             console.error(err);
             alert("Error al guardar el lavado personalizado.");
           });
+
+
       });
+
       
 });

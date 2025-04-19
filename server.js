@@ -136,7 +136,7 @@ app.get('/display/categories', (req, res) => {
   res.sendFile(path.join(__dirname, 'public', 'server', 'categorias-lavados.html'));
 });
 
-app.get('/display/avados-favs', (req, res) => {
+app.get('/display/lavados-favs', (req, res) => {
   res.sendFile(path.join(__dirname, 'public', 'server', 'lavados-favs.html'));
 });
 
@@ -151,6 +151,24 @@ app.get('/display/register', (req, res) => {
 app.get('/display/empezar-lavado', (req, res) => {
   res.sendFile(path.join(__dirname, 'public', 'server', 'empezar-lavado.html'));
 });
+
+app.get('/display/profile', (req, res) => {
+  res.sendFile(path.join(__dirname, 'public/server/perfil.html'));
+});
+
+app.get('/display/lavados-favs', (req, res) => {
+  res.sendFile(path.join(__dirname, 'public/server/lavados-favs.html'));
+});
+
+app.get('/display/historial', (req, res) => {
+  res.sendFile(path.join(__dirname, 'public/server/historial.html'));
+});
+
+app.get('/display/lavado-personalizado', (req, res) => {
+  console.log('🔔 /display/lavado-personalizado pedido');
+  res.sendFile(path.join(__dirname, 'public/server/lavado-personalizado.html'));
+});
+
 
 
 
@@ -503,27 +521,18 @@ app.get('/api/users/:username/personalizados', async (req, res) => { // Nueva ru
   }
 });
 
-app.get('/display/profile', (req, res) => {
-  res.sendFile(path.join(__dirname, 'public/server/perfil.html'));
-});
 
-app.get('/display/lavados-favs', (req, res) => {
-  res.sendFile(path.join(__dirname, 'public/server/lavados-favs.html'));
-});
-
-app.get('/display/historial', (req, res) => {
-  res.sendFile(path.join(__dirname, 'public/server/historial.html'));
-});
 
 
 // CONEXIONES SOCKET.IO
 io.on('connection', (socket) => {
   console.log('Usuario conectado');
 
-  socket.on('registerServerDisplay', () => {
+  socket.on('registerDisplay', () => {
     serverDisplaySocketId = socket.id;
     console.log('📺 Server‑Display registrado con ID:', serverDisplaySocketId);
   });
+  
   
 
 
@@ -702,6 +711,20 @@ io.on('connection', (socket) => {
   socket.on('closeGameDisplay', () => {
     console.log('📱 Recibida petición para cerrar juego');
     io.emit('closeGameDisplay');  // Envía a todas las pantallas del servidor
+  });
+
+  // reenviamos cada cambio de opción al display
+  socket.on('updatePersonalizadoOption', payload => {
+    if (serverDisplaySocketId) {
+      io.to(serverDisplaySocketId).emit('updatePersonalizadoOption', payload);
+    }
+  });
+
+// reenviamos el “guardado” para que aparezca el popup
+  socket.on('personalizadoSaved', () => {
+    if (serverDisplaySocketId) {
+      io.to(serverDisplaySocketId).emit('personalizadoSaved');
+    }
   });
 });
 
