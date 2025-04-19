@@ -6,13 +6,13 @@
     "foto": "/images/persona_cla.svg",
     "favoritos": [
       {
-        "nombre": "Lavado Frío",
-        "descripcion": "Ideal para lana, seda, ropa interior, etc.",
-        "temperatura": "20ºC",
-        "duracion": "40 min",
-        "centrifugado": "600 rpm",
-        "detergente": "30 ml",
-        "imagen": "../../../images/frio.svg"
+        "nombre": "Lavado Ropa Oscura",
+        "descripcion": "Ideal para vaqueros, camisetas negras, sudaderas, etc.",
+        "temperatura": "30ºC",
+        "duracion": "1h",
+        "centrifugado": "800 rpm",
+        "detergente": "50 ml",
+        "imagen": "../../../images/ropa_oscura.svg"
       },
       {
         "nombre": "Lavado Rápido",
@@ -22,58 +22,50 @@
         "centrifugado": "1200 rpm",
         "detergente": "50 ml",
         "imagen": "../../../images/rapido.svg"
-      },
-      {
-        "nombre": "Lavado Caliente",
-        "descripcion": "Ideal para ropa muy sucia o con manchas.",
-        "temperatura": "60ºC",
-        "duracion": "1h 15 min",
-        "centrifugado": "1200 rpm",
-        "detergente": "60 ml",
-        "imagen": "../../../images/caliente.svg"
       }
     ],
     "personalizados": [
       {
-        "nivelSuciedad": "Manchas visibles",
-        "temperatura": "50°C",
+        "nivelSuciedad": "Ropa a penas usada",
+        "temperatura": "40°C",
         "centrifugado": "Bajo: 600 rpm",
-        "duracion": "60 min",
-        "detergente": "25 ml",
+        "duracion": "95 min",
+        "detergente": "30 ml",
         "tejido": [
-          "Blanco"
+          "Algodón"
         ],
         "favorito": false,
         "nombre": "Lavado personalizado 3",
         "index": 3,
-        "fechaGuardado": "2025-04-18T09:35:55.811Z"
+        "fechaGuardado": "2025-04-19T21:58:51.073Z"
       },
       {
-        "nivelSuciedad": "Manchas visibles",
+        "nivelSuciedad": "Ropa a penas usada",
         "temperatura": "60°C",
         "centrifugado": "Bajo: 600 rpm",
-        "duracion": "105 min",
-        "detergente": "20 ml",
+        "duracion": "50 min",
+        "detergente": "10 ml",
         "tejido": [
-          "Lana"
+          "Algodón"
         ],
         "favorito": false,
         "nombre": "Lavado personalizado 2",
         "index": 2,
-        "fechaGuardado": "2025-04-12T09:36:24.381Z"
+        "fechaGuardado": "2025-04-19T21:51:52.302Z"
       },
       {
-        "nivelSuciedad": "Ropa de uso diario",
-        "temperatura": "55°C",
+        "nivelSuciedad": "Ropa a penas usada",
+        "temperatura": "50°C",
         "centrifugado": "Bajo: 600 rpm",
-        "duracion": "45 min",
-        "detergente": "95 ml",
+        "duracion": "85 min",
+        "detergente": "70 ml",
         "tejido": [
-          "Sintético"
+          "Algodón"
         ],
         "favorito": false,
         "nombre": "Lavado personalizado 1",
-        "index": 1
+        "index": 1,
+        "fechaGuardado": "2025-04-19T21:48:57.115Z"
       }
     ]
   },

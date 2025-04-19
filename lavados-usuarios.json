@@ -1,6 +1,63 @@
 {
   "albatello": [
     {
+      "nombre": "Lavado Rápido",
+      "descripcion": "Ideal para ropa poco sucia o uso diario.",
+      "temperatura": "30ºC",
+      "duracion": "30 min",
+      "centrifugado": "1200 rpm",
+      "detergente": "50 ml",
+      "fechaInicio": "19/4/25, 22:58",
+      "imagen": "../../../images/rapido.svg",
+      "prendasEscaneadas": [
+        {
+          "id": "prenda1",
+          "scanType": "color",
+          "scanData": {
+            "hex": "#d4d4d4",
+            "L": "83",
+            "tone": "Tono Claro",
+            "fullPalette": [
+              {
+                "hex": "#d4d4d4",
+                "red": 212,
+                "green": 212,
+                "blue": 212,
+                "area": 0.1252284620792002,
+                "hue": 0,
+                "saturation": 0,
+                "lightness": 0.8313725490196079,
+                "intensity": 0
+              },
+              {
+                "hex": "#7a7a7a",
+                "red": 122,
+                "green": 122,
+                "blue": 122,
+                "area": 0.24628602671248925,
+                "hue": 0,
+                "saturation": 0,
+                "lightness": 0.47843137254901963,
+                "intensity": 0
+              },
+              {
+                "hex": "#363943",
+                "red": 54,
+                "green": 57,
+                "blue": 67,
+                "area": 0.6284855112083105,
+                "hue": 0.6282051282051282,
+                "saturation": 0.10743801652892565,
+                "lightness": 0.2372549019607843,
+                "intensity": 0.05098039215686276
+              }
+            ]
+          }
+        }
+      ],
+      "usuario": "albatello"
+    },
+    {
       "nombre": "Lavado Frío",
       "descripcion": "Ideal para lana, seda, ropa interior, etc.",
       "temperatura": "20ºC",
