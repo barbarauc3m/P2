@@ -1,3 +1,6 @@
+//import VoiceRecognition from './voice-recognition.js';
+let voiceControl;
+
 window.socket = io();  // Definimos el socket globalmente
 const socket = window.socket;
 
@@ -203,6 +206,7 @@ function controlarMovimientoCarrito() {
 
 function juego2() {    
     //console.log('🧭 Activando puntero Wii remoto desde móvil');
+    voiceControl = new VoiceRecognition(socket);
 
     let lastBeta = null;
     let lastTime = null;
@@ -233,6 +237,7 @@ function juego2() {
     if (pauseButton) {
         pauseButton.addEventListener("click", function() {
             console.log("😡 MÓVIL MANDA QUE SE PARE EL JUEGO");
+            voiceControl.start(); // Activar reconocimiento durante pausa
             pausePopup.style.display = 'flex';
             socket.emit('juego2-pausar');
             //alert("Juego pausado");
