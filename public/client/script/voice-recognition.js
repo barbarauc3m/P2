@@ -24,10 +24,11 @@ class VoiceRecognition {
             const last = event.results.length - 1;
             const transcript = event.results[last][0].transcript.trim().toLowerCase();
 
-            print(transcript);
+            console.log(transcript);
             
             if (transcript.includes("reanudar")) {
                 console.log("Comando de voz 'Reanudar' detectado");
+                voiceControl.stop();
                 this.socket.emit('juego2-reanudar');
             }
         };

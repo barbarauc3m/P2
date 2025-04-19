@@ -37,6 +37,10 @@ document.addEventListener("DOMContentLoaded", function() {
         pausarJuego();
       });
 
+      socket.on('juego2-reanudado', () => {
+        reanudarJuego();
+      });
+
       socket.on('juego2-reiniciar', () => {
         console.log("Reinicio recibido desde móvil");
         reiniciarJuego();

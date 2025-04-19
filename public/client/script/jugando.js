@@ -207,6 +207,7 @@ function controlarMovimientoCarrito() {
 function juego2() {    
     //console.log('🧭 Activando puntero Wii remoto desde móvil');
     voiceControl = new VoiceRecognition(socket);
+    voiceControl.stop();
 
     let lastBeta = null;
     let lastTime = null;
@@ -240,7 +241,6 @@ function juego2() {
             voiceControl.start(); // Activar reconocimiento durante pausa
             pausePopup.style.display = 'flex';
             socket.emit('juego2-pausar');
-            //alert("Juego pausado");
         });
     }
 
@@ -250,7 +250,6 @@ function juego2() {
         restartButton.addEventListener("click", function() {
             console.log("😱 MÓVIL MANDA QUE SE REINICIE EL JUEGO");
             socket.emit('juego2-reiniciar');
-            //alert("Juego reiniciado");
         });
     }
 }
