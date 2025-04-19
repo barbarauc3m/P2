@@ -1,154 +1,66 @@
 {
   "albatello": [
     {
-      "nombre": "Lavado Rápido",
-      "descripcion": "Ideal para ropa poco sucia o uso diario.",
-      "temperatura": "30ºC",
-      "duracion": "30 min",
-      "centrifugado": "1200 rpm",
-      "detergente": "50 ml",
-      "fechaInicio": "19/4/25, 18:56",
-      "imagen": "../../../images/rapido.svg",
+      "nombre": "Lavado Frío",
+      "descripcion": "Ideal para lana, seda, ropa interior, etc.",
+      "temperatura": "20ºC",
+      "duracion": "40 min",
+      "centrifugado": "600 rpm",
+      "detergente": "30 ml",
+      "fechaInicio": "19/4/25, 20:46",
+      "imagen": "../../../images/frio.svg",
       "prendasEscaneadas": [
         {
           "id": "prenda1",
           "scanType": "color",
           "scanData": {
-            "hex": "#95c4f3",
-            "L": "77",
-            "tone": "Tono Claro",
+            "hex": "#a63a36",
+            "L": "43",
+            "tone": "Tono Medio",
             "fullPalette": [
               {
-                "hex": "#95c4f3",
-                "red": 149,
-                "green": 196,
-                "blue": 243,
-                "area": 0.11127860657658362,
-                "hue": 0.5833333333333334,
-                "saturation": 0.7966101694915252,
-                "lightness": 0.7686274509803921,
-                "intensity": 0.3686274509803922
+                "hex": "#a63a36",
+                "red": 166,
+                "green": 58,
+                "blue": 54,
+                "area": 0.5210028899476685,
+                "hue": 0.005952380952380952,
+                "saturation": 0.509090909090909,
+                "lightness": 0.43137254901960786,
+                "intensity": 0.4392156862745098
               },
               {
-                "hex": "#50779e",
-                "red": 80,
-                "green": 119,
-                "blue": 158,
-                "area": 0.0056080606107943454,
-                "hue": 0.5833333333333334,
-                "saturation": 0.3277310924369748,
-                "lightness": 0.4666666666666667,
-                "intensity": 0.3058823529411765
-              },
-              {
-                "hex": "#5b3443",
-                "red": 91,
-                "green": 52,
-                "blue": 67,
-                "area": 0.3106146996797626,
-                "hue": 0.9358974358974358,
-                "saturation": 0.27272727272727276,
-                "lightness": 0.2803921568627451,
-                "intensity": 0.15294117647058825
-              },
-              {
-                "hex": "#a99787",
-                "red": 169,
-                "green": 151,
-                "blue": 135,
-                "area": 0.5724986331328595,
-                "hue": 0.07843137254901962,
-                "saturation": 0.16504854368932032,
-                "lightness": 0.596078431372549,
-                "intensity": 0.13333333333333328
-              }
-            ]
-          }
-        },
-        {
-          "id": "prenda2",
-          "scanType": "etiqueta",
-          "scanData": {
-            "Temperatura": "lavado_30 (0.69)",
-            "Delicadeza": "lavado_normal (0.59)",
-            "Lejía": "lejia_si (0.57)"
-          }
-        }
-      ],
-      "usuario": "albatello"
-    },
-    {
-      "nombre": "Lavado Rápido",
-      "descripcion": "Ideal para ropa poco sucia o uso diario.",
-      "temperatura": "30ºC",
-      "duracion": "30 min",
-      "centrifugado": "1200 rpm",
-      "detergente": "50 ml",
-      "fechaInicio": "19/4/25, 17:14",
-      "imagen": "../../../images/rapido.svg",
-      "usuario": "albatello"
-    },
-    {
-      "nombre": "Lavado Rápido",
-      "descripcion": "Ideal para ropa poco sucia o uso diario.",
-      "temperatura": "30ºC",
-      "duracion": "30 min",
-      "centrifugado": "1200 rpm",
-      "detergente": "50 ml",
-      "fechaInicio": "16/4/25, 19:25",
-      "imagen": "../../../images/rapido.svg",
-      "usuario": "albatello"
-    },
-    {
-      "nombre": "Lavado Rápido",
-      "descripcion": "Ideal para ropa poco sucia o uso diario.",
-      "temperatura": "30ºC",
-      "duracion": "30 min",
-      "centrifugado": "1200 rpm",
-      "detergente": "50 ml",
-      "fechaInicio": "16/4/25, 19:24",
-      "imagen": "../../../images/rapido.svg",
-      "prendasEscaneadas": [
-        {
-          "id": "prenda1",
-          "scanType": "color",
-          "scanData": {
-            "hex": "#313131",
-            "L": "19",
-            "tone": "Tono Oscuro",
-            "fullPalette": [
-              {
-                "hex": "#313131",
-                "red": 49,
-                "green": 49,
-                "blue": 49,
-                "area": 0.10716238381629306,
-                "hue": 0,
-                "saturation": 0,
-                "lightness": 0.19215686274509805,
-                "intensity": 0
-              },
-              {
-                "hex": "#bbbbbb",
+                "hex": "#bb8861",
                 "red": 187,
-                "green": 187,
-                "blue": 187,
-                "area": 0.2362102632195579,
-                "hue": 0,
-                "saturation": 0,
-                "lightness": 0.7333333333333333,
-                "intensity": 0
+                "green": 136,
+                "blue": 97,
+                "area": 0.4708896352417402,
+                "hue": 0.07222222222222223,
+                "saturation": 0.39823008849557523,
+                "lightness": 0.5568627450980392,
+                "intensity": 0.3529411764705882
               },
               {
-                "hex": "#6d686a",
-                "red": 109,
-                "green": 104,
-                "blue": 106,
-                "area": 0.656627352964149,
-                "hue": 0.933333333333333,
-                "saturation": 0.023474178403755853,
-                "lightness": 0.41764705882352937,
-                "intensity": 0.019607843137254888
+                "hex": "#625e74",
+                "red": 98,
+                "green": 94,
+                "blue": 116,
+                "area": 0.00026556275872842303,
+                "hue": 0.6969696969696969,
+                "saturation": 0.10476190476190474,
+                "lightness": 0.4117647058823529,
+                "intensity": 0.08627450980392154
+              },
+              {
+                "hex": "#35292d",
+                "red": 53,
+                "green": 41,
+                "blue": 45,
+                "area": 0.007841912051862845,
+                "hue": 0.9444444444444445,
+                "saturation": 0.1276595744680851,
+                "lightness": 0.1843137254901961,
+                "intensity": 0.047058823529411764
               }
             ]
           }
@@ -157,14 +69,14 @@
       "usuario": "albatello"
     },
     {
-      "nombre": "Lavado Edredones",
-      "descripcion": "Ideal para edredones.",
-      "temperatura": "30ºC",
-      "duracion": "2 h 30 min",
-      "centrifugado": "800 rpm",
-      "detergente": "45 ml",
-      "fechaInicio": "9/4/25, 20:42",
-      "imagen": "../../../images/edredon.svg",
+      "nombre": "Lavado Caliente",
+      "descripcion": "Ideal para ropa muy sucia o con manchas.",
+      "temperatura": "60ºC",
+      "duracion": "1h 15 min",
+      "centrifugado": "1200 rpm",
+      "detergente": "60 ml",
+      "fechaInicio": "19/4/25, 20:40",
+      "imagen": "../../../images/caliente.svg",
       "usuario": "albatello"
     },
     {
@@ -174,19 +86,8 @@
       "duracion": "30 min",
       "centrifugado": "1200 rpm",
       "detergente": "50 ml",
-      "fechaInicio": "9/4/25, 20:42",
+      "fechaInicio": "19/4/25, 20:39",
       "imagen": "../../../images/rapido.svg",
-      "usuario": "albatello"
-    },
-    {
-      "nombre": "Lavado Eco",
-      "descripcion": "Ideal para ahorrar energía y agua.",
-      "temperatura": "40ºC",
-      "duracion": "1h",
-      "centrifugado": "800 rpm",
-      "detergente": "35 ml",
-      "fechaInicio": "31/3/25, 18:02",
-      "imagen": "../../../images/eco.svg",
       "usuario": "albatello"
     },
     {
@@ -196,19 +97,30 @@
       "duracion": "40 min",
       "centrifugado": "600 rpm",
       "detergente": "30 ml",
-      "fechaInicio": "31/3/25, 11:33",
+      "fechaInicio": "19/4/25, 20:37",
       "imagen": "../../../images/frio.svg",
       "usuario": "albatello"
     },
     {
-      "nombre": "Lavado Ropa Blanca",
-      "descripcion": "Ideal para camisas, toallas, sábanas, ropa blanca, etc.",
-      "temperatura": "60ºC",
-      "duracion": "1h",
-      "centrifugado": "1200 rpm",
-      "detergente": "55 ml",
-      "fechaInicio": "28/3/25, 16:48",
-      "imagen": "../../../images/ropa_blanca.svg",
+      "nombre": "Lavado Frío",
+      "descripcion": "Ideal para lana, seda, ropa interior, etc.",
+      "temperatura": "20ºC",
+      "duracion": "40 min",
+      "centrifugado": "600 rpm",
+      "detergente": "30 ml",
+      "fechaInicio": "19/4/25, 20:37",
+      "imagen": "../../../images/frio.svg",
+      "usuario": "albatello"
+    },
+    {
+      "nombre": "Lavado Frío",
+      "descripcion": "Ideal para lana, seda, ropa interior, etc.",
+      "temperatura": "20ºC",
+      "duracion": "40 min",
+      "centrifugado": "600 rpm",
+      "detergente": "30 ml",
+      "fechaInicio": "19/4/25, 20:34",
+      "imagen": "../../../images/frio.svg",
       "usuario": "albatello"
     },
     {
@@ -218,18 +130,7 @@
       "duracion": "30 min",
       "centrifugado": "1200 rpm",
       "detergente": "50 ml",
-      "fechaInicio": "28/3/25, 16:23",
-      "imagen": "../../../images/rapido.svg",
-      "usuario": "albatello"
-    },
-    {
-      "nombre": "Lavado Rápido",
-      "descripcion": "Ideal para ropa poco sucia o uso diario.",
-      "temperatura": "30ºC",
-      "duracion": "30 min",
-      "centrifugado": "1200 rpm",
-      "detergente": "50 ml",
-      "fechaInicio": "28/3/25, 16:09",
+      "fechaInicio": "19/4/25, 20:33",
       "imagen": "../../../images/rapido.svg",
       "usuario": "albatello"
     }

@@ -1,9 +1,6 @@
 const socket = io();
 
-socket.on('connect', () => {
-  console.log('Cliente lavado conectado, emitiendo registerDisplay');
-  socket.emit('registerDisplay');
-});
+socket.on('connect', () => {});
 
 const lavado = JSON.parse(localStorage.getItem('lavadoSeleccionado'));
 
@@ -69,6 +66,8 @@ const lavado = JSON.parse(localStorage.getItem('lavadoSeleccionado'));
         // Añadir usuario al objeto que se envía
         lavado.usuario = usuario;
 
+        localStorage.setItem("lavadoIniciado", JSON.stringify(lavado));
+
         socket.emit('washInitiated', lavado);
 
         fetch('/guardar-lavado', {
@@ -117,19 +116,27 @@ const lavado = JSON.parse(localStorage.getItem('lavadoSeleccionado'));
       });
 
       // Cierra el popup si el usuario hace clic fuera del contenido
-document.addEventListener("click", function (event) {
-  const popup = document.getElementById("popup-escaner");
-  const container = popup.querySelector(".container");
+    document.addEventListener("click", function (event) {
+      const popup = document.getElementById("popup-escaner");
+      const container = popup.querySelector(".container");
 
-  if (
-    popup.style.display === "flex" &&
-    !container.contains(event.target) &&
-    !event.target.closest(".scan-button") // para evitar cerrar si hacen clic en el botón original
-  ) {
-    cerrarPopupEscaner();
-  }
+      if (
+        popup.style.display === "flex" &&
+        !container.contains(event.target) &&
+        !event.target.closest(".scan-button") // para evitar cerrar si hacen clic en el botón original
+      ) {
+        cerrarPopupEscaner();
+      }
+
 });
 
+  document.getElementById('back-button').addEventListener('click', function() {
+    /*emit redirigir el servidor a index*/ 
+    socket.emit('requestDisplayChange', { targetPage: '/' });
+    
+    // Redirigir a la página de juegos
+    window.location.href = 'index.html';
+  });
 
   function abrirPopupEscaner() {
     document.getElementById("popup-escaner").style.display = "flex";

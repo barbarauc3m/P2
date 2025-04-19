@@ -520,9 +520,9 @@ app.get('/display/historial', (req, res) => {
 io.on('connection', (socket) => {
   console.log('Usuario conectado');
 
-  socket.on('registerDisplay', () => {
+  socket.on('registerServerDisplay', () => {
     serverDisplaySocketId = socket.id;
-    console.log('📺 Display registrado con ID:', serverDisplaySocketId);
+    console.log('📺 Server‑Display registrado con ID:', serverDisplaySocketId);
   });
   
 
@@ -651,14 +651,12 @@ io.on('connection', (socket) => {
      }
   });
 
-  socket.on('washInitiated', (washInfo) => { // Recibe señal de inicio del cliente
-      console.log(`⚡ Cliente ${socket.id} señalando lavado iniciado: ${washInfo?.nombre}`);
-      if (serverDisplaySocketId && io.sockets.sockets.get(serverDisplaySocketId)) {
-          io.to(serverDisplaySocketId).emit('showWashStartedPopup', washInfo); // Envía señal de popup
-      } else {
-          console.warn("Server Display no conectado (para datos), no se pudo enviar señal de inicio.");
-      }
+  socket.on('washInitiated', (washInfo) => {
+    if (serverDisplaySocketId) {
+      io.to(serverDisplaySocketId).emit('showWashStartedPopup', washInfo);
+    }
   });
+  
   
 
   socket.on('clearServerDisplay', () => { // Recibe señal de cliente saliendo

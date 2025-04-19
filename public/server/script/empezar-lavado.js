@@ -17,6 +17,10 @@
       console.log('🖥️ Mostrando pantalla Empezar Lavado:', data.targetPage);
       clearDisplay();
     }
+    else if (data.targetPage === '/') {
+        // recarga o redirige la pantalla servidor al home
+        window.location.href = '/'; // o la ruta que sirva tu home
+      }
   });
 
   // Recibe datos actualizados del lavado seleccionado
@@ -122,17 +126,18 @@ function displayEscaneos(prendas) {
     });
 }
 
+
   // Muestra popup de inicio de lavado
   function showWashStartedPopup(info) {
-    const popup = document.getElementById('wash-started-popup');
-    const spanName = document.getElementById('started-wash-name');
-    spanName.textContent = info.nombre;
-    popup.style.display = 'block';
+  const popup = document.getElementById("wash-started-popup");
+  document.getElementById("started-wash-name").textContent = info.nombre;
+  popup.style.display = "flex";           // o 'block', según tu CSS
+  setTimeout(() => {
+    popup.style.display = "none";
+     // Al cerrar el popup, redirigimos al inicio
+    window.location.href = "/";
+    }, 3000);}
 
-    setTimeout(() => {
-      popup.style.display = 'none';
-    }, 5000);
-  }
 
   // Limpia detalles y prendas
   function clearDisplay() {
@@ -159,6 +164,16 @@ window.addEventListener('load', () => {
       displayEscaneos(lavado.prendasEscaneadas || []);
     }
   });
+
+  // En public/server/script/empezar-lavado.js, justo después de tus window.addEventListener('storage', …)
+    window.addEventListener("storage", (e) => {
+    if (e.key === "lavadoIniciado" && e.newValue) {
+      const info = JSON.parse(e.newValue);
+      showWashStartedPopup(info);
+      localStorage.removeItem("lavadoIniciado");
+    }
+  });
+  
 })();
 
 
