@@ -7,6 +7,94 @@
       "duracion": "30 min",
       "centrifugado": "1200 rpm",
       "detergente": "50 ml",
+      "fechaInicio": "19/4/25, 18:56",
+      "imagen": "../../../images/rapido.svg",
+      "prendasEscaneadas": [
+        {
+          "id": "prenda1",
+          "scanType": "color",
+          "scanData": {
+            "hex": "#95c4f3",
+            "L": "77",
+            "tone": "Tono Claro",
+            "fullPalette": [
+              {
+                "hex": "#95c4f3",
+                "red": 149,
+                "green": 196,
+                "blue": 243,
+                "area": 0.11127860657658362,
+                "hue": 0.5833333333333334,
+                "saturation": 0.7966101694915252,
+                "lightness": 0.7686274509803921,
+                "intensity": 0.3686274509803922
+              },
+              {
+                "hex": "#50779e",
+                "red": 80,
+                "green": 119,
+                "blue": 158,
+                "area": 0.0056080606107943454,
+                "hue": 0.5833333333333334,
+                "saturation": 0.3277310924369748,
+                "lightness": 0.4666666666666667,
+                "intensity": 0.3058823529411765
+              },
+              {
+                "hex": "#5b3443",
+                "red": 91,
+                "green": 52,
+                "blue": 67,
+                "area": 0.3106146996797626,
+                "hue": 0.9358974358974358,
+                "saturation": 0.27272727272727276,
+                "lightness": 0.2803921568627451,
+                "intensity": 0.15294117647058825
+              },
+              {
+                "hex": "#a99787",
+                "red": 169,
+                "green": 151,
+                "blue": 135,
+                "area": 0.5724986331328595,
+                "hue": 0.07843137254901962,
+                "saturation": 0.16504854368932032,
+                "lightness": 0.596078431372549,
+                "intensity": 0.13333333333333328
+              }
+            ]
+          }
+        },
+        {
+          "id": "prenda2",
+          "scanType": "etiqueta",
+          "scanData": {
+            "Temperatura": "lavado_30 (0.69)",
+            "Delicadeza": "lavado_normal (0.59)",
+            "Lejía": "lejia_si (0.57)"
+          }
+        }
+      ],
+      "usuario": "albatello"
+    },
+    {
+      "nombre": "Lavado Rápido",
+      "descripcion": "Ideal para ropa poco sucia o uso diario.",
+      "temperatura": "30ºC",
+      "duracion": "30 min",
+      "centrifugado": "1200 rpm",
+      "detergente": "50 ml",
+      "fechaInicio": "19/4/25, 17:14",
+      "imagen": "../../../images/rapido.svg",
+      "usuario": "albatello"
+    },
+    {
+      "nombre": "Lavado Rápido",
+      "descripcion": "Ideal para ropa poco sucia o uso diario.",
+      "temperatura": "30ºC",
+      "duracion": "30 min",
+      "centrifugado": "1200 rpm",
+      "detergente": "50 ml",
       "fechaInicio": "16/4/25, 19:25",
       "imagen": "../../../images/rapido.svg",
       "usuario": "albatello"

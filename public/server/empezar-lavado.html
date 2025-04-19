@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Empezando Lavado</title>
+    <link rel="stylesheet" href="/server/styles/empezar-lavado.css">
+    <script src="/socket.io/socket.io.js"></script>
+</head>
+<body>
+    <div id="empezar-lavado-container">
+        <h1 id="titulo">Preparando Lavado...</h1>
+        <div id="configuracion">
+        </div>
+        <h1 class="titulo-escaneos">Prendas escaneadas</h1>
+        <div id="escaneos">
+        </div>
+
+        <div id="wash-started-popup" style="display: none;">
+            <h2>¡Lavado Iniciado!</h2>
+            <p>Lavado "<span id="started-wash-name">-</span>" en progreso.</p>
+            <p>Puedes consultar su estado en la pantalla principal de la aplicación.</p>
+        </div>
+
+    </div>
+
+    <script src="/server/script/empezar-lavado.js"></script>
+ </body>
+</html>

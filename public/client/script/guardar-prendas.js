@@ -1,4 +1,8 @@
 // --- script/guardar-prendas.js ---
+socket.on('connect', () => {
+  console.log('🧺 guardar-prendas conectado con ID:', socket.id);
+});
+
 
 // Variable global para guardar temporalmente el resultado del escaneo mientras el popup está abierto
 let resultadoScanActual = null;
@@ -237,6 +241,7 @@ function anadirPrendaConfirmada() {
         alert("Prenda añadida al lavado actual.");
 
         // Opcional: Actualizar la UI en empezar-lavado.html para mostrar las prendas añadidas
+        socket.emit('updateServerDisplay', JSON.parse(localStorage.getItem('lavadoSeleccionado')));
 
     } catch (e) {
         console.error("Error al añadir prenda o actualizar localStorage:", e);

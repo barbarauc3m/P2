@@ -6,6 +6,7 @@ const fsPromises = require('fs').promises;
 const bcrypt = require('bcrypt'); // HASHEAMOS CONTRASEÑAS FUEGO
 const app = express();
 const PORT = 6969;
+let serverDisplaySocketId = null;
 const USERS_FILE = path.join(__dirname, 'usuarios.json'); // Ruta al archivo de usuarios
 const { Server } = require('socket.io');
 
@@ -122,6 +123,7 @@ app.get('/escaner-color.html', (req, res) => {
 app.get('/juegos-server.html', (req, res) => {
   res.sendFile(path.join(__dirname, 'public/server/juegos-server.html'));
 });
+
 app.get('/juego1.html', (req, res) => {
   res.sendFile(path.join(__dirname, 'public/server/juego1.html'));
 });
@@ -141,8 +143,13 @@ app.get('/display/avados-favs', (req, res) => {
 app.get('/display/login', (req, res) => {
   res.sendFile(path.join(__dirname, 'public/server/login.html'));
 });
+
 app.get('/display/register', (req, res) => {
   res.sendFile(path.join(__dirname, 'public/server/register.html'));
+});
+
+app.get('/display/empezar-lavado', (req, res) => {
+  res.sendFile(path.join(__dirname, 'public', 'server', 'empezar-lavado.html'));
 });
 
 
@@ -513,6 +520,13 @@ app.get('/display/historial', (req, res) => {
 io.on('connection', (socket) => {
   console.log('Usuario conectado');
 
+  socket.on('registerDisplay', () => {
+    serverDisplaySocketId = socket.id;
+    console.log('📺 Display registrado con ID:', serverDisplaySocketId);
+  });
+  
+
+
   /*
   socket.onAny((event, ...args) => {
     console.log(`📥 Evento recibido: ${event}`, args);
@@ -628,6 +642,36 @@ io.on('connection', (socket) => {
     console.log(`🖥️ Emitiendo 'refreshFavorites' a otros clientes.`);
   });
 
+  socket.on('updateServerDisplay', (washData) => { // Recibe datos actualizados del cliente
+    console.log(`⚡ Cliente ${socket.id} enviando actualización de lavado a display: ${washData?.nombre}`);
+     if (serverDisplaySocketId && io.sockets.sockets.get(serverDisplaySocketId)) {
+         io.to(serverDisplaySocketId).emit('updateDisplay', washData); // Envía datos a la pantalla del servidor
+     } else {
+         console.warn("Server Display no conectado (para datos), no se pudo enviar datos de lavado.");
+     }
+  });
+
+  socket.on('washInitiated', (washInfo) => { // Recibe señal de inicio del cliente
+      console.log(`⚡ Cliente ${socket.id} señalando lavado iniciado: ${washInfo?.nombre}`);
+      if (serverDisplaySocketId && io.sockets.sockets.get(serverDisplaySocketId)) {
+          io.to(serverDisplaySocketId).emit('showWashStartedPopup', washInfo); // Envía señal de popup
+      } else {
+          console.warn("Server Display no conectado (para datos), no se pudo enviar señal de inicio.");
+      }
+  });
+  
+
+  socket.on('clearServerDisplay', () => { // Recibe señal de cliente saliendo
+    console.log(`⚡ Cliente ${socket.id} señalando limpiar display.`);
+     if (serverDisplaySocketId && io.sockets.sockets.get(serverDisplaySocketId)) {
+         io.to(serverDisplaySocketId).emit('clearDisplay'); // Envía señal para limpiar contenido/volver
+     } else {
+         console.warn("Server Display no conectado (para datos), no se pudo enviar señal de limpiar.");
+     }
+  });
+
+
+  
   // Manejar la visualización del juego en el servidor
   socket.on('showGameOnServer', (data) => {
     console.log(`🖥️ Recibido juego para mostrar: ${data.gameName}`);

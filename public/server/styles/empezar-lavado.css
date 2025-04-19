@@ -1,0 +1,125 @@
+@font-face {
+    font-family: 'Super Cottage';
+    src: url(/fonts/Super\ Cottage.ttf);
+    font-weight: normal;
+    font-style: normal;
+  }
+
+  @font-face {
+    font-family: 'Super Lobster';
+    src: url(/fonts/Super\ Lobster.ttf);
+    font-weight: normal;
+    font-style: normal;
+  }
+
+  @font-face {
+    font-family: 'Super Peace';
+    src: url(/fonts/Super\ Peace.ttf);
+    font-weight: normal;
+    font-style: normal;
+  }
+
+
+body {
+    background-color: #5d6b8b;
+    margin: 0;
+    padding: 0;
+    color: #fff;
+    font-family: 'Super Cottage', sans-serif;
+}
+
+h2{
+    font-size: 5vh;
+    margin: 0;
+    padding: 0;
+    font-family: 'Super Cottage', sans-serif;
+}
+
+h3{
+    font-size: 2vh;
+    margin: 0;
+    padding: 0;
+    font-family: 'Super Cottage', sans-serif;
+}
+
+#configuracion {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    margin-top: 10vh;
+}
+
+.card-lavado{
+    background-color: #d2d4de66;
+    padding: 4vh;
+    border-radius: 1rem;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    width: 70vh;
+    box-shadow: 0 6px 12px #2429363f;
+}
+
+.card-lavado img{
+    width: 20vh;
+    height: 20vh;
+}
+
+.card-lavado p{
+    font-size: 3vh;
+    margin: 0;
+    padding: 0;
+    font-family: sans-serif;
+}
+
+
+.detalles{
+    margin-top: 5vh;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 8vh;
+}
+
+.detalles-lavado{
+    text-align: justify;
+}
+
+.titulo-escaneos{
+    margin: 5vh 4vh;
+}
+
+
+#escaneos{
+    display: grid;
+    grid-template-columns: repeat(5, 1fr);
+    gap: 7.5vh;
+    margin: 5vh 4vh;
+}
+
+.escaneo-card{
+    background-color: #d2d4de66;
+    padding: 3vh 1vh;
+    border-radius: 1rem;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    width: 30vh;
+    box-shadow: 0 6px 12px #2429363f;;
+}
+
+.color-sample{
+    width: 6vh;
+    height: 6vh;
+    margin: 2vh 0;
+}
+
+.escaneo-card p, .escaneo-card li{
+    font-size: 2vh;
+    margin: 0;
+    padding: 0;
+    font-family: sans-serif;
+}

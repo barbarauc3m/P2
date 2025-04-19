@@ -186,6 +186,11 @@ document.addEventListener('DOMContentLoaded', () => {
               imagen
         };
         localStorage.setItem("lavadoSeleccionado", JSON.stringify(lavado));
+
+        socketCategoriesClient.emit('requestDisplayChange', {
+             targetPage: '/server/empezar-lavado.html',
+        });
+
         window.location.href = "empezar-lavado.html";
       });
     });
@@ -194,22 +199,25 @@ document.addEventListener('DOMContentLoaded', () => {
     const backButton = document.querySelector("#back-button-categorias");
     const homeButton = document.querySelector("#home-button-categorias");
 
-    function navigateToHome(event) {
-      if (event) {
-        event.preventDefault(); // Evita la navegación normal del enlace
+    function navigateAndSignalDisplay(event, clientTarget, serverTarget) {
+        if (event) {
+          event.preventDefault(); // Evita la navegación normal del enlace
+        }
+ 
+        // Emitir señal para cambiar la pantalla del servidor
+        socketCategoriesClient.emit('requestDisplayChange', {
+          targetPage: serverTarget,
+        });
+ 
+        // Navegar el cliente
+        window.location.href = clientTarget;
       }
-
-      socketCategoriesClient.emit('requestDisplayChange', {
-        targetPage: '/',
-      });
-      window.location.href = '/mobile'; // Navega a la página de inicio
-
-    }
-    if (backButton) {
-      backButton.addEventListener("click", navigateToHome);
-    }
-    if (homeButton) {
-      homeButton.addEventListener("click", navigateToHome);
-    }
+ 
+      if (backButton) {
+        backButton.addEventListener("click", (e) => navigateAndSignalDisplay(e, '/mobile', '/'));
+      }
+      if (homeButton) {
+        homeButton.addEventListener("click", (e) => navigateAndSignalDisplay(e, '/mobile', '/'));
+      }
 
 }); // Fin DOMContentLoaded Principal

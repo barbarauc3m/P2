@@ -1,3 +1,10 @@
+const socket = io();
+
+socket.on('connect', () => {
+  console.log('Cliente lavado conectado, emitiendo registerDisplay');
+  socket.emit('registerDisplay');
+});
+
 const lavado = JSON.parse(localStorage.getItem('lavadoSeleccionado'));
 
     if (lavado) {
@@ -30,6 +37,8 @@ const lavado = JSON.parse(localStorage.getItem('lavadoSeleccionado'));
       `;
     }
 
+    socket.emit('updateServerDisplay', lavado);
+
     document.getElementById("config-title").addEventListener("click", () => {
       const box = document.getElementById("configuracion-box");
       box.classList.toggle("visible");
@@ -59,6 +68,8 @@ const lavado = JSON.parse(localStorage.getItem('lavadoSeleccionado'));
 
         // Añadir usuario al objeto que se envía
         lavado.usuario = usuario;
+
+        socket.emit('washInitiated', lavado);
 
         fetch('/guardar-lavado', {
           method: 'POST',
@@ -137,4 +148,8 @@ document.addEventListener("click", function (event) {
     cerrarPopupEscaner();
     window.location.href = "escaner-color.html";
   }
+
+
+  
+  
   
