@@ -7,6 +7,72 @@
       "duracion": "30 min",
       "centrifugado": "1200 rpm",
       "detergente": "50 ml",
+      "fechaInicio": "20/4/25, 11:39",
+      "imagen": "../../../images/rapido.svg",
+      "prendasEscaneadas": [
+        {
+          "id": "prenda1",
+          "scanType": "color",
+          "scanData": {
+            "hex": "#716663",
+            "L": "42",
+            "tone": "Tono Medio",
+            "fullPalette": [
+              {
+                "hex": "#716663",
+                "red": 113,
+                "green": 102,
+                "blue": 99,
+                "area": 0.17886432867296728,
+                "hue": 0.035714285714285775,
+                "saturation": 0.06603773584905658,
+                "lightness": 0.4156862745098039,
+                "intensity": 0.0549019607843137
+              },
+              {
+                "hex": "#3a3535",
+                "red": 58,
+                "green": 53,
+                "blue": 53,
+                "area": 0.004670780285870499,
+                "hue": 0,
+                "saturation": 0.045045045045045015,
+                "lightness": 0.21764705882352942,
+                "intensity": 0.019607843137254888
+              },
+              {
+                "hex": "#a3a3a5",
+                "red": 163,
+                "green": 163,
+                "blue": 165,
+                "area": 0.8164648910411623,
+                "hue": 0.6666666666666666,
+                "saturation": 0.010989010989011104,
+                "lightness": 0.6431372549019607,
+                "intensity": 0.007843137254902044
+              }
+            ]
+          }
+        },
+        {
+          "id": "prenda2",
+          "scanType": "etiqueta",
+          "scanData": {
+            "Temperatura": "lavado_30 (0.73)",
+            "Delicadeza": "lavado_normal (0.66)",
+            "Lejía": "lejia_no (0.58)"
+          }
+        }
+      ],
+      "usuario": "albatello"
+    },
+    {
+      "nombre": "Lavado Rápido",
+      "descripcion": "Ideal para ropa poco sucia o uso diario.",
+      "temperatura": "30ºC",
+      "duracion": "30 min",
+      "centrifugado": "1200 rpm",
+      "detergente": "50 ml",
       "fechaInicio": "19/4/25, 22:58",
       "imagen": "../../../images/rapido.svg",
       "prendasEscaneadas": [

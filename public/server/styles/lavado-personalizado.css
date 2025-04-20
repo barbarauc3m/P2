@@ -49,6 +49,15 @@ body {
     padding: 10vh;
 }
 
+.option-container{
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.option-container img{
+  height: 6vh
+}
 
 .option{
     background-color: #d2d4de66;
