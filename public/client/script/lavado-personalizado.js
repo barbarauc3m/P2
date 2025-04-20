@@ -149,9 +149,8 @@ document.addEventListener("DOMContentLoaded", function () {
 
     const backBtn = document.getElementById("back-button");
     backBtn.addEventListener("click", e => {
-      e.preventDefault();                                   // evita efectos colaterales
+      e.preventDefault();  
       socket.emit("requestDisplayChange", { targetPage: "/" }); 
-      // Navega a la página principal (ruta absoluta)
       window.location.href = "/index.html";                 // o simplemente "/"
     });
 
