@@ -435,6 +435,18 @@
   justify-content: center;
   align-items: center;
   flex-direction: column;
+  position: relative;
+}
+
+.profile-edit-button {
+  position: absolute;
+  bottom: 5px;
+  right: 10vh;
+  background: white;
+  border: none;
+  padding: 4px;
+  border-radius: 50%;
+  cursor: pointer;
 }
 
 /* Modal */
