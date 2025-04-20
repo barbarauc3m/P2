@@ -72,6 +72,7 @@ document.addEventListener("DOMContentLoaded", function() {
         juegoTerminado = true;
         document.getElementById("game-container").style.display = "none";
         document.querySelector(".game-finished-container").style.display = "block";
+        socket.emit("voiceControl-start");
     }
     function iniciarTemporizador(tiempoInicial = 60) {
         let tiempo = tiempoInicial;
@@ -224,20 +225,29 @@ document.addEventListener("DOMContentLoaded", function() {
         moverCarritoPorInclinacion(inclinacion);
       }
       );
+
+      socket.on('juego-backtoMenu', () => {
+        console.log("Se vuelve al menú");
+        backtoMenu();
+      });
     
-      socket.on('juego1-empezar', () => {
+      socket.on('juego-empezar', () => {
         console.log("🟢 Señal de empezar recibida desde el móvil");
         iniciarJuego1();
       }); 
 
-      socket.on('juego1-pausar', () => {
+      socket.on('juego-pausar', () => {
         console.log("Pausa recibida desde móvil");
         pausarJuego();
       });
 
-      socket.on('juego1-reiniciar', () => {
+      socket.on('juego-reiniciar', () => {
         console.log("Reinicio recibido desde móvil");
         reiniciarJuego();
+      });
+
+      socket.on('juego-reanudado', () => {
+        reanudarJuego();
       });
 
       socket.on('closeGameDisplay', (data) => {
@@ -330,7 +340,7 @@ document.addEventListener("DOMContentLoaded", function() {
             console.log("Se ha pulsado reanudar");
             reanudarJuego();
             // Emitir evento de reanudación al servidor
-            socket.emit("juego1-reanudar");
+            socket.emit("juego-reanudar");
         });
     });
     document.querySelectorAll(".backtoMenu-button").forEach(button => { // volver al menú de inicio y cambiar la pantalla del móvil tmb

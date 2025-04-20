@@ -28,25 +28,25 @@ document.addEventListener("DOMContentLoaded", function() {
         console.log('✅ Ordenador conectado al servidor con socket ID:', socket.id);
       });
 
-      socket.on('juego2-empezar', () => {
+      socket.on('juego-empezar', () => {
         iniciarJuego2();
       });   
       
-      socket.on('juego2-pausar', () => {
+      socket.on('juego-pausar', () => {
         console.log("Pausa recibida desde móvil");
         pausarJuego();
       });
 
-      socket.on('juego2-reanudado', () => {
+      socket.on('juego-reanudado', () => {
         reanudarJuego();
       });
 
-      socket.on('juego2-backtoMenu', () => {
+      socket.on('juego-backtoMenu', () => {
         console.log("Se vuelve al menú");
         backtoMenu();
       });
 
-      socket.on('juego2-reiniciar', () => {
+      socket.on('juego-reiniciar', () => {
         console.log("Reinicio recibido desde móvil");
         reiniciarJuego();
       });
@@ -282,7 +282,7 @@ document.addEventListener("DOMContentLoaded", function() {
             console.log("Se ha pulsado reanudar");
             reanudarJuego();
             // Emitir evento de reanudación al servidor
-            socket.emit("juego2-reanudar");
+            socket.emit("juego-reanudar");
         });
     });
     document.querySelectorAll(".backtoMenu-button").forEach(button => { // volver al menú de inicio y cambiar la pantalla del móvil tmb

@@ -29,13 +29,13 @@ class VoiceRecognition {
             if (transcript.includes("reanudar")) {
                 console.log("Comando de voz 'Reanudar' detectado");
                 voiceControl.stop();
-                this.socket.emit('juego2-reanudar');
+                this.socket.emit('juego-reanudar');
             }
 
             if (transcript.includes("menú")) {
                 console.log("Comando de voz 'Volver al menú' detectado");
                 voiceControl.stop();
-                this.socket.emit('juego2-volver');
+                this.socket.emit('juego-volver');
                 console.log('Cliente vuelve al menú');
                 window.location.href = './juegos.html';
             }
@@ -43,7 +43,7 @@ class VoiceRecognition {
             if (transcript.includes("volver")) {
                 console.log("Comando de voz 'Volver a jugar' detectado");
                 voiceControl.stop();
-                this.socket.emit('juego2-reiniciar');  // supongo que es equivalente a volver a jugar xd
+                this.socket.emit('juego-reiniciar');  // supongo que es equivalente a volver a jugar xd
             }
 
         };

@@ -257,5 +257,40 @@
       "imagen": "../../../images/rapido.svg",
       "usuario": "albatello"
     }
+  ],
+  "Chizanito": [
+    {
+      "nombre": "Lavado personalizado 1",
+      "descripcion": "Ropa a penas usada",
+      "temperatura": "35°C",
+      "duracion": "35 min",
+      "centrifugado": "Bajo",
+      "detergente": "",
+      "fechaInicio": "20/4/25, 17:05",
+      "imagen": "../../../images/personalizado.svg",
+      "usuario": "Chizanito"
+    },
+    {
+      "nombre": "Lavado Rápido",
+      "descripcion": "Ideal para ropa poco sucia o uso diario.",
+      "temperatura": "30ºC",
+      "duracion": "30 min",
+      "centrifugado": "1200 rpm",
+      "detergente": "50 ml",
+      "fechaInicio": "20/4/25, 16:36",
+      "imagen": "../../../images/rapido.svg",
+      "prendasEscaneadas": [
+        {
+          "id": "prenda1",
+          "scanType": "etiqueta",
+          "scanData": {
+            "Temperatura": "No detectado",
+            "Delicadeza": "No detectado",
+            "Lejía": "lejia_no (0.98)"
+          }
+        }
+      ],
+      "usuario": "Chizanito"
+    }
   ]
 }

@@ -18,13 +18,8 @@ socket.on('connect_error', (err) => {
     console.error('❌ Error de conexión con el servidor de Socket.IO:', err.message);
 });
 
-socket.on('juego1-reanudado', () => {
-    console.log("Juego 1 reanudado");
-    pausePopup.style.display = 'none';
-});
-
-socket.on('juego2-reanudado', () => {
-    console.log("Juego 2 reanudado");
+socket.on('juego-reanudado', () => {
+    console.log("Juego reanudado");
     pausePopup.style.display = 'none';
 });
 
@@ -55,11 +50,11 @@ document.addEventListener('DOMContentLoaded', function() {
     // Detectar juego seleccionado y configurar controles
     if (gameTitle === 'El Rey del Tendedero') {
         console.log("Configurando controles para El Rey del Tendedero");
-        setupShakeDetection('juego2-empezar', juego2);
+        setupShakeDetection('juego-empezar', juego2);
     } 
     else if (gameTitle === 'Atrapa la Ropa') {
         console.log("Configurando controles para Atrapa la Ropa");
-        setupShakeDetection('juego1-empezar', juego1);
+        setupShakeDetection('juego-empezar', juego1);
     }
 
 });
@@ -161,7 +156,11 @@ function handleMotion(event) {
 
 // ====================== JUEGO 1 ==========================
 
-function juego1() {    
+function juego1() {   
+    
+    voiceControl = new VoiceRecognition(socket);
+    voiceControl.stop();
+
     console.log('🚗 Activando controles de movimiento para el carrito');
     controlarMovimientoCarrito();
 
@@ -170,15 +169,16 @@ function juego1() {
     if (pauseButton) {
         pauseButton.addEventListener("click", function() {
             console.log("Pausa solicitada desde el móvil");
+            voiceControl.start(); // Activar reconocimiento durante pausa
             pausePopup.style.display = 'flex';
-            socket.emit('juego1-pausar');
+            socket.emit('juego-pausar');
         });
     }
 
     const restartButton = document.getElementById("restart-button");
     if (restartButton) {
         restartButton.addEventListener("click", function() {
-            socket.emit('juego1-reiniciar');
+            socket.emit('juego-reiniciar');
         });
     }
 }
@@ -241,7 +241,7 @@ function juego2() {
             console.log("😡 MÓVIL MANDA QUE SE PARE EL JUEGO");
             voiceControl.start(); // Activar reconocimiento durante pausa
             pausePopup.style.display = 'flex';
-            socket.emit('juego2-pausar');
+            socket.emit('juego-pausar');
         });
     }
 
@@ -250,7 +250,7 @@ function juego2() {
     if (restartButton) {
         restartButton.addEventListener("click", function() {
             console.log("😱 MÓVIL MANDA QUE SE REINICIE EL JUEGO");
-            socket.emit('juego2-reiniciar');
+            socket.emit('juego-reiniciar');
         });
     }
 }

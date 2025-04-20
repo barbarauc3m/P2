@@ -74,8 +74,33 @@
     "email": "izansanchezalvaro@gmail.com",
     "hashedPassword": "$2b$10$X95slNkrgwCyhr9iub0NeeBkxcijaoQyDFajvW5MYHpueoEg64aXG",
     "foto": "/images/persona_cla.svg",
-    "favoritos": [],
-    "personalizados": []
+    "favoritos": [
+      {
+        "nombre": "Lavado Rápido",
+        "descripcion": "Ideal para ropa poco sucia o uso diario.",
+        "temperatura": "30ºC",
+        "duracion": "30 min",
+        "centrifugado": "1200 rpm",
+        "detergente": "50 ml",
+        "imagen": "../../../images/rapido.svg"
+      }
+    ],
+    "personalizados": [
+      {
+        "nivelSuciedad": "Ropa a penas usada",
+        "temperatura": "35°C",
+        "centrifugado": "Bajo: 600 rpm",
+        "duracion": "35 min",
+        "detergente": "40 ml",
+        "tejido": [
+          "Algodón"
+        ],
+        "favorito": false,
+        "nombre": "Lavado personalizado 1",
+        "index": 1,
+        "fechaGuardado": "2025-04-20T15:05:21.123Z"
+      }
+    ]
   },
   "babiism": {
     "username": "babiism",

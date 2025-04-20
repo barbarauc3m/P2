@@ -615,50 +615,30 @@ io.on('connection', (socket) => {
     console.log('Usuario desconectado');
   });
 
-  socket.on('juego1-empezar', () => {  // Llega solicitud desde el móvil
-    console.log('[SERVER.JS] Empieza el juego 1');
-    socket.broadcast.emit('juego1-empezar'); // Reenvía a todos menos al móvil
-  });
+  socket.on('juego-empezar', () => {  // Llega solicitud desde el móvil
+    console.log('[SERVER.JS] Empieza el juego');
+    socket.broadcast.emit('juego-empezar'); // Reenvía a todos menos al móvil
+  }); 
 
-  socket.on('juego1-pausar', () => {  // Llega solicitud desde el móvil
+  socket.on('juego-pausar', () => {  // Llega solicitud desde el móvil
     console.log('[SERVER.JS]📱 Pausa recibida desde móvil');
-    socket.broadcast.emit('juego1-pausar'); // Reenvía a todos menos al móvil
+    socket.broadcast.emit('juego-pausar'); // Reenvía a todos menos al móvil
   }); 
 
-  socket.on('juego1-reiniciar', () => {  // Llega solicitud desde el móvil
+  socket.on('juego-reiniciar', () => {  // Llega solicitud desde el móvil
     console.log('[SERVER.JS]📱 Petición reinicio recibida desde móvil');
-    socket.broadcast.emit('juego1-reiniciar'); // Reenvía a todos menos al móvil
+    socket.broadcast.emit('juego-reiniciar'); // Reenvía a todos menos al móvil
   }); 
 
-  socket.on('juego1-reanudar', () => {
-    console.log("📱 Juego 1 reanudado desde servidor");
-    io.emit('juego1-reanudado');
+  socket.on('juego-reanudar', () => {
+    console.log("📱 Juego reanudado desde servidor");
+    io.emit('juego-reanudado');
   });
 
-  socket.on('juego2-empezar', () => {  // Llega solicitud desde el móvil
-    console.log('[SERVER.JS] Empieza el juego 3');
-    socket.broadcast.emit('juego2-empezar'); // Reenvía a todos menos al móvil
-  }); 
-
-  socket.on('juego2-pausar', () => {  // Llega solicitud desde el móvil
-    console.log('[SERVER.JS]📱 Pausa recibida desde móvil');
-    socket.broadcast.emit('juego2-pausar'); // Reenvía a todos menos al móvil
-  }); 
-
-  socket.on('juego2-reiniciar', () => {  // Llega solicitud desde el móvil
-    console.log('[SERVER.JS]📱 Petición reinicio recibida desde móvil');
-    socket.broadcast.emit('juego2-reiniciar'); // Reenvía a todos menos al móvil
-  }); 
-
-  socket.on('juego2-reanudar', () => {
-    console.log("📱 Juego 2 reanudado desde servidor");
-    io.emit('juego2-reanudado');
-  });
-
-  socket.on('juego2-volver', () => {
+  socket.on('juego-volver', () => {
     console.log("Recibido 'volver'");
     //io.emit('moverCienteAlMenu');
-    socket.broadcast.emit('juego2-backtoMenu');
+    socket.broadcast.emit('juego-backtoMenu');
   });
 
   socket.on('voiceControl-start', () => {
