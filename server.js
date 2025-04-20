@@ -12,9 +12,9 @@ const { Server } = require('socket.io');
 
 const SALT_ROUNDS = 10; // Coste del hashing para bcrypt
 
-// --- Middlewares (asegúrate de tener express.json y express.urlencoded) ---
-app.use(express.json()); // Para parsear JSON bodies
-app.use(express.urlencoded({ extended: true }));
+// USE
+app.use(express.json({ limit: '1000mb' })); 
+app.use(express.urlencoded({ extended: true, limit: '1000mb' }));
 
 // Carga de certificados
 // GENERA CERTIFICADOS CON EL SIGUIENTE COMANDO:
@@ -28,8 +28,6 @@ const server = https.createServer({
 // Inicializa Socket.IO sobre HTTPS
 const io = new Server(server);
 
-// USE
-app.use(express.json());
 
 app.use(express.static(path.join(__dirname, 'public')));
 
