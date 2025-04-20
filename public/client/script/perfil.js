@@ -4,17 +4,14 @@
 
 // Abre el modal de edición
 function openModal() {
-  const modal = document.getElementById('profile-modal');
-  if (modal) modal.classList.add('open');
+  document.getElementById('profile-modal').classList.add('popup-animado');
+  document.getElementById('profile-modal').style.display = 'flex';
 }
-
-// Cierra el modal de edición
 function closeModal() {
-  const modal = document.getElementById('profile-modal');
-  if (modal) modal.classList.remove('open');
+  document.getElementById('profile-modal').style.display = 'none';
 }
 
-// Rellena el formulario del modal con los datos del usuario
+
 // Rellena el formulario del modal con los datos del usuario
 function mostrarPerfil() {
   const username = localStorage.getItem('loggedInUser');
@@ -23,7 +20,7 @@ function mostrarPerfil() {
     return;
   }
 
-  fetch(`/api/users/${encodeURIComponent(username)}`)
+  fetch(`/api/users/${username}`)
     .then(res => {
       if (!res.ok) throw new Error(`HTTP ${res.status}`);
       return res.json();
@@ -38,9 +35,7 @@ function mostrarPerfil() {
       document.getElementById('edit-email').value    = userData.email;
 
       // CONTRASEÑA (no la rellenas; sólo dejas el placeholder)
-      const pwd = document.getElementById('edit-password');
-      pwd.value = '';
-      pwd.placeholder = '••••••••••';
+      document.getElementById('edit-password').value = 'userData.password';
     })
     .catch(err => {
       console.error('mostrarPerfil: fallo al cargar perfil', err);
@@ -115,7 +110,7 @@ async function guardarCambiosPerfil() {
 
   try {
     // Llamada a tu API REST
-    const res = await fetch(`/api/users/${encodeURIComponent(oldUsername)}`, {
+    const res = await fetch(`/api/users/${oldUsername}`, {
       method: 'PUT',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({
@@ -159,9 +154,23 @@ document.getElementById('profile-form')
 // LÓGICA PRINCIPAL AL CARGAR DOM
 // =========================
 document.addEventListener("DOMContentLoaded", () => {
-  console.log("CARGANDO PERFIL...");
   const usuario = localStorage.getItem("loggedInUser");
+  const perfilImg = document.getElementById("perfil-imagen");
   if (usuario) {
+    fetch(`/api/users/${usuario}`)
+      .then(res => {
+        if (!res.ok) throw new Error(`HTTP ${res.status}`);
+        return res.json();
+      })
+      .then(userData => {
+        // Pintamos su foto en el avatar principal:
+        perfilImg.src = userData.foto;
+      })
+      .catch(err => {
+        console.error("Error cargando foto de perfil:", err);
+        // dejamos la imagen por defecto si falla
+      });
+    // también ponemos el nombre junto al avatar
     document.querySelector(".username").textContent = usuario;
   }
 
@@ -198,8 +207,6 @@ document.addEventListener("DOMContentLoaded", () => {
     });
 
   // — Control del modal
-  document.getElementById("modal-close")
-    .addEventListener("click", closeModal);
   document.getElementById("profile-modal")
     .addEventListener("click", e => {
       if (e.target.id === "profile-modal") closeModal();

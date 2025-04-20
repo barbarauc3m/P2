@@ -39,26 +39,31 @@
       <!-- ======================
              MODAL EDITAR
       ======================== -->
-      <div id="profile-modal" class="modal">
-        <div class="modal-content">
-          <span id="modal-close" class="modal-close">&times;</span>
-          <h2>Editar perfil</h2>
-          <form id="profile-form">
-            <!-- Foto -->
-            <img id="profile-edit-foto" src="../../images/persona_os.svg" alt="Previsualización" style="width:80px; height:80px; border-radius:50%; display:block; margin:0 auto 12px;">
-            <input type="file" id="profile-edit-foto-input" accept="image/*" style="display:none" onchange="previewImagePerfil(event)">
-            <button type="button" onclick="subirFoto(event)">Cambiar foto</button>
-      
-            <!-- Campos -->
-            <input type="text"    id="edit-username" placeholder="Usuario">
-            <input type="password" id="edit-password" placeholder="Contraseña">
-            <input type="email"   id="edit-email"    placeholder="Email">
-      
-            <!-- Guardar -->
-            <button type="submit">Guardar cambios</button>
-            </form>
-        </div>
-      </div>
+      <!-- PERFIL – NUEVO POPUP -->
+<div id="profile-modal" class="popup-overlay">
+  <div class="popup-animado container">
+    <h2 class="heading">Editar perfil</h2>
+    <form id="profile-form" class="form">
+      <!-- Foto -->
+       <div class="foto">
+        <img id="profile-edit-foto" src="../../images/persona_os.svg" alt="Previsualización">
+        <input type="file" id="profile-edit-foto-input" accept="image/*" style="display:none" onchange="previewImagePerfil(event)">
+        <button type="button" class="login-button" onclick="subirFoto(event)">
+          <img src="../../images/editar.svg" alt="Opciones" width="20" height="20">
+        </button>
+      </div>  
+
+      <!-- Campos -->
+      <input type="text" id="edit-username" class="input" placeholder="Usuario">
+      <input type="password"  id="edit-password" class="input" placeholder="Contraseña">
+      <input type="email" id="edit-email" class="input" placeholder="Email">
+
+      <!-- Guardar -->
+      <button type="submit" class="login-button">Guardar cambios</button>
+    </form>
+  </div>
+</div>
+
 
       
     </div>
