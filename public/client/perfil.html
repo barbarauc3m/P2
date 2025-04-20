@@ -4,6 +4,7 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
   <title>Perfil</title>
+  <link rel="icon" href="../../../images/lavadora_logo.svg" type="image/x-icon">
   <link rel="stylesheet" href="styles/perfil.css" />
   <link rel="stylesheet" href="styles/login.css" />
   <script src="/socket.io/socket.io.js"></script>
@@ -18,9 +19,48 @@
         <p>⭐ Lavados completados: <span class="completados">54</span></p>
         <p>❤️ Lavados favoritos: <span class="favoritos">4</span></p>
       </div>
-      <div>
-        <img src="../../images/persona_os.svg" alt="Avatar" class="avatar" />
+      <div class="profile-container">
+        <img id="perfil-imagen" src="../../images/persona_os.svg" alt="Avatar" class="avatar"/>
+      
+        <!-- Botón de opciones -->
+        <button id="profile-dropdown-btn" class="profile-edit-btn">
+          <img src="../../images/editar.svg" alt="Opciones" width="20" height="20">
+        </button>
+      
+        <!-- Menú dropdown -->
+        <div id="profile-dropdown-menu">
+          <ul>
+            <li id="dropdown-edit-profile">Editar perfil</li>
+            <li id="dropdown-logout">Cerrar sesión</li>
+          </ul>
+        </div>
       </div>
+      
+      <!-- ======================
+             MODAL EDITAR
+      ======================== -->
+      <div id="profile-modal" class="modal">
+        <div class="modal-content">
+          <span id="modal-close" class="modal-close">&times;</span>
+          <h2>Editar perfil</h2>
+          <form id="profile-form">
+            <!-- Foto -->
+            <img id="profile-edit-foto" src="../../images/persona_os.svg" alt="Previsualización" style="width:80px; height:80px; border-radius:50%; display:block; margin:0 auto 12px;">
+            <input type="file" id="profile-edit-foto-input" accept="image/*" style="display:none" onchange="previewImagePerfil(event)">
+            <button type="button" onclick="subirFoto(event)">Cambiar foto</button>
+      
+            <!-- Campos -->
+            <input type="text"    id="edit-username" placeholder="Usuario">
+            <input type="password" id="edit-password" placeholder="Contraseña">
+            <input type="email"   id="edit-email"    placeholder="Email">
+      
+            <!-- Guardar -->
+            <button type="submit">Guardar cambios</button>
+            </form>
+        </div>
+      </div>
+
+      
     </div>
   </section>
 

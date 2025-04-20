@@ -1,25 +1,213 @@
+// =========================
+// FUNCIONES GLOBALES DE PERFIL
+// =========================
+
+// Abre el modal de edición
+function openModal() {
+  const modal = document.getElementById('profile-modal');
+  if (modal) modal.classList.add('open');
+}
+
+// Cierra el modal de edición
+function closeModal() {
+  const modal = document.getElementById('profile-modal');
+  if (modal) modal.classList.remove('open');
+}
+
+// Rellena el formulario del modal con los datos del usuario
+// Rellena el formulario del modal con los datos del usuario
+function mostrarPerfil() {
+  const username = localStorage.getItem('loggedInUser');
+  if (!username) {
+    console.warn('mostrarPerfil: no hay usuario logueado');
+    return;
+  }
+
+  fetch(`/api/users/${encodeURIComponent(username)}`)
+    .then(res => {
+      if (!res.ok) throw new Error(`HTTP ${res.status}`);
+      return res.json();
+    })
+    .then(userData => {
+      // FOTO
+      document.getElementById('perfil-imagen').src     = userData.foto;
+      document.getElementById('profile-edit-foto').src = userData.foto;
+
+      // CAMPOS
+      document.getElementById('edit-username').value = userData.username;
+      document.getElementById('edit-email').value    = userData.email;
+
+      // CONTRASEÑA (no la rellenas; sólo dejas el placeholder)
+      const pwd = document.getElementById('edit-password');
+      pwd.value = '';
+      pwd.placeholder = '••••••••••';
+    })
+    .catch(err => {
+      console.error('mostrarPerfil: fallo al cargar perfil', err);
+      alert('Error al cargar los datos de tu perfil. Revisa la consola.');
+    });
+}
+
+
+
+// Previsualiza la imagen seleccionada en el input
+function previewImagePerfil(event) {
+  const reader = new FileReader();
+  reader.onload = () => {
+    document.getElementById('profile-edit-foto').src = reader.result;
+  };
+  if (event.target.files && event.target.files[0]) {
+    reader.readAsDataURL(event.target.files[0]);
+  } else {
+    document.getElementById('profile-edit-foto').src = '../../images/persona_os.svg';
+  }
+}
+
+// Dispara el selector de archivo
+function subirFoto(event) {
+  event.preventDefault();
+  event.stopPropagation();
+  document.getElementById('profile-edit-foto-input').click();
+}
+
+// Elimina la foto y actualiza localStorage
+function eliminarFotoPerfil() {
+  if (!confirm("¿Estás seguro de que quieres eliminar tu foto de perfil?")) return;
+  const defaultImg = '../../images/persona_os.svg';
+  document.getElementById('profile-edit-foto').src = defaultImg;
+  document.getElementById('perfil-imagen').src      = defaultImg;
+
+  const user = localStorage.getItem('loggedInUser');
+  if (user) {
+    const usuarios = JSON.parse(localStorage.getItem('usuarios')) || {};
+    if (usuarios[user]) {
+      usuarios[user].foto = defaultImg;
+      localStorage.setItem('usuarios', JSON.stringify(usuarios));
+    }
+  }
+}
+
+// Valida y guarda cambios en localStorage
+async function guardarCambiosPerfil() {
+  const oldUsername = localStorage.getItem('loggedInUser');
+  if (!oldUsername) {
+    return alert("Inicia sesión de nuevo para editar tu perfil.");
+  }
+
+  // Recoge valores del formulario
+  const newUsername = document.getElementById('edit-username').value.trim();
+  const newEmail    = document.getElementById('edit-email').value.trim();
+  const newPassword = document.getElementById('edit-password').value;
+  const newFoto     = document.getElementById('profile-edit-foto').src;
+
+  // Validaciones idénticas a las tuyas
+  if (!newUsername || !newEmail || !newPassword) {
+    return alert("Rellena todos los campos.");
+  }
+  if (newUsername.length < 3) {
+    return alert("El nombre de usuario debe tener al menos 3 caracteres.");
+  }
+
+  const emailRe = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+  if (!emailRe.test(newEmail)) {
+    return alert("Introduce un email válido.");
+  }
+
+  try {
+    // Llamada a tu API REST
+    const res = await fetch(`/api/users/${encodeURIComponent(oldUsername)}`, {
+      method: 'PUT',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({
+        username: newUsername,
+        email:    newEmail,
+        password: newPassword,
+        foto:     newFoto
+      })
+    });
+    if (!res.ok) {
+      const err = await res.json().catch(()=>null);
+      throw new Error(err?.message || res.statusText);
+    }
+    const result = await res.json();
+
+    // Éxito: actualiza localStorage si cambió el username
+    if (newUsername !== oldUsername) {
+      localStorage.setItem('loggedInUser', newUsername);
+    }
+    alert("Perfil actualizado con éxito.");
+
+    // Refresca el avatar en la página
+    document.getElementById('perfil-imagen').src = newFoto;
+    closeModal();
+  } catch (err) {
+    console.error('guardarCambiosPerfil:', err);
+    alert(`Error al guardar tu perfil: ${err.message}`);
+  }
+}
+
+document.getElementById('profile-form')
+  .addEventListener('submit', e => {
+    e.preventDefault();
+    guardarCambiosPerfil();
+  });
+
+
+
+
+// =========================
+// LÓGICA PRINCIPAL AL CARGAR DOM
+// =========================
 document.addEventListener("DOMContentLoaded", () => {
   console.log("CARGANDO PERFIL...");
   const usuario = localStorage.getItem("loggedInUser");
-  const usernameElement = document.querySelector(".username");
-  const historialContainer = document.querySelector(".categoria-list");
-  const historialCountElement = document.querySelector(".completados");
-  // Asegúrate de tener estos elementos en tu HTML de perfil del cliente
-  const favBox = document.querySelector(".lavado-box");
-  const mensajeVacio = document.querySelector(".lavado-box-none");
-  const favoritosCountElement = document.querySelector(".favoritos");
-  // IDs de los enlaces 'ver más'
-  const verMasProgramasBtn = document.getElementById('ver-mas-programas');
-  const verMasHistorialLink = document.getElementById('historial');
+  if (usuario) {
+    document.querySelector(".username").textContent = usuario;
+  }
 
+  // — Socket de navegación
   const socketPerfil = io();
-  socketPerfil.on('connect', () => console.log('📱✅ Socket de navegación conectado en perfil.js'));
-  socketPerfil.on('connect_error', (err) => console.error('📱❌ Error conexión socket en perfil.js:', err));
-  socketPerfil.on('disconnect', () => console.log('📱 Socket de navegación desconectado en perfil.js'));
+  socketPerfil.on('connect',       () => console.log('📱✅ Socket conectado en perfil.js'));
+  socketPerfil.on('connect_error', err => console.error('📱❌ Error socket en perfil.js:', err));
+  socketPerfil.on('disconnect',     () => console.log('📱 Socket desconectado'));
 
+  // — Dropdown de perfil
+  const btnDropdown    = document.getElementById("profile-dropdown-btn");
+  const menuDropdown   = document.getElementById("profile-dropdown-menu");
+  btnDropdown.addEventListener("click", e => {
+    e.stopPropagation();
+    menuDropdown.style.display = menuDropdown.style.display === "block" ? "none" : "block";
+  });
+  document.addEventListener("click", () => {
+    if (menuDropdown.style.display === "block") {
+      menuDropdown.style.display = "none";
+    }
+  });
 
-  // Mostrar nombre del usuario
-  document.querySelector(".username").textContent = usuario;
+  // — Opciones del dropdown
+  document.getElementById("dropdown-edit-profile")
+    .addEventListener("click", () => {
+      mostrarPerfil();
+      openModal();
+      menuDropdown.style.display = "none";
+    });
+  document.getElementById("dropdown-logout")
+    .addEventListener("click", () => {
+      localStorage.removeItem("loggedInUser");
+      window.location.href = "/index.html";
+    });
+
+  // — Control del modal
+  document.getElementById("modal-close")
+    .addEventListener("click", closeModal);
+  document.getElementById("profile-modal")
+    .addEventListener("click", e => {
+      if (e.target.id === "profile-modal") closeModal();
+    });
+
+  // — Preview de imagen al cambiar input
+  document.getElementById("profile-edit-foto-input")
+    .addEventListener("change", previewImagePerfil);
 
   // =========================
   // LAVADOS COMPLETADOS
@@ -47,53 +235,39 @@ document.addEventListener("DOMContentLoaded", () => {
         contenedor.appendChild(div);
       });
 
-      // Actualizar contador de lavados completados
       document.querySelector(".completados").textContent = lavados.length;
 
-      // Hover animaciones
       const categorias = document.querySelectorAll(".categoria");
-
-      categorias.forEach((categoria, index) => {
-        categoria.addEventListener("mouseenter", () => handleHover(index));
-        categoria.addEventListener("mouseleave", handleLeave);
-      });
-
-      function handleHover(indexHovered) {
-        categorias.forEach((el, idx) => {
-          el.classList.remove("mover-izquierda", "mover-derecha");
-
-          if (indexHovered === 0) {
-            if (idx > indexHovered) el.classList.add("mover-derecha");
-          } else if (indexHovered === 1) {
-            if (idx > indexHovered) el.classList.add("mover-derecha");
-          } else if (indexHovered === 2) {
-            if (idx < indexHovered) el.classList.add("mover-izquierda");
-          }
+      categorias.forEach((el, idx) => {
+        el.addEventListener("mouseenter", () => {
+          categorias.forEach((item, j) => {
+            item.classList.remove("mover-izquierda", "mover-derecha");
+            if (idx === 0 && j > idx) item.classList.add("mover-derecha");
+            if (idx === 1 && j > idx) item.classList.add("mover-derecha");
+            if (idx === 2 && j < idx) item.classList.add("mover-izquierda");
+          });
         });
-      }
-
-      function handleLeave() {
-        categorias.forEach(el =>
-          el.classList.remove("mover-izquierda", "mover-derecha")
-        );
-      }
+        el.addEventListener("mouseleave", () => {
+          categorias.forEach(item =>
+            item.classList.remove("mover-izquierda", "mover-derecha")
+          );
+        });
+      });
     });
 
   // =========================
   // LAVADOS FAVORITOS
   // =========================
   fetch(`/api/users/${usuario}/favoritos`)
-  .then(res => res.json())
+    .then(res => res.json())
     .then(favoritos => {
       document.querySelector(".favoritos").textContent = favoritos.length;
-
       if (favoritos.length === 0) return;
 
       const ultimo = favoritos.at(-1);
       if (!ultimo) return;
 
       document.querySelector(".lavado-box-none").classList.add("none");
-
       const favBox = document.querySelector(".lavado-box");
       const favDiv = document.createElement("div");
       favDiv.classList.add("lavado-sombra");
@@ -113,77 +287,44 @@ document.addEventListener("DOMContentLoaded", () => {
           </div>
         </div>
       `;
-
       favBox.appendChild(favDiv);
 
-
-
-  // --- NUEVA LÓGICA PARA "VER MÁS PROGRAMAS" ---
-  const verMasProgramasBtn = document.getElementById('ver-mas-programas');
-
-  if (verMasProgramasBtn) {
-      verMasProgramasBtn.addEventListener('click', (event) => {
-          event.preventDefault(); // Prevenir navegación normal del enlace <a>
-          const usuario = localStorage.getItem("loggedInUser"); // Obtener usuario actual
-
+      // "Ver más programas"
+      const verMasProgramasBtn = document.getElementById('ver-mas-programas');
+      if (verMasProgramasBtn) {
+        verMasProgramasBtn.addEventListener('click', event => {
+          event.preventDefault();
           if (!usuario) {
-              alert("Debes iniciar sesión para ver tus programas.");
-              const loginPopup = document.getElementById('popup-login');
-              if (loginPopup) loginPopup.style.display = 'flex';
-              return;
+            alert("Debes iniciar sesión para ver tus programas.");
+            const loginPopup = document.getElementById('popup-login');
+            if (loginPopup) loginPopup.style.display = 'flex';
+            return;
           }
-
-          console.log(`📱 Botón 'Ver Más Programas' presionado por ${usuario}.`);
-
-          // 1. Notificar al servidor para que muestre la pantalla de "Mis Programas"
           socketPerfil.emit('requestDisplayChange', {
-              targetPage: '/display/lavados-favs', // Nueva ruta para el servidor
-              userId: usuario
+            targetPage: '/display/lavados-favs',
+            userId: usuario
           });
+          window.location.href = 'lavados-favs.html';
+        });
+      }
+    });
 
-          // 2. Navegar el cliente a su página de gestión (lavados-favs.html)
-          window.location.href = 'lavados-favs.html'; // O usa event.target.href si era un <a>
-      });
-      console.log("📱 Listener añadido a #ver-mas-programas.");
-  } else {
-      console.warn("Botón/Enlace #ver-mas-programas no encontrado.");
-  }
-
-  });
-
-
+  // =========================
+  // VER MÁS HISTORIAL
+  // =========================
+  const verMasHistorialLink = document.getElementById('historial');
   if (verMasHistorialLink) {
-      verMasHistorialLink.addEventListener('click', (event) => {
-          event.preventDefault(); // Prevenir navegación normal del enlace
-          const usuario = localStorage.getItem("loggedInUser"); // Obtener usuario actual
-
-          if (!usuario) {
-              alert("Debes iniciar sesión para ver el historial completo.");
-              return;
-          }
-
-          console.log(`📱 Botón 'Ver Más Historial' presionado por ${usuario}.`);
-
-          // 1. Notificar al servidor para que muestre la pantalla de historial
-          // Asegúrate que tienes una conexión socket disponible (ej: socketPerfil)
-          if (socketPerfil && socketPerfil.connected) {
-            socketPerfil.emit('requestDisplayChange', {
-                  targetPage: '/display/historial', // Nueva ruta para el servidor
-                  userId: usuario
-               });
-           } else {
-               console.error("Socket no conectado en perfil.js para emitir requestDisplayChange");
-               // Considera reconectar o mostrar error
-           }
-
-
-          // 2. Navegar el cliente a su página de historial completa
-          window.location.href = 'historial.html'; // Navega al HTML del cliente
-
+    verMasHistorialLink.addEventListener('click', event => {
+      event.preventDefault();
+      if (!usuario) {
+        alert("Debes iniciar sesión para ver el historial completo.");
+        return;
+      }
+      socketPerfil.emit('requestDisplayChange', {
+        targetPage: '/display/historial',
+        userId: usuario
       });
-      console.log("📱 Listener añadido a #historial (ver más).");
-  } else {
-      console.warn("Enlace #historial no encontrado en perfil.html.");
+      window.location.href = 'historial.html';
+    });
   }
-
 });

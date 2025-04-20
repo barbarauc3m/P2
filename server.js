@@ -500,6 +500,60 @@ app.get('/api/users/:username', async (req, res) => {
   }
 });
 
+// PUT /api/users/:username
+// PUT /api/users/:username
+app.put('/api/users/:username', async (req, res) => {
+  const oldUsername = req.params.username;
+  const { username: newUsername, email, password, foto } = req.body;
+
+  try {
+    // 1) Leer el fichero con promesas
+    const text = await fsPromises.readFile(USERS_FILE, 'utf8');
+    const usuarios = JSON.parse(text || '{}');
+
+    // 2) Comprobar existencia
+    if (!usuarios[oldUsername]) {
+      return res.status(404).json({ message: 'Usuario no encontrado' });
+    }
+
+    // 3) Si cambia de username, renombrar la clave
+    if (newUsername !== oldUsername) {
+      usuarios[newUsername] = usuarios[oldUsername];
+      delete usuarios[oldUsername];
+    }
+
+    // 4) Actualizar campos
+    const user = usuarios[newUsername];
+    user.username = newUsername;
+    user.email    = email;
+
+    // Hashear contraseña
+    const salt = await bcrypt.genSalt(SALT_ROUNDS);
+    user.hashedPassword = await bcrypt.hash(password, salt);
+
+    if (foto) {
+      user.foto = foto;
+    }
+
+    // 5) Escribir de vuelta en disco con promesas
+    await fsPromises.writeFile(
+      USERS_FILE,
+      JSON.stringify(usuarios, null, 2),
+      'utf8'
+    );
+
+    // 6) Responder al cliente (no enviamos hashedPassword)
+    return res.json({
+      message: 'Perfil actualizado con éxito',
+      user: { username: newUsername, email, foto }
+    });
+
+  } catch (err) {
+    console.error('Error al actualizar usuario:', err);
+    return res.status(500).json({ message: 'Error interno al guardar usuario' });
+  }
+});
+
 // --- Refactorizar OBTENER LAVADOS PERSONALIZADOS ---
 // Cambiamos la ruta
 app.get('/api/users/:username/personalizados', async (req, res) => { // Nueva ruta
