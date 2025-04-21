@@ -1,98 +1,94 @@
-// public/client/script/categorias-lavados.js
 document.addEventListener('DOMContentLoaded', () => {
-    console.log('📱 DOM cargado. Inicializando todo...');
 
-    // --- Conexión Socket.IO ---
+    // conexion SOCKET.IO
     const socketCategoriesClient = io();
 
     socketCategoriesClient.on('connect', () => {});
-    // --- Lógica de Hover ---
-    const categoriasHover = document.querySelectorAll('.lavado-card[data-category-id]');
-    console.log(`📱 Encontrados ${categoriasHover.length} elementos '.lavado-card[data-category-id]' para hover.`);
-    if (categoriasHover.length === 0) {
-        console.warn('📱 No se encontraron elementos para añadir listeners de hover.');
-    }
+
+    // LÓGICA PARA EL HOVER DE CATEGORÍAS
+    const categoriasHover = document.querySelectorAll('.lavado-card[data-category-id]'); // se seleccionan todos los ids de lavado
+
     categoriasHover.forEach(card => {
-        const categoryId = card.dataset.categoryId;
+        const categoryId = card.dataset.categoryId; // data-category-id de la card de lavado
         if (!categoryId) return;
-        // console.log(`📱 Añadiendo listeners a tarjeta: ${categoryId}`); // Log opcional
+
+        // emite el evento al servidor cuando el mouse entra o sale de la card
         card.addEventListener('mouseenter', () => {
-            // console.log(`➡️ MOUSE ENTER sobre tarjeta: ${categoryId}`); // Log opcional
-            socketCategoriesClient.emit('hoverCategory', { categoryId: categoryId });
+            socketCategoriesClient.emit('hoverCategory', { categoryId: categoryId }); // emite hover
         });
         card.addEventListener('mouseleave', () => {
-            // console.log(`⬅️ MOUSE LEAVE de tarjeta: ${categoryId}`); // Log opcional
-            socketCategoriesClient.emit('unhoverCategory', { categoryId: categoryId });
+            socketCategoriesClient.emit('unhoverCategory', { categoryId: categoryId }); // emite unhover
         });
     });
 
-    // --- Lógica de Favoritos y Botones (integrada aquí) ---
+    // FAVORITOS
     const usuarioActual = localStorage.getItem('loggedInUser');
-    const corazones = document.querySelectorAll('.heart'); // Selecciona los corazones
+    const corazones = document.querySelectorAll('.heart'); // seleccionamos los corazones
 
+    // no hay isuario registrado
     if (!usuarioActual) {
-        console.log('📱 Usuario no logueado. Bloqueando corazones.');
+        // console.log('Usuario no logueado. Bloqueando corazones.');
         corazones.forEach(corazon => {
-            corazon.style.cursor = 'not-allowed'; // Indica visualmente que no se puede hacer clic
+            corazon.style.cursor = 'not-allowed'; // visualmente que no se puede hacer clic
             corazon.addEventListener('click', (e) => {
-                e.preventDefault(); // Prevenir cualquier acción por defecto
+                e.preventDefault();
                 alert("Debes registrarte o iniciar sesión para guardar lavados como favoritos");
             });
         });
-        // No necesitamos `return` aquí si el resto de la lógica está dentro del `if (usuarioActual)`
     }
 
-    // Solo añadir listeners y fetch si hay usuario
+    // hay usuario registrado
     if (usuarioActual) {
-        console.log(`📱 Usuario logueado: ${usuarioActual}. Cargando y configurando favoritos.`);
-        fetch(`/api/users/${usuarioActual}/favoritos`)
+        // console.log(`usuario logueado: ${usuarioActual}`);
+        fetch(`/api/users/${usuarioActual}/favoritos`) // obtenemos los favoritos del usuario
+            // el servidor responde con un JSON
             .then(res => {
-                if (!res.ok) throw new Error('Error al obtener favoritos');
                 return res.json();
             })
+            // si la respuesta es correcta obtenemos los favoritos
             .then(favoritosData => {
-                let favoritos = favoritosData[usuarioActual] || []; // Array de favoritos del usuario
+                let favoritos = favoritosData || []; // no favoritos? pues vacio 
 
                 corazones.forEach(corazon => {
-                    // Encontrar el contenedor principal y el nombre del lavado
-                    const sectionLavado = corazon.closest('section.lavado'); // El elemento que tiene el H2
+                    // encontramos el contenedor principal y el nombre del lavado
+                    const sectionLavado = corazon.closest('section.lavado'); // seccioin lavado
                     if (!sectionLavado) {
                         console.warn('No se encontró section.lavado para el corazón:', corazon);
                         return;
                     }
-                    const nombreLavado = sectionLavado.querySelector('h2')?.textContent.trim();
+                    const nombreLavado = sectionLavado.querySelector('h2')?.textContent.trim(); // nombre del lavado
                     if (!nombreLavado) {
                          console.warn('No se encontró h2 para el corazón en:', sectionLavado);
                          return;
                     }
-                    const lavadoCard = sectionLavado.querySelector('.lavado-card'); // El div interno
+                    const lavadoCard = sectionLavado.querySelector('.lavado-card'); // div card de lavado
 
-                    // Establecer estado inicial del corazón
+                    // el corazon es innicialmente vacio
                     const esFavoritoInicial = favoritos.some(lav => lav.nombre === nombreLavado);
                     if (esFavoritoInicial) {
-                        corazon.src = '/images/cora_relleno.svg'; // Ruta absoluta
+                        corazon.src = '/images/cora_relleno.svg'; // si es favorito, corazon relleno
                         corazon.classList.add('activo');
                     } else {
-                        corazon.src = '/images/corazon.svg'; // Ruta absoluta
+                        corazon.src = '/images/corazon.svg'; // si no corazon normal
                         corazon.classList.remove('activo');
                     }
 
-                    // Añadir listener de CLICK al corazón
+                    // CLICK AL CORAZON PARA AÑIDR O QUITAR DE FAVORITOS
                     corazon.addEventListener('click', () => {
-                        let esFavoritoAhora; // Para saber qué estado se guardó
+                        let esFavoritoAhora; // par a saber si se ha añadido o quitado de favoritos
 
                         if (corazon.classList.contains('activo')) {
-                            // --- Quitar de favoritos ---
-                            corazon.classList.remove('activo');
-                            corazon.src = '/images/corazon.svg';
+                            // QUITAR DE FAVORITOS
+                            corazon.classList.remove('activo'); // remover la clase activa
+                            corazon.src = '/images/corazon.svg'; // vuelta a la foto normal
                             favoritos = favoritos.filter(lav => lav.nombre !== nombreLavado);
                             esFavoritoAhora = false;
-                            console.log(`💔 "${nombreLavado}" quitado de favoritos localmente.`);
+                            // console.log(`"${nombreLavado}" quitado de favoritos`);
                         } else {
-                            // --- Añadir a favoritos ---
-                            corazon.classList.add('activo');
-                            corazon.src = '/images/cora_relleno.svg';
-                            // Extraer info SOLO al añadir
+                            // AÑADIR A FAVORITOS
+                            corazon.classList.add('activo'); // añadir la clase activa
+                            corazon.src = '/images/cora_relleno.svg'; // foto rellena
+                            // extraemos info del lavado para añadirlo al json del user en la parte de favs
                             const descripcion = lavadoCard?.querySelector("p")?.textContent.trim() || "";
                             const items = lavadoCard?.querySelectorAll("ul li");
                             const imagen = lavadoCard?.querySelector("img.icon")?.getAttribute("src") || "";
@@ -103,59 +99,60 @@ document.addEventListener('DOMContentLoaded', () => {
                                 duracion: items?.[1]?.textContent.split(":")[1]?.trim() || "",
                                 centrifugado: items?.[2]?.textContent.split(":")[1]?.trim() || "",
                                 detergente: items?.[3]?.textContent.split(":")[1]?.trim() || "",
-                                imagen: imagen // Ya debería ser ruta absoluta si corregiste HTML
+                                imagen: imagen
                             };
                             favoritos.push(infoLavado);
                             esFavoritoAhora = true;
-                            console.log(`❤️ "${nombreLavado}" añadido a favoritos localmente.`);
+                            // console.log(`"${nombreLavado}" añadido a favoritos`);
                         }
 
-                        // Guardar en el servidor backend
-                        console.log(`💾 Guardando favoritos actualizados para ${usuarioActual} en backend...`);
+                        // GUARDAR FAVORITOS EN EL BACKEND
+                        // console.log(`Guardando favoritos actualizados para ${usuarioActual} en backend`);
                         fetch('/guardar-favoritos', {
                             method: 'POST',
                             headers: { 'Content-Type': 'application/json' },
-                            body: JSON.stringify({ usuario: usuarioActual, favoritos: favoritos }) // Enviar la lista actualizada
+                            body: JSON.stringify({ usuario: usuarioActual, favoritos: favoritos }) // enviamos la lista actualizada
                         })
                         .then(res => {
                             if (!res.ok) throw new Error('Error al guardar favoritos en backend');
                             return res.text();
                         })
                         .then(msg => {
-                            console.log(`✅ Backend dice: ${msg}`);
-                            // *** ¡¡NUEVO!! Emitir evento Socket.IO tras guardar con éxito ***
-                            console.log(`⚡ Emitiendo 'favoritesUpdated' para notificar a otros clientes.`);
+                            // emitimos para otros clientes que se ha actualizado el favorito
                             socketCategoriesClient.emit('favoritesUpdated', {
                                 userId: usuarioActual,
-                                changedWash: { // Opcional: enviar qué cambió
+                                changedWash: {
                                     nombre: nombreLavado,
                                     esFavorito: esFavoritoAhora
                                 }
                             });
                         })
                         .catch(err => console.error('❌ Error en fetch /guardar-favoritos:', err));
-                    }); // Fin addEventListener click corazón
-                }); // Fin corazones.forEach
+                    }); // FIN CLICK CORAZON
+                }); // FIN FAVS CORAZONES
             })
             .catch(err => console.error('❌ Error inicial cargando favoritos:', err));
-    } // Fin if (usuarioActual)
+    } 
 
-    // --- Lógica Botones EMPEZAR ---
+    // BOTONES PARA INICIAR UN LAVADO
     const botones = document.querySelectorAll(".lavado-button .button");
     botones.forEach((boton) => {
       boton.addEventListener("click", () => {
-        const section = boton.closest(".lavado");
-        const card = section?.querySelector(".lavado-card"); // Buscar dentro de la sección
+        const section = boton.closest(".lavado"); // seccion en la que esta el boton
+        const card = section?.querySelector(".lavado-card"); // buscamos dentro de la sección
         if (!section || !card) {
-            console.error("Error al encontrar sección o tarjeta para botón EMPEZAR");
+            console.error("Error al encontrar sección o tarjeta para botón EMPEZAR"); // no se encontró la sección o la tarjeta
             return;
         }
+
+        // cogemos info del lavado seleccionado
         const nombre = section.querySelector("h2")?.textContent.trim();
         const descripcion = card.querySelector("p")?.textContent.trim() || "";
         const items = card.querySelectorAll("ul li");
         const imagen = card.querySelector("img.icon")?.getAttribute("src") || "";
-        if (!nombre) return; // Salir si no hay nombre
+        if (!nombre) return; // SALIR si no hay nombre
 
+        // guardamos el lavado seleccionado en localStorage
         const lavado = { 
             nombre: nombre,
               descripcion,
@@ -169,8 +166,9 @@ document.addEventListener('DOMContentLoaded', () => {
               }),
               imagen
         };
-        localStorage.setItem("lavadoSeleccionado", JSON.stringify(lavado));
+        localStorage.setItem("lavadoSeleccionado", JSON.stringify(lavado)); // guardamos localstorage
 
+        // emitir evento para cambiar la pantalla en el servidor
         socketCategoriesClient.emit('requestDisplayChange', {
             targetPage: '/display/empezar-lavado',
         });
@@ -179,7 +177,7 @@ document.addEventListener('DOMContentLoaded', () => {
       });
     });
 
-
+    // BOTONES PARA VOLVER A LA PANTALLA DE INICIO
     const backButton = document.querySelector("#back-button-categorias");
     const homeButton = document.querySelector("#home-button-categorias");
 
@@ -204,4 +202,4 @@ document.addEventListener('DOMContentLoaded', () => {
         homeButton.addEventListener("click", (e) => navigateAndSignalDisplay(e, '/mobile', '/'));
       }
 
-}); // Fin DOMContentLoaded Principal
+}); 

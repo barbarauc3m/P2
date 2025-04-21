@@ -1,52 +1,47 @@
 
-import { extractColors } from 'https://cdn.jsdelivr.net/npm/extract-colors@4.2.0/+esm';
+import { extractColors } from 'https://cdn.jsdelivr.net/npm/extract-colors@4.2.0/+esm'; // LIBRERIA PARA EXTRAER COLORES
 
-// --- Referencias a Elementos del DOM ---
 const video = document.getElementById('video');
 const canvas = document.getElementById('canvas');
 const snapButton = document.getElementById('snap');
-const resultado = document.getElementById('resultado'); // Para mostrar mensajes de estado
-const scanText = document.querySelector('.scan-text'); // Para mensajes de estado
+const resultado = document.getElementById('resultado');
+const scanText = document.querySelector('.scan-text'); 
 
 // --- Constantes para Tono ---
 const DARK_L_THRESHOLD = 35;  // % de Luminosidad por debajo = Oscuro
 const LIGHT_L_THRESHOLD = 75; // % de Luminosidad por encima = Claro
 
-// --- Función para iniciar la cámara ---
+// FUNCION PARA INICIAR LA CÁMARA 
 async function startCamera() {
-    console.log("Iniciando cámara...");
-        // Pedir acceso al stream de vídeo, preferiblemente la cámara trasera
+    // console.log("Iniciando cámara...");
+        // acceso a la camarita
         const stream = await navigator.mediaDevices.getUserMedia({
-            video: { facingMode: "environment" } // 'environment' para trasera, 'user' para frontal
+            video: { facingMode: "environment" } // environment para trasera, user para delantera
         });
         video.srcObject = stream;
 
-        // Esperar a que el vídeo cargue metadatos para saber sus dimensiones
+        // cargar los datos del video
         video.onloadedmetadata = () => {
-            console.log("Metadatos del vídeo cargados.");
-            // Ajustar tamaño del canvas (importante para drawImage)
-            // Podrías ajustar esto si necesitas un tamaño específico, pero usar el del vídeo es directo
             canvas.width = video.videoWidth;
             canvas.height = video.videoHeight;
             snapButton.disabled = false; // Habilitar el botón de captura
             scanText.textContent = "¡Cámara lista! Apunta a la prenda y pulsa Capturar.";
-            console.log(`Cámara lista. Resolución: ${video.videoWidth}x${video.videoHeight}`);
+            // console.log(`Cámara lista. Resolución: ${video.videoWidth}x${video.videoHeight}`);
         };
 
-        // Opcional: Manejar el evento 'canplay' para asegurar que el vídeo está listo para reproducirse
         video.oncanplay = () => {
-             console.log("El vídeo puede empezar a reproducirse.");
+             // console.log("vídeo reproducir");
         };
 }
 
-// --- Función para capturar el frame y analizar el color ---
+// FUNCION PARA CAPTURAR LA FOTO Y ANALIZAR EL COLOR
 async function captureAndAnalyze() {
     if (!video.srcObject || video.readyState < video.HAVE_METADATA) {
         alert("La cámara no está lista o activa.");
         return;
     }
 
-    snapButton.disabled = true; // Deshabilitar mientras procesa
+    snapButton.disabled = true; // desabilitamos boton 
     scanText.textContent = "Capturando y analizando...";
     resultado.textContent = "Procesando...";
 
@@ -63,7 +58,6 @@ async function captureAndAnalyze() {
 
 
     // 3. Analizar colores usando la librería extractColors
-        // Opciones: Reducir 'pixels' puede acelerar el proceso en móviles
         const options = {
             pixels: 128000,       
             distance: 0.18,         
@@ -71,12 +65,12 @@ async function captureAndAnalyze() {
             lightnessDistance: 0.1, 
             hueDistance: 0.05 
         };
-        console.log("Llamando a extractColors...");
+        // console.log("Llamando a extractColors...");
         const colors = await extractColors(imageDataUrl, options);
 
-        console.log("Paleta Completa Detectada:", JSON.stringify(colors, null, 2));
+        // console.log("Paleta Completa Detectada:", JSON.stringify(colors, null, 2));
 
-        console.log("extractColors completado. Colores detectados:", colors.length);
+        // console.log("extractColors completado. Colores detectados:", colors.length);
 
         if (colors && colors.length > 0) {
             // Tomamos el primer color como el más dominante
