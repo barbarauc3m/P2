@@ -5,13 +5,8 @@ document.addEventListener("DOMContentLoaded", () => {
     const contenedor = document.getElementById("historial-container");
   
      // --- Conexión Socket.IO (Necesaria para emitir hover) ---
-     if (typeof io === 'undefined') {
-      console.error('Historial script: io no definido.');
-      // return; // Opcional: detener si no hay socket
-    }
     const socketHistorial = io(); // Conexión específica para esta página
     socketHistorial.on('connect', () => console.log('📱✅ Historial Client Conectado:', socketHistorial.id));
-    socketHistorial.on('connect_error', (err) => console.error('📱❌ Error conexión socket en historial.js:', err));
 
 
 
@@ -143,15 +138,38 @@ document.addEventListener("DOMContentLoaded", () => {
     } else {
          console.warn('Botón #home-button-historial no encontrado.');
     }
+
+
+    function handleEmpezarClickHistorial(lavadoData) {
+      if (!lavadoData || !usuario) return; // Añadida verificación de usuario
+       console.log("Empezando lavado desde historial:", lavadoData.nombre);
+       const lavadoParaEmpezar = {
+          nombre: lavadoData.nombre,
+          descripcion: lavadoData.descripcion || "",
+          temperatura: lavadoData.temperatura || "?",
+          duracion: lavadoData.duracion || "?",
+          centrifugado: lavadoData.centrifugado || "?",
+          detergente: lavadoData.detergente || "?",
+          fechaInicio: new Date().toLocaleString("es-ES", { dateStyle: "short", timeStyle: "short" }), // Fecha/Hora actual
+          imagen: lavadoData.imagen || '/images/default-wash.png'
+       };
+       localStorage.setItem("lavadoSeleccionado", JSON.stringify(lavadoParaEmpezar));
+    
+       socketHistorial.emit('requestDisplayChange', {
+        targetPage: '/display/empezar-lavado',
+      });
+      
+    
+       window.location.href = "empezar-lavado.html";
+        
+    }
   });
 
   function sanitizeId(text) {
     if (!text) return `item-${Math.random().toString(36).substr(2, 9)}`;
     return text.toString().toLowerCase()
-               .replace(/\s+/g, '-') // Reemplaza espacios con guiones
-               .replace(/[^\w-]+/g, ''); // Quita caracteres no alfanuméricos (excepto guion)
-               // Podrías añadir más reemplazos si las fechas/horas dan problemas (:, /)
-               // .replace(/[:\/]/g, '-');
+               .replace(/\s+/g, '-') 
+               .replace(/[^\w-]+/g, ''); 
 }
 
    // --- Paso 3: Crear Función handleFavoriteToggle ---
@@ -227,23 +245,6 @@ document.addEventListener("DOMContentLoaded", () => {
 } // Fin handleFavoriteToggle
 
 
-// --- Función para Empezar Lavado desde Historial (ya la tenías, revisada) ---
- function handleEmpezarClickHistorial(lavadoData) {
-    if (!lavadoData || !usuario) return; // Añadida verificación de usuario
-     console.log("Empezando lavado desde historial:", lavadoData.nombre);
-     const lavadoParaEmpezar = {
-        nombre: lavadoData.nombre,
-        descripcion: lavadoData.descripcion || "",
-        temperatura: lavadoData.temperatura || "?",
-        duracion: lavadoData.duracion || "?",
-        centrifugado: lavadoData.centrifugado || "?",
-        detergente: lavadoData.detergente || "?",
-        fechaInicio: new Date().toLocaleString("es-ES", { dateStyle: "short", timeStyle: "short" }), // Fecha/Hora actual
-        imagen: lavadoData.imagen || '/images/default-wash.png'
-     };
-     localStorage.setItem("lavadoSeleccionado", JSON.stringify(lavadoParaEmpezar));
-     window.location.href = "empezar-lavado.html";
-}
   
   function parseFecha(fechaStr) {
     const [fecha, hora] = fechaStr.split(', ');

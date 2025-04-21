@@ -1,27 +1,11 @@
 // public/client/script/categorias-lavados.js
-
-console.log('📱 Script categorias-lavados.js cargado.');
-
 document.addEventListener('DOMContentLoaded', () => {
     console.log('📱 DOM cargado. Inicializando todo...');
 
     // --- Conexión Socket.IO ---
-    if (typeof io === 'undefined') {
-        console.error('📱 ERROR: io (Socket.IO) no está definido...');
-        return;
-    }
     const socketCategoriesClient = io();
 
-    socketCategoriesClient.on('connect', () => {
-        console.log('📱✅ Categorias Client Conectado:', socketCategoriesClient.id);
-    });
-    socketCategoriesClient.on('connect_error', (err) => {
-        console.error('📱❌ Error de conexión Socket.IO:', err);
-    });
-    socketCategoriesClient.on('disconnect', () => {
-        console.log('📱 Categorias Client Desconectado');
-    });
-
+    socketCategoriesClient.on('connect', () => {});
     // --- Lógica de Hover ---
     const categoriasHover = document.querySelectorAll('.lavado-card[data-category-id]');
     console.log(`📱 Encontrados ${categoriasHover.length} elementos '.lavado-card[data-category-id]' para hover.`);
@@ -188,7 +172,7 @@ document.addEventListener('DOMContentLoaded', () => {
         localStorage.setItem("lavadoSeleccionado", JSON.stringify(lavado));
 
         socketCategoriesClient.emit('requestDisplayChange', {
-             targetPage: '/server/empezar-lavado.html',
+            targetPage: '/display/empezar-lavado',
         });
 
         window.location.href = "empezar-lavado.html";

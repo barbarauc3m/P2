@@ -7,17 +7,18 @@ const bcrypt = require('bcrypt'); // HASHEAMOS CONTRASEÑAS FUEGO
 const app = express();
 const PORT = 6969;
 let serverDisplaySocketId = null;
-const USERS_FILE = path.join(__dirname, 'usuarios.json'); // Ruta al archivo de usuarios
+const USERS_FILE = path.join(__dirname, 'usuarios.json');
 const { Server } = require('socket.io');
 
-const SALT_ROUNDS = 10; // Coste del hashing para bcrypt
+const SALT_ROUNDS = 10; // hashing para bcrypt
 
-// USE
+// USE JSON
+// esto es para que podamos meter fotos y cosas grandes en el json, que sino no debaja guardar fotos.
 app.use(express.json({ limit: '1000mb' })); 
 app.use(express.urlencoded({ extended: true, limit: '1000mb' }));
 
 // Carga de certificados
-// GENERA CERTIFICADOS CON EL SIGUIENTE COMANDO:
+// GENERAMOS CERTIFICADOS CON EL SIGUIENTE COMANDO:
 // openssl req -nodes -new -x509 -keyout key.pem -out cert.pem -days 365
 
 const server = https.createServer({
@@ -25,10 +26,11 @@ const server = https.createServer({
   cert: fs.readFileSync('cert.pem')
 }, app);
 
-// Inicializa Socket.IO sobre HTTPS
+// Inicializamos Socket.IO sobre HTTPS
 const io = new Server(server);
 
 
+// rutas para carpetas del proyecto
 app.use(express.static(path.join(__dirname, 'public')));
 
 app.use('/images', express.static(path.join(__dirname, 'images')));
@@ -44,20 +46,22 @@ app.use('/client', express.static(path.join(__dirname, 'public', 'client')));
 app.use('/server', express.static(path.join(__dirname, 'public', 'server')));
 
 
-// GET
+// RUTAS INICIALES DONDE SE CARGA EL SERVIDOR
+// ruta / que es el index del SERVIDOR (ordenador)
 app.get('/', (req, res) => {
   res.sendFile(path.join(__dirname, 'public/server/index.html'));
 }
 );
 
-// Ruta '/mobile' servirá el index del CLIENTE (móvil)
+// ruta /mobile que es el index del CLIENTE (movil)
 app.get('/mobile', (req, res) => {
   res.sendFile(path.join(__dirname, 'public', 'client', 'index.html'));
 });
 
+
 // LADO CLIENTE
 app.get('/index.html', (req, res) => 
-  res.redirect('/mobile')); // Redirige a /mobile si se pide explícitamente el index del cliente
+  res.redirect('/mobile'));
 
 app.get('/perfil.html', (req, res) => {
   res.sendFile(path.join(__dirname, 'public/client/perfil.html'));
@@ -116,8 +120,8 @@ app.get('/escaner-color.html', (req, res) => {
   res.sendFile(path.join(__dirname, 'public/client/escaner-color.html'));
 });
 
-// LADO SERVIDOR
 
+// LADO SERVIDOR
 app.get('/juegos-server.html', (req, res) => {
   res.sendFile(path.join(__dirname, 'public/server/juegos-server.html'));
 });
@@ -131,11 +135,11 @@ app.get('/juego2.html', (req, res) => {
 });
 
 app.get('/display/categories', (req, res) => {
-  res.sendFile(path.join(__dirname, 'public', 'server', 'categorias-lavados.html'));
+  res.sendFile(path.join(__dirname, 'public/server/categorias-lavados.html'));
 });
 
 app.get('/display/lavados-favs', (req, res) => {
-  res.sendFile(path.join(__dirname, 'public', 'server', 'lavados-favs.html'));
+  res.sendFile(path.join(__dirname, 'public/server/lavados-favs.html'));
 });
 
 app.get('/display/login', (req, res) => {
@@ -147,7 +151,7 @@ app.get('/display/register', (req, res) => {
 });
 
 app.get('/display/empezar-lavado', (req, res) => {
-  res.sendFile(path.join(__dirname, 'public', 'server', 'empezar-lavado.html'));
+  res.sendFile(path.join(__dirname, 'public/server/empezar-lavado.html'));
 });
 
 app.get('/display/profile', (req, res) => {
@@ -163,18 +167,17 @@ app.get('/display/historial', (req, res) => {
 });
 
 app.get('/display/lavado-personalizado', (req, res) => {
-  console.log('🔔 /display/lavado-personalizado pedido');
   res.sendFile(path.join(__dirname, 'public/server/lavado-personalizado.html'));
 });
 
 
 
 
-// funciones que nos ayudan
+// FUNCIONES QUE NOS AYUDAN
+// Función para leer usuarios.json y devolver un objeto
 async function readUsers() {
   try {
       const data = await fsPromises.readFile(USERS_FILE, 'utf8');
-      // Manejar archivo vacío
       return data.trim() === '' ? {} : JSON.parse(data);
   } catch (error) {
       if (error.code === 'ENOENT') {
@@ -192,67 +195,64 @@ async function readUsers() {
 app.post('/api/register', async (req, res) => {
   const { username, email, password } = req.body;
 
-  // 1. Validación básica del servidor
+  // 1. Validamos los datos
   if (!username || !email || !password) {
       return res.status(400).json({ message: 'Todos los campos son obligatorios.' });
   }
 
   try {
-      // 2. Leer usuarios existentes (o crear archivo si no existe)
+      // 2. Leer usuarios existentes 
       let users = {};
       try {
           const data = await fsPromises.readFile(USERS_FILE, 'utf8');
-          users = JSON.parse(data);
+          users = JSON.parse(data); // Parseamos el JSON
       } catch (error) {
-          if (error.code === 'ENOENT') {
-              console.log('Archivo usuarios.json no encontrado, se creará uno nuevo.');
-          } else {
-              throw error; // Otro tipo de error de lectura sí es problema
-          }
+          console.log('Archivo usuarios.json no encontrado, se creará uno nuevo.');
       }
 
       // 3. Comprobar duplicados (username y email)
       if (users[username]) {
-          return res.status(409).json({ message: 'El nombre de usuario ya existe.' }); // 409 Conflict
+          return res.status(409).json({ message: 'El nombre de usuario ya existe.' }); 
       }
       const emailExists = Object.values(users).some(user => user.email === email);
       if (emailExists) {
           return res.status(409).json({ message: 'El correo electrónico ya está registrado.' });
       }
 
-      // 4. Hashear la contraseña
+      // 4. hasheamos la contraseña FUEGOTE
       const hashedPassword = await bcrypt.hash(password, SALT_ROUNDS);
 
-      // 5. Crear nuevo objeto de usuario 
+      // 5. creams new usuario 
       const newUser = {
           username: username,
           email: email,
           hashedPassword: hashedPassword, // Guardar el hash
-          foto: '/images/persona_cla.svg', // Ruta absoluta por defecto
-          favoritos: [], // Lista de favoritos inicial
-          personalizados: [] // Lista de lavados personalizados inicial};
+          foto: '/images/persona_os.svg', // foto por defecto
+          favoritos: [], // favoritos inicial
+          personalizados: [] // lavados personalizados inicial
       };
 
-      // 6. Añadir usuario al objeto
+      // 6. añadimos el new usuario al json
       users[username] = newUser;
 
-      // 7. Escribir el archivo JSON actualizado
+      // 7. escribimos el json actualizado
       await fsPromises.writeFile(USERS_FILE, JSON.stringify(users, null, 2)); // null, 2 para formatear bonito
       console.log(`Usuario ${username} registrado exitosamente en ${USERS_FILE}`);
 
       // 8. Enviar respuesta de éxito
-      res.status(201).json({ message: `Registro exitoso. ¡Bienvenido/a, ${username}!` }); // 201 Created
+      res.status(201).json({ message: `Registro exitoso. ¡Bienvenido/a, ${username}!` }); // 201 creao
 
   } catch (error) {
-      console.error('Error en /api/register:', error);
+      console.error('Error en /api/register:', error); // error por si acaso AB
       res.status(500).json({ message: 'Error interno del servidor durante el registro.' });
   }
 });
 
+// LOGIN DE USUARIOS
 app.post('/api/login', async (req, res) => {
   const { email, password } = req.body;
 
-  // 1. Validación básica
+  // 1. validation basica
   if (!email || !password) {
       return res.status(400).json({ message: 'Email y contraseña son obligatorios.' });
   }
@@ -264,24 +264,18 @@ app.post('/api/login', async (req, res) => {
           const data = await fsPromises.readFile(USERS_FILE, 'utf8');
           // Comprobar si está vacío antes de parsear
           if (data.trim() === '') {
-               return res.status(401).json({ message: 'Credenciales inválidas (no hay usuarios).' }); // 401 Unauthorized
+               return res.status(401).json({ message: 'Credenciales inválidas (no hay usuarios).' }); // 401 no users fuk
           }
           users = JSON.parse(data);
       } catch (error) {
-          if (error.code === 'ENOENT') {
-              // Si el archivo no existe, nadie puede loguearse
-              console.log('Intento de login pero usuarios.json no existe.');
-              return res.status(401).json({ message: 'Credenciales inválidas (archivo no encontrado).' });
-          } else {
-              // Otro error de lectura o parseo
-              throw new Error(`Error al leer/parsear usuarios.json: ${error.message}`);
-          }
+          console.log('Intento de login pero usuarios.json no existe.');
+          return res.status(401).json({ message: 'Credenciales inválidas (archivo no encontrado).' });
       }
 
       // 3. Buscar usuario por email
       let foundUser = null;
       let foundUsername = null;
-      // Iteramos para encontrar el usuario y su clave (username)
+      // encontrar el usuario por email 
       for (const username in users) {
           if (users[username].email === email) {
               foundUser = users[username];
@@ -292,27 +286,20 @@ app.post('/api/login', async (req, res) => {
 
       // 4. Usuario no encontrado
       if (!foundUser) {
-          console.log(`Intento de login fallido: Email ${email} no encontrado.`);
           return res.status(401).json({ message: 'Credenciales inválidas (email no encontrado).' });
       }
 
       // 5. Comparar contraseña usando bcrypt
-      console.log(`Comparando contraseña para usuario: ${foundUsername}`);
       const match = await bcrypt.compare(password, foundUser.hashedPassword);
 
       if (match) {
-          // 6. ¡Contraseña correcta! Login exitoso
-          console.log(`Login exitoso para usuario: ${foundUsername}`);
-          // Enviamos una respuesta exitosa incluyendo el username (necesario para el cliente)
-          // NO ENVÍES NUNCA EL HASH DE LA CONTRASEÑA
+          // 6. contraseña correcta
           res.status(200).json({
               message: `¡Bienvenido/a, ${foundUsername}!`,
               username: foundUsername, // El cliente necesita esto para localStorage
-              foto: foundUser.foto // Enviar la foto para que el cliente la use
           });
       } else {
-          // 7. Contraseña incorrecta
-          console.log(`Intento de login fallido: Contraseña incorrecta para ${foundUsername}.`);
+          // 7. contraseña incorrecta
           return res.status(401).json({ message: 'Credenciales inválidas (contraseña incorrecta).' });
       }
 
@@ -322,49 +309,57 @@ app.post('/api/login', async (req, res) => {
   }
 });
 
-// Ruta POST para guardar lavado
+// GUARDAR LAVADO (empezar lavado)
 app.post('/guardar-lavado', (req, res) => {
-  const nuevoLavado = req.body;
-  const usuario = nuevoLavado.usuario;
+  // 1. recibimos nuestro querido lavado 
+  const nuevoLavado = req.body; // datos lavado
+  const usuario = nuevoLavado.usuario; // user
 
-  if (!usuario) return res.status(400).send('Falta el nombre del usuario');
+  if (!usuario) {
+    return res.status(400).send('Falta el nombre del usuario');
+  }
 
+  // 2. guardamos el lavado en un json
   const filePath = path.join(__dirname, 'lavados-usuarios.json');
 
   fs.readFile(filePath, 'utf8', (err, data) => {
     let dataUsuarios = {};
     if (!err && data) {
       try {
-        dataUsuarios = JSON.parse(data);
+        dataUsuarios = JSON.parse(data); // parseamos el json
       } catch (e) {
         return res.status(500).send('Error al parsear JSON de lavados-usuarios');
       }
     }
 
-    // Si no hay lavados previos para el usuario, lo inicializamos
+    // si no tiene lavados previos el usar, creamos un array vacío
     if (!dataUsuarios[usuario]) dataUsuarios[usuario] = [];
 
-    // Guardamos el nuevo lavado al principio y limitamos a 20
+    // guardamos el lavado nuevo
     dataUsuarios[usuario].unshift(nuevoLavado);
-    dataUsuarios[usuario] = dataUsuarios[usuario].slice(0, 20);
 
     fs.writeFile(filePath, JSON.stringify(dataUsuarios, null, 2), err => {
-      if (err) return res.status(500).send('Error al guardar el lavado');
+      if (err) {
+        return res.status(500).send('Error al guardar el lavado');
+      }
       res.send('Lavado guardado correctamente');
     });
   });
 });
 
-// Nueva ruta para obtener lavados de un usuario
+// OBTENER LAVADOS DE LOS USUARIOS (historial)
 app.get('/lavados/:usuario', (req, res) => {
   const usuario = req.params.usuario;
   const filePath = path.join(__dirname, 'lavados-usuarios.json');
 
+  // leemos el lavaos-usuarios.json
   fs.readFile(filePath, 'utf8', (err, data) => {
-    if (err || !data) return res.json([]);
+    if (err || !data) {
+      return res.json([]);
+    }
     try {
       const json = JSON.parse(data);
-      res.json(json[usuario] || []);
+      res.json(json[usuario] || []); // si no tiene lavados, devolvemos un array vacío
     } catch (e) {
       res.status(500).send('Error al parsear lavados');
     }
@@ -373,96 +368,89 @@ app.get('/lavados/:usuario', (req, res) => {
 
 
 // GUARDAR LAVADOS FAVORITOS
-app.post('/guardar-favoritos', async (req, res) => { // Convertida a async
-  const { usuario, favoritos } = req.body; // 'usuario' es el username
+app.post('/guardar-favoritos', async (req, res) => { 
+  const { usuario, favoritos } = req.body;
 
-  if (!usuario || !Array.isArray(favoritos)) { // Validar que favoritos sea un array
+  if (!usuario || !Array.isArray(favoritos)) { // validamos que favoritos sea un array
     return res.status(400).json({ message: 'Falta nombre de usuario o la lista de favoritos es inválida.' });
   }
 
   try {
-    let users = await readUsers(); // Leer usuarios
+    let users = await readUsers(); // leemos usuarios
 
-    // Verificar si el usuario existe
+    // verificamos si el usuario existe
     if (!users[usuario]) {
-      return res.status(404).json({ message: 'Usuario no encontrado.' });
+      return res.status(404).json({ message: 'Usuario no encontrado.' }); // explota
     }
 
-    // Actualizar el array de favoritos de ESE usuario
+    // actualizamos el array de favoritos de ESE usuario
     users[usuario].favoritos = favoritos;
 
-    // Guardar TODO el objeto users de vuelta en usuarios.json
+    // guardamos TODO el objeto users de vuelta en usuarios.json
     await fsPromises.writeFile(USERS_FILE, JSON.stringify(users, null, 2));
-    console.log(`✅ Favoritos guardados para ${usuario}`);
     res.status(200).json({ message: 'Favoritos guardados correctamente.' }); // Enviar JSON
 
   } catch (error) {
-    console.error('❌ Error en /guardar-favoritos:', error);
     res.status(500).json({ message: 'Error interno al guardar favoritos.' });
   }
 });
 
-// --- Refactorizar OBTENER FAVORITOS ---
-// Cambiamos la ruta a una API más específica
-app.get('/api/users/:username/favoritos', async (req, res) => { // Nueva ruta
+// OBTENER LOS LAVADOS FAVORITOS DE USUARIO
+app.get('/api/users/:username/favoritos', async (req, res) => {
     const username = req.params.username;
 
     try {
-        const users = await readUsers();
+        const users = await readUsers(); // leemos usuarios.json
 
         if (!users[username]) {
             return res.status(404).json({ message: 'Usuario no encontrado.' });
         }
 
-        // Devolver SOLO el array de favoritos de ese usuario (o vacío si no tiene)
+        // devolvemos SOLO el array de favoritos de ese usuario (o vacío si no tiene)
         res.status(200).json(users[username].favoritos || []);
 
     } catch (error) {
-        console.error(`❌ Error en /api/users/${username}/favoritos:`, error);
         res.status(500).json({ message: 'Error interno al obtener favoritos.' });
     }
 });
 
 
-// Ruta para guardar lavado personalizado
-app.post('/guardar-lavado-personalizado', async (req, res) => { // Convertida a async
+// GUARDAR LAVADO PERSONALIZADO POR USER
+app.post('/guardar-lavado-personalizado', async (req, res) => {
   const lavadoData = req.body;
-  const usuario = lavadoData.usuario; // Asumiendo que el cliente envía el 'usuario'
+  const usuario = lavadoData.usuario; 
 
   if (!usuario) {
       return res.status(400).json({ message: 'Falta el nombre del usuario.' });
   }
-  // Puedes añadir más validaciones para los campos del lavado si quieres
 
   try {
-      let users = await readUsers();
+      let users = await readUsers(); // lee usuarios.json
 
       if (!users[usuario]) {
           return res.status(404).json({ message: 'Usuario no encontrado.' });
       }
 
-      // Asegurarse de que el array 'personalizados' exista
+      // verificar que el array personalizados exista
       if (!Array.isArray(users[usuario].personalizados)) {
           users[usuario].personalizados = [];
       }
 
-      // Lógica para añadir el lavado (similar a la anterior)
+      // añadimos el lavaodo personalizado al array
       const nuevoIndex = users[usuario].personalizados.length + 1;
       const nuevoLavado = {
           ...lavadoData, // Copia los datos recibidos
-          nombre: `Lavado personalizado ${nuevoIndex}`, // Asigna nombre
+          nombre: `Lavado personalizado ${nuevoIndex}`, // nombre
           index: nuevoIndex, // Asigna índice
           fechaGuardado: new Date().toISOString()
       };
-      delete nuevoLavado.usuario; // Quitar el campo usuario del objeto guardado en el array
+      delete nuevoLavado.usuario; // quita el usuario del objeto
 
-      users[usuario].personalizados.unshift(nuevoLavado); // Añadir al principio
-      users[usuario].personalizados = users[usuario].personalizados.slice(0, 20); // Limitar
+      users[usuario].personalizados.unshift(nuevoLavado); // añadimos al principio uwu
 
-      // Guardar TODO el objeto users de vuelta
-      await fsPromises.writeFile(USERS_FILE, JSON.stringify(users, null, 2));
-      console.log(`✅ Lavado personalizado guardado para ${usuario}`);
-      res.status(200).json({ message: 'Lavado personalizado guardado correctamente.' }); // Enviar JSON
+      // guardamos TODO el objeto users de vuelta
+      await fsPromises.writeFile(USERS_FILE, JSON.stringify(users, null, 2)); // escribimos el json
+      res.status(200).json({ message: 'Lavado personalizado guardado correctamente.' }); // bomba
 
   } catch (error) {
       console.error('❌ Error en /guardar-lavado-personalizado:', error);
@@ -470,90 +458,7 @@ app.post('/guardar-lavado-personalizado', async (req, res) => { // Convertida a 
   }
 });
 
-app.get('/api/users/:username', async (req, res) => {
-  const requestedUsername = req.params.username;
-  console.log(`API: Solicitud de datos para usuario: ${requestedUsername}`);
-
-  try {
-      const users = await readUsers(); // Usa tu función helper para leer usuarios.json
-
-      if (!users[requestedUsername]) {
-          // Usuario no encontrado
-          return res.status(404).json({ message: 'Usuario no encontrado.' });
-      }
-
-      // Usuario encontrado, preparar datos públicos para enviar
-      const publicUserData = {
-          username: users[requestedUsername].username,
-          email: users[requestedUsername].email, // Decide si quieres enviar el email
-          foto: users[requestedUsername].foto
-          // NUNCA incluyas hashedPassword aquí
-      };
-
-      res.status(200).json(publicUserData); // Enviar datos públicos
-
-  } catch (error) {
-      console.error(`❌ Error en /api/users/${requestedUsername}:`, error);
-      res.status(500).json({ message: 'Error interno al obtener datos del usuario.' });
-  }
-});
-
-// PUT /api/users/:username
-// PUT /api/users/:username
-app.put('/api/users/:username', async (req, res) => {
-  const oldUsername = req.params.username;
-  const { username: newUsername, email, password, foto } = req.body;
-
-  try {
-    // 1) Leer el fichero con promesas
-    const text = await fsPromises.readFile(USERS_FILE, 'utf8');
-    const usuarios = JSON.parse(text || '{}');
-
-    // 2) Comprobar existencia
-    if (!usuarios[oldUsername]) {
-      return res.status(404).json({ message: 'Usuario no encontrado' });
-    }
-
-    // 3) Si cambia de username, renombrar la clave
-    if (newUsername !== oldUsername) {
-      usuarios[newUsername] = usuarios[oldUsername];
-      delete usuarios[oldUsername];
-    }
-
-    // 4) Actualizar campos
-    const user = usuarios[newUsername];
-    user.username = newUsername;
-    user.email    = email;
-
-    // Hashear contraseña
-    const salt = await bcrypt.genSalt(SALT_ROUNDS);
-    user.hashedPassword = await bcrypt.hash(password, salt);
-
-    if (foto) {
-      user.foto = foto;
-    }
-
-    // 5) Escribir de vuelta en disco con promesas
-    await fsPromises.writeFile(
-      USERS_FILE,
-      JSON.stringify(usuarios, null, 2),
-      'utf8'
-    );
-
-    // 6) Responder al cliente (no enviamos hashedPassword)
-    return res.json({
-      message: 'Perfil actualizado con éxito',
-      user: { username: newUsername, email, foto }
-    });
-
-  } catch (err) {
-    console.error('Error al actualizar usuario:', err);
-    return res.status(500).json({ message: 'Error interno al guardar usuario' });
-  }
-});
-
-// --- Refactorizar OBTENER LAVADOS PERSONALIZADOS ---
-// Cambiamos la ruta
+// OBTENEMOS LAVADOS PERSOALIZADOS POR USER
 app.get('/api/users/:username/personalizados', async (req, res) => { // Nueva ruta
   const username = req.params.username;
 
@@ -573,199 +478,232 @@ app.get('/api/users/:username/personalizados', async (req, res) => { // Nueva ru
   }
 });
 
+// OBTENER DATOS USER
+app.get('/api/users/:username', async (req, res) => {
+  const requestedUsername = req.params.username;
+
+  try {
+      const users = await readUsers(); // leer usuarios.json
+
+      if (!users[requestedUsername]) {
+          // Usuario no encontrado
+          return res.status(404).json({ message: 'Usuario no encontrado.' });
+      }
+
+      // usuario encontrado, enviamos datillos
+      const publicUserData = {
+          username: users[requestedUsername].username,
+          email: users[requestedUsername].email, 
+          foto: users[requestedUsername].foto
+      };
+
+      res.status(200).json(publicUserData); // enviao
+
+  } catch (error) {
+      console.error(`❌ Error en /api/users/${requestedUsername}:`, error); // :(
+      res.status(500).json({ message: 'Error interno al obtener datos del usuario.' });
+  }
+});
+
+// ACTUALIZAR PERFIL DE USUARIO
+app.put('/api/users/:username', async (req, res) => {
+  const oldUsername = req.params.username;
+  const { username: newUsername, email, password, foto } = req.body; // nuevos datos
+
+  try {
+    const text = await fsPromises.readFile(USERS_FILE, 'utf8');
+    const usuarios = JSON.parse(text || '{}');
+
+    // comprobamos si el antiguo username existe 
+    if (!usuarios[oldUsername]) {
+      return res.status(404).json({ message: 'Usuario no encontrado' });
+    }
+
+    // si cambia de username renombrar la clave!! *IMPORTANTE*
+    if (newUsername !== oldUsername) {
+      usuarios[newUsername] = usuarios[oldUsername]; // new
+      delete usuarios[oldUsername]; // borramos el antiguo
+    }
+
+    // actualizamos los campos editados
+    const user = usuarios[newUsername];
+    user.username = newUsername;
+    user.email    = email;
+
+    // hasheamos contraseña
+    const salt = await bcrypt.genSalt(SALT_ROUNDS);
+    user.hashedPassword = await bcrypt.hash(password, salt);
+
+    // fotillo
+    if (foto) {
+      user.foto = foto;
+    }
+
+    // guardamos el json actualizado
+    await fsPromises.writeFile(USERS_FILE, JSON.stringify(usuarios, null, 2),'utf8');
+
+    
+    return res.json({
+      message: 'Perfil actualizado con éxito',
+      user: { username: newUsername, email, foto }
+    });
+
+  } catch (err) {
+    console.error('Error al actualizar usuario:', err);
+    return res.status(500).json({ message: 'Error interno al guardar usuario' });
+  }
+});
 
 
 
-// CONEXIONES SOCKET.IO
+
+
+// SOCKET.IO CONEXIONES
 io.on('connection', (socket) => {
-  console.log('Usuario conectado');
 
+  // Registrar la pantalla del servidor como display principal
   socket.on('registerDisplay', () => {
     serverDisplaySocketId = socket.id;
-    console.log('📺 Server‑Display registrado con ID:', serverDisplaySocketId);
   });
-  
-  
 
-
-  /*
-  socket.onAny((event, ...args) => {
-    console.log(`📥 Evento recibido: ${event}`, args);
-});*/
-
-
+  // mensajes a otros clientes
   socket.on('mensaje', (data) => {
-    console.log('Mensaje recibido:', data);
     socket.broadcast.emit('mensaje', data);
   });
 
-  socket.on('lanzar', () => {  // Juego 3
-    console.log('[SERVER.JS] Movimiento recibido desde móvil');
-    socket.broadcast.emit('lanzar'); // Reenvía a todos menos al móvil
-  }); 
+  // Lanzar objeto en juego 3 desde móvil
+  socket.on('lanzar', () => {
+    socket.broadcast.emit('lanzar');
+  });
 
+  // Actualizar posición del carrito al inclinar el móvil
   socket.on('movimientoCarrito', (inclinacion) => {
-    // Reenvía la inclinación a todos los clientes (excepto al emisor)
     socket.broadcast.emit('actualizarPosicionCarrito', inclinacion);
   });
 
-  socket.on('disconnect', () => {
-    console.log('Usuario desconectado');
+  // Control de juego desde el móvil
+  socket.on('juego-empezar', () => {
+    socket.broadcast.emit('juego-empezar');
   });
 
-  socket.on('juego-empezar', () => {  // Llega solicitud desde el móvil
-    console.log('[SERVER.JS] Empieza el juego');
-    socket.broadcast.emit('juego-empezar'); // Reenvía a todos menos al móvil
-  }); 
+  socket.on('juego-pausar', () => {
+    socket.broadcast.emit('juego-pausar');
+  });
 
-  socket.on('juego-pausar', () => {  // Llega solicitud desde el móvil
-    console.log('[SERVER.JS]📱 Pausa recibida desde móvil');
-    socket.broadcast.emit('juego-pausar'); // Reenvía a todos menos al móvil
-  }); 
-
-  socket.on('juego-reiniciar', () => {  // Llega solicitud desde el móvil
-    console.log('[SERVER.JS]📱 Petición reinicio recibida desde móvil');
-    socket.broadcast.emit('juego-reiniciar'); // Reenvía a todos menos al móvil
-  }); 
+  socket.on('juego-reiniciar', () => {
+    socket.broadcast.emit('juego-reiniciar');
+  });
 
   socket.on('juego-reanudar', () => {
-    console.log("📱 Juego reanudado desde servidor");
     io.emit('juego-reanudado');
   });
 
   socket.on('juego-volver', () => {
-    console.log("Recibido 'volver'");
-    //io.emit('moverCienteAlMenu');
     socket.broadcast.emit('juego-backtoMenu');
   });
 
+  // Control por voz desde el móvil
   socket.on('voiceControl-start', () => {
-    console.log("voiceControl-start recibido por el servidor. Lo reenvía al cliente");
     io.emit('voiceControl-start');
   });
-/*
-  socket.on('moverClienteAlMenu', () => {  
-    console.log('[SERVER.JS]📱 Señal mandada al móvil para ir al menú');
-    io.emit('moverCienteAlMenu'); 
-  }); */
 
-  // Para animar los juegos si inclinas el móvil a un lado o a otro
-  socket.on("expandir-juego1", () => {  
-    console.log("Server: Expandir juego1 recibido");
-    socket.broadcast.emit('expandir-juego1'); 
-  });
-  socket.on("expandir-juego2", () => {  
-    console.log("Server: Expandir juego2 recibido");
-    socket.broadcast.emit('expandir-juego2'); 
+  // Efectos visuales al inclinar el móvil en juegos
+  socket.on("expandir-juego1", () => {
+    socket.broadcast.emit('expandir-juego1');
   });
 
-  // NUEVO: Escuchar solicitud para cambiar la pantalla del servidor
+  socket.on("expandir-juego2", () => {
+    socket.broadcast.emit('expandir-juego2');
+  });
+
+  // Solicitud del móvil para cambiar pantalla del display (servidor)
   socket.on('requestDisplayChange', (data) => {
-    console.log(`📱 Recibida petición de ${socket.id} para cambiar display a: ${data.targetPage}`);
-    // Reenviar solo a los otros clientes (asumiendo que son las pantallas del servidor)
     socket.broadcast.emit('changeDisplay', data);
-    console.log(`🖥️ Emitiendo 'changeDisplay' a otros clientes.`);
   });
 
-  // NUEVO: Escuchar evento de hover desde el móvil
+  // Hover sobre tarjetas de categorías desde el móvil
   socket.on('hoverCategory', (data) => {
-    console.log(`📱 Hover en categoría ${data.categoryId} desde ${socket.id}`);
-    // Reenviar a los otros clientes (pantallas del servidor)
     socket.broadcast.emit('highlightCategory', data);
   });
 
-  // NUEVO: Escuchar evento de fin de hover desde el móvil
   socket.on('unhoverCategory', (data) => {
-    console.log(`📱 Unhover en categoría ${data.categoryId} desde ${socket.id}`);
-    // Reenviar a los otros clientes (pantallas del servidor)
     socket.broadcast.emit('unhighlightCategory', data);
   });
 
+  // Actualización de favoritos desde el móvil
   socket.on('favoritesUpdated', (data) => {
-    console.log(`❤️ Favoritos actualizados para usuario: ${data.userId} (Notificado por: ${socket.id})`);
-    // Retransmitir a los otros clientes (pantallas servidor) para que refresquen
-    socket.broadcast.emit('refreshFavorites', data); // Reenvía la misma data
-    console.log(`🖥️ Emitiendo 'refreshFavorites' a otros clientes.`);
+    socket.broadcast.emit('refreshFavorites', data);
   });
 
-  socket.on('updateServerDisplay', (washData) => { // Recibe datos actualizados del cliente
-    console.log(`⚡ Cliente ${socket.id} enviando actualización de lavado a display: ${washData?.nombre}`);
-     if (serverDisplaySocketId && io.sockets.sockets.get(serverDisplaySocketId)) {
-         io.to(serverDisplaySocketId).emit('updateDisplay', washData); // Envía datos a la pantalla del servidor
-     } else {
-         console.warn("Server Display no conectado (para datos), no se pudo enviar datos de lavado.");
-     }
+  // Envío de los datos del lavado actual para mostrar en pantalla del servidor
+  socket.on('updateServerDisplay', (washData) => {
+    if (serverDisplaySocketId && io.sockets.sockets.get(serverDisplaySocketId)) {
+      io.to(serverDisplaySocketId).emit('updateDisplay', washData);
+    }
   });
 
+  // Notificación al servidor de que se ha iniciado un lavado
   socket.on('washInitiated', (washInfo) => {
     if (serverDisplaySocketId) {
       io.to(serverDisplaySocketId).emit('showWashStartedPopup', washInfo);
     }
   });
-  
-  
 
-  socket.on('clearServerDisplay', () => { // Recibe señal de cliente saliendo
-    console.log(`⚡ Cliente ${socket.id} señalando limpiar display.`);
-     if (serverDisplaySocketId && io.sockets.sockets.get(serverDisplaySocketId)) {
-         io.to(serverDisplaySocketId).emit('clearDisplay'); // Envía señal para limpiar contenido/volver
-     } else {
-         console.warn("Server Display no conectado (para datos), no se pudo enviar señal de limpiar.");
-     }
+  // Limpiar pantalla del servidor cuando el cliente sale
+  socket.on('clearServerDisplay', () => {
+    if (serverDisplaySocketId && io.sockets.sockets.get(serverDisplaySocketId)) {
+      io.to(serverDisplaySocketId).emit('clearDisplay');
+    }
   });
 
-
-  
-  // Manejar la visualización del juego en el servidor
+  // Mostrar juego específico en pantalla del servidor
   socket.on('showGameOnServer', (data) => {
-    console.log(`🖥️ Recibido juego para mostrar: ${data.gameName}`);
-    
-    // Enviar a TODAS las pantallas del servidor (incluyendo la que lo envió si es necesario)
     io.emit('loadGameOnDisplay', {
-        gameFile: data.gameFile,
-        gameName: data.gameName
+      gameFile: data.gameFile,
+      gameName: data.gameName
     });
   });
 
-  // Manejar la solicitud de abrir la pantalla de juegos
+  // Abrir pantalla de juegos en el display desde el móvil
   socket.on("abrir-juegos", () => {
-    console.log("Se pidió abrir la pantalla de juegos");
     socket.broadcast.emit('redirigir-a-juegos');
   });
 
-  // Manejar controles del juego
+  // Controles del juego enviados desde el móvil
   socket.on('gameControl', (data) => {
-    console.log(`🎮 Control recibido: ${data.action} para ${data.game}`);
-    // Reenviar a todas las pantallas del servidor
     io.emit('gameAction', data);
   });
 
+  // Cerrar juego desde el móvil
   socket.on('closeGameDisplay', () => {
-    console.log('📱 Recibida petición para cerrar juego');
-    io.emit('closeGameDisplay');  // Envía a todas las pantallas del servidor
+    io.emit('closeGameDisplay');
   });
 
-  // reenviamos cada cambio de opción al display
-  socket.on('updatePersonalizadoOption', payload => {
+  // Actualización en vivo de opciones de lavado personalizado
+  socket.on('updatePersonalizadoOption', (payload) => {
     if (serverDisplaySocketId) {
       io.to(serverDisplaySocketId).emit('updatePersonalizadoOption', payload);
     }
   });
 
-// reenviamos el “guardado” para que aparezca el popup
+  // Notificar guardado de lavado personalizado (para mostrar popup)
   socket.on('personalizadoSaved', () => {
     if (serverDisplaySocketId) {
       io.to(serverDisplaySocketId).emit('personalizadoSaved');
     }
   });
+
+  // Cuando un cliente se desconecta
+  socket.on('disconnect', () => {
+    // Limpieza si es necesario
+  });
 });
 
 
+// CONEXION CON EL SERVIDOR
 server.listen(PORT, () => {
-  console.log(`Servidor HTTPS con Socket.IO en https://localhost:${PORT}`);
   console.log(`Accede a la pantalla del servidor en: https://localhost:${PORT}/`);
   console.log(`Accede a la pantalla del móvil en: https://localhost:${PORT}/mobile`);
-  // Se puede añadir: console.log(`Pantalla servidor (categorías): https://localhost:${PORT}/display/categories`);
 });
 
 

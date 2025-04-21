@@ -6,8 +6,6 @@
 
   // Registrar display al conectarse
   socket.on('connect', () => {
-    console.log('✅ Server display conectado con ID:', socket.id);
-    socket.emit('registerDisplay'); // Event renamed to avoid conflicts
   });
 
   // Al recibir petición de cambio de pantalla, si es la de empezar-lavado, limpiamos
