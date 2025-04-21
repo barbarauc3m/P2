@@ -73,8 +73,9 @@ async function captureAndAnalyze() {
         // console.log("extractColors completado. Colores detectados:", colors.length);
 
         if (colors && colors.length > 0) {
-            // Tomamos el primer color como el más dominante
+            // el primer color como el más dominante
             const dominantColor = colors[0];
+            // transformar el color a hsl, para ver la luminosidad
             const rgb = hexToRgb(dominantColor.hex);
             const hsl = rgbToHsl(rgb.r, rgb.g, rgb.b);
 
@@ -83,34 +84,32 @@ async function captureAndAnalyze() {
             const s = (hsl[1] * 100).toFixed(0); // Porcentaje 0-100
             const l = (hsl[2] * 100).toFixed(0); // Porcentaje 0-100 (Luminosidad/Tono)
 
-            // Determinar descripción del tono basada en Luminosidad (L)
-            let toneDescription = "Tono Medio";
+            // Determinar descripción del tono basada en Luminosidad 
+            let toneDescription = "Tono Medio"; // por defecto
             if (l < DARK_L_THRESHOLD) {
-                toneDescription = "Tono Oscuro";
+                toneDescription = "Tono Oscuro"; // si la luminosidad es menor que el umbral, tono oscuro
             } else if (l > LIGHT_L_THRESHOLD) {
-                toneDescription = "Tono Claro";
+                toneDescription = "Tono Claro"; // si la luminosidad es mayor que el umbral, tono claro
             }
 
             const resultadoParaGuardar = {
                 type: 'color',
                 data: {
                     hex: dominantColor.hex,
-                    L: l, // Guardamos L como número 0-100
+                    L: l, // luminosidad como número 0-100
                     tone: toneDescription,
-                    fullPalette: colors // Opcional: guardar toda la paleta por si acaso
+                    fullPalette: colors // guardar toda la paleta por si acaso
                 }
             };
-            console.log('Resultado de color para guardar:', resultadoParaGuardar);
+            // console.log('Resultado de color para guardar:', resultadoParaGuardar);
 
-             // --- Guardar en sessionStorage y volver ---
+             // GUARDAR EN sessionStorage
             try {
                 sessionStorage.setItem('ultimoResultadoScan', JSON.stringify(resultadoParaGuardar));
-                console.log("Resultado guardado en sessionStorage.");
-                // Volver a la página anterior (o a una específica)
-                // window.history.back(); // Opción 1: Volver atrás
-                window.location.href = 'empezar-lavado.html'; // Opción 2: Ir a página específica
+                // console.log("Resultado guardado en sessionStorage.");
+                window.location.href = 'empezar-lavado.html'; 
             } catch (e) {
-                console.error("Error al guardar en sessionStorage:", e);
+                // console.error("Error al guardar en sessionStorage:", e);
                 alert("Error al procesar el resultado. Vuelve manualmente e inténtalo de nuevo.");
             }
 
@@ -122,8 +121,9 @@ async function captureAndAnalyze() {
 }
 
 
-// --- Funciones Auxiliares de Color (COPIAR AQUÍ) ---
+// FUNCIONES AUXILIARES PARA TRANSFOARMAR COLOR HEX A RGB Y RGB A HSL
 
+// convierte un color hexadecimal a RGB
 function hexToRgb(hex) {
     const result = /^#?([a-f\d]{2})([a-f\d]{2})([a-f\d]{2})$/i.exec(hex);
     return result ? {
@@ -133,13 +133,14 @@ function hexToRgb(hex) {
     } : null;
 }
 
+// convierte un color RGB a HSL
 function rgbToHsl(r, g, b){
     r /= 255, g /= 255, b /= 255;
     var max = Math.max(r, g, b), min = Math.min(r, g, b);
     var h, s, l = (max + min) / 2;
 
     if(max == min){
-        h = s = 0; // achromatic
+        h = s = 0;
     }else{
         var d = max - min;
         s = l > 0.5 ? d / (2 - max - min) : d / (max + min);
@@ -150,13 +151,8 @@ function rgbToHsl(r, g, b){
         }
         h /= 6;
     }
-    // Devolvemos H, S, L como valores entre 0 y 1
     return [h, s, l];
 }
 
-// --- Inicialización ---
-// Intentar iniciar la cámara tan pronto como la página cargue
 startCamera();
-
-// Añadir el listener al botón de captura
 snapButton.addEventListener('click', captureAndAnalyze);
