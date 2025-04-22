@@ -146,5 +146,32 @@
         "fechaGuardado": "2025-04-20T17:56:54.925Z"
       }
     ]
+  },
+  "albauwu": {
+    "username": "albauwu",
+    "email": "albatellomarcos@gmail.com",
+    "hashedPassword": "$2b$10$9OY.cLVmCpLZms41eBrZl.98XE5xdoRkZgH8KGot.bynIHXr/5Fmy",
+    "foto": "/images/persona_os.svg",
+    "favoritos": [
+      {
+        "nombre": "Lavado Rápido",
+        "descripcion": "Ideal para ropa poco sucia o uso diario.",
+        "temperatura": "30ºC",
+        "duracion": "30 min",
+        "centrifugado": "1200 rpm",
+        "detergente": "50 ml",
+        "imagen": "../../../images/rapido.svg"
+      },
+      {
+        "nombre": "Lavado Frío",
+        "descripcion": "Ideal para lana, seda, ropa interior, etc.",
+        "temperatura": "20ºC",
+        "duracion": "40 min",
+        "centrifugado": "600 rpm",
+        "detergente": "30 ml",
+        "imagen": "../../../images/frio.svg"
+      }
+    ],
+    "personalizados": []
   }
 }

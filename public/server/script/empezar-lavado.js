@@ -6,6 +6,7 @@
 
   // Registrar display al conectarse
   socket.on('connect', () => {
+    socket.emit('registerDisplay');
   });
 
   // Al recibir petición de cambio de pantalla, si es la de empezar-lavado, limpiamos

@@ -1,6 +1,6 @@
 // CONEXIÓN CON EL SERVIDOR
-const socketEmpezarLavado = io();
-socketEmpezarLavado.on('connect', () => {});
+const socket = io();
+socket.on('connect', () => {});
 
 const lavado = JSON.parse(localStorage.getItem('lavadoSeleccionado')); // cogemos el lavado seleccionado del localStorage
 
@@ -34,7 +34,7 @@ const lavado = JSON.parse(localStorage.getItem('lavadoSeleccionado')); // cogemo
       `;
     }
 
-    socketEmpezarLavado.emit('updateServerDisplay', lavado); // emitimos el lavado seleccionado al servidor
+    socket.emit('updateServerDisplay', lavado); // emitimos el lavado seleccionado al servidor
 
     document.getElementById("config-title").addEventListener("click", () => {
       const box = document.getElementById("configuracion-box");
@@ -69,7 +69,7 @@ const lavado = JSON.parse(localStorage.getItem('lavadoSeleccionado')); // cogemo
 
         localStorage.setItem("lavadoIniciado", JSON.stringify(lavado));
 
-        socketEmpezarLavado.emit('washInitiated', lavado); // emitimos el lavado iniciado al servidor
+        socket.emit('washInitiated', lavado); // emitimos el lavado iniciado al servidor
 
         // GUARDAMOS EL LAVADO INICIADO EN EL JSON
         fetch('/guardar-lavado', {
@@ -137,7 +137,7 @@ const lavado = JSON.parse(localStorage.getItem('lavadoSeleccionado')); // cogemo
 });
 
   document.getElementById('back-button').addEventListener('click', function() {
-    socketEmpezarLavado.emit('requestDisplayChange', { targetPage: '/' }); // emit redirigir a index
+    socket.emit('requestDisplayChange', { targetPage: '/' }); // emit redirigir a index
     
     window.location.href = 'index.html';
     
