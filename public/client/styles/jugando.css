@@ -145,6 +145,17 @@ body {
     font-family: 'Super Cottage', sans-serif;
 }
 
+.popup-wrapper {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 40px;
+}
+
+#volver-button {
+    background-color: #5d6b8b;
+}
+
 @keyframes fadeIn {
     from { opacity: 0; transform: scale(0.9); }
     to { opacity: 1; transform: scale(1); }

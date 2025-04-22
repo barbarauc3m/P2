@@ -49,6 +49,15 @@ document.addEventListener('DOMContentLoaded', function() {
     const gameTitle = localStorage.getItem('selectedGameTitle') || 'Juego';
     document.getElementById('game-title').textContent = gameTitle;
    
+    // Botón de volver en el popup inicial
+    const volverButton = document.getElementById('volver-button');
+    if (volverButton) {
+        volverButton.addEventListener('click', function() {
+            socket.emit('closeGameDisplay'); // Notifico al servidor 
+            window.location.href = 'juegos.html';
+        });
+    }
+
     // Configurar botón de salida
     document.getElementById('exit-button').addEventListener('click', function() {
         /*emit redirigir el servidor a index*/ 
