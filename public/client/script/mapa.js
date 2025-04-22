@@ -1,3 +1,8 @@
+// SOCKET
+const socketMapa = io();
+
+    socketMapa.on('connect', () => {});
+
 // Inicializar el mapa centrado en UC3M Leganés (como fallback)
 const mymap = L.map('sample_map').setView([40.3340, -3.7690], 10);
 
@@ -117,6 +122,30 @@ function locateUser() {
     }
 }
 
+// BOTONES PARA VOLVER A LA PANTALLA DE INICIO
+const backButton = document.querySelector("#back-button-categorias");
+const homeButton = document.querySelector("#home-button-categorias");
+
+function navigateAndSignalDisplay(event, clientTarget, serverTarget) {
+    if (event) {
+      event.preventDefault(); // Evita la navegación normal del enlace
+    }
+
+    // Emitir señal para cambiar la pantalla del servidor
+    socketMapa.emit('requestDisplayChange', {
+      targetPage: serverTarget,
+    });
+
+    // Navegar el cliente
+    window.location.href = clientTarget;
+  }
+
+  if (backButton) {
+    backButton.addEventListener("click", (e) => navigateAndSignalDisplay(e, '/mobile', '/'));
+  }
+  if (homeButton) {
+    homeButton.addEventListener("click", (e) => navigateAndSignalDisplay(e, '/mobile', '/'));
+  }
 
 // Intentar geolocalizar al cargar la página
 locateUser();

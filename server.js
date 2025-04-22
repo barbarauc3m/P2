@@ -37,6 +37,8 @@ app.use('/images', express.static(path.join(__dirname, 'images')));
 
 app.use('/fonts', express.static(path.join(__dirname, 'fonts')));
 
+app.use('/sounds', express.static(path.join(__dirname, 'sounds')));
+
 app.use('/script', express.static(path.join(__dirname, 'public', 'client', 'script')));
 
 app.use('/styles', express.static(path.join(__dirname, 'public', 'client', 'styles')));

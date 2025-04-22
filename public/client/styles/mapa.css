@@ -1,3 +1,32 @@
+@font-face {
+  font-family: 'Super Cottage';
+  src: url(../../../../fonts/Super\ Cottage.ttf);
+  font-weight: normal;
+  font-style: normal;
+}
+
+@font-face {
+  font-family: 'Super Lobster';
+  src: url(../../../../fonts/Super\ Lobster.ttf);
+  font-weight: normal;
+  font-style: normal;
+}
+
+@font-face {
+  font-family: 'Super Peace';
+  src: url(../../../../fonts/Super\ Peace.ttf);
+  font-weight: normal;
+  font-style: normal;
+}
+
+
+h1{
+  font-family: 'Super Cottage', sans-serif;  
+  font-size: 3vh;
+  margin: 0;
+  padding: 1vh 0;
+}
+
 body {
     padding: 0;
     margin: 0;
@@ -7,3 +36,25 @@ body {
     height: 100%;
   }
   
+
+  .top-bar {
+    display: flex;
+    background-color: transparent;
+    align-items: center;
+    justify-content: space-between;
+    margin: 0 2vh;
+    padding: 8px;
+    font-weight: bold;
+    color: #3c3c6e;
+    font-size: 2vh;
+  }
+  
+  .top-bar .back-button {
+    text-decoration: none;
+    color: #3c3c6e;
+    background: none;
+    border: none;
+    font-size: 4vh;
+    cursor: pointer;
+    margin-right: 12px;
+  }
