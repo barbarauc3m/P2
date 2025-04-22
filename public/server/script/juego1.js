@@ -72,6 +72,7 @@ document.addEventListener("DOMContentLoaded", function() {
         juegoTerminado = true;
         document.getElementById("game-container").style.display = "none";
         document.querySelector(".game-finished-container").style.display = "block";
+        socket.emit("juego-finished");
         socket.emit("voiceControl-start");
     }
     function iniciarTemporizador(tiempoInicial = 60) {
@@ -321,6 +322,7 @@ document.addEventListener("DOMContentLoaded", function() {
         gameInterval = setInterval(moverObjetos, 50);
         timer = iniciarTemporizador(); // Asignar el nuevo temporizador a la variable timer
         
+        socket.emit('juego-reiniciado');
         console.log("Juego reiniciado correctamente");
     }
 

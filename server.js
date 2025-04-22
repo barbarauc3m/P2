@@ -609,6 +609,16 @@ io.on('connection', (socket) => {
     io.emit('voiceControl-start');
   });
 
+  // Control del popup de fin de juego en móvil
+  socket.on('juego-finished', () => {
+    io.emit('juego-finished');
+  });
+
+  // Control para quitar el popup de fin
+  socket.on('juego-reiniciado', () => {
+    io.emit('juego-reiniciado');
+  });
+
   // Efectos visuales al inclinar el móvil en juegos
   socket.on("expandir-juego1", () => {
     socket.broadcast.emit('expandir-juego1');

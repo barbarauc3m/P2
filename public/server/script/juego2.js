@@ -172,6 +172,7 @@ document.addEventListener("DOMContentLoaded", function() {
         document.querySelector(".game-over-container").style.display = "block";
         console.log("Se hace socket.broadcast.emit del voiceControl-start.");
         socket.emit("voiceControl-start");  // activar voiceControl.start(). enviamos esto a server y server manda otro mensaje a cliente
+        socket.emit("juego-finished");
     }
 
     function gameWon() { 
@@ -179,6 +180,7 @@ document.addEventListener("DOMContentLoaded", function() {
         document.querySelector(".game-container").style.display = "none";
         document.querySelector(".game-won-container").style.display = "block";
         socket.emit("voiceControl-start");
+        socket.emit("juego-finished");
     }
     
 
@@ -258,6 +260,7 @@ document.addEventListener("DOMContentLoaded", function() {
         // 7. Restablece el array de prendas y la prenda actual
         prendas = [prendaInicial];
         prendaActual = prendaInicial;
+        socket.emit('juego-reiniciado');
     }
 
     function reanudarJuego(){

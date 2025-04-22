@@ -30,6 +30,16 @@ socket.on('voiceControl-start', () => {
     voiceControl.start()
 });
 
+socket.on('juego-finished', () => {
+    console.log("Juego terminado");
+    finPopup.style.display = 'flex';
+});
+
+socket.on('juego-reiniciado', () => {
+    console.log("Juego reiniciado");
+    finPopup.style.display = 'none';
+});
+
 document.addEventListener('DOMContentLoaded', function() {
         
     // Mostrar popup inmediatamente al cargar
@@ -107,8 +117,11 @@ function setupShakeDetection(eventName, gameFunction) {
                 if (shakeCount >= REQUIRED_SHAKES) {
                     console.log("📳 ¡Agitado detectado!");
 
+                    vibrar();
+
                     // Ocultar popup y comenzar juego
                     shakePopup.style.display = 'none';
+                    finPopup.style.display = 'none';
                     socket.emit(eventName);
                     juegoIniciado = true;
                     window.removeEventListener('devicemotion', onDeviceMotion);
@@ -179,6 +192,7 @@ function juego1() {
     const restartButton = document.getElementById("restart-button");
     if (restartButton) {
         restartButton.addEventListener("click", function() {
+            finPopup.style.display = 'none';
             socket.emit('juego-reiniciar');
         });
     }
@@ -251,6 +265,7 @@ function juego2() {
     if (restartButton) {
         restartButton.addEventListener("click", function() {
             console.log("😱 MÓVIL MANDA QUE SE REINICIE EL JUEGO");
+            finPopup.style.display = 'none';
             socket.emit('juego-reiniciar');
         });
     }
