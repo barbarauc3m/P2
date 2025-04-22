@@ -7,6 +7,7 @@ const socket = window.socket;
 // Elementos del popup
 const shakePopup = document.getElementById('shake-popup');
 const pausePopup = document.getElementById('pause-popup');
+const finPopup = document.getElementById('fin-popup');
 
 let juegoIniciado = false;
 
