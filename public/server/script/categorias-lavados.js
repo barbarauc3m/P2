@@ -144,6 +144,12 @@ socketCategoriesServer.on('disconnect', () => {
     removeFocus();
 });
 
+// redirigir a juegos
+socketCategoriesServer.on("redirigir-a-juegos", () => {  
+    console.log("redirigiendo a juegos");
+    window.location.href = "./juegos-server.html"; 
+  });
+
 // quitamos foco si se hace clic en el overlay
 overlay?.addEventListener('click', () => {
     removeFocus();

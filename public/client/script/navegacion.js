@@ -44,7 +44,7 @@ document.addEventListener('DOMContentLoaded', () => {
         // console.warn("Botón #nav-home-button no encontrado en esta página.");
     }
 
-    // --- Listener para Botón de PERFIL (Puedes moverlo aquí si quieres centralizar) ---
+    // --- Listener para Botón de PERFIL ---
     const perfilButton = document.getElementById('perfil-boton');
     if (perfilButton) {
         perfilButton.addEventListener('click', () => {
@@ -55,7 +55,6 @@ document.addEventListener('DOMContentLoaded', () => {
         console.log("📱 Listener añadido a #perfil-boton (desde navigation.js).");
     }
 
-     // --- Puedes añadir aquí listeners para OTROS botones comunes de la barra ---
 
 });
 

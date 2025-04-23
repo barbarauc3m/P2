@@ -179,7 +179,15 @@ document.addEventListener('DOMContentLoaded', () => {
 
     // BOTONES PARA VOLVER A LA PANTALLA DE INICIO
     const backButton = document.querySelector("#back-button-categorias");
-    const homeButton = document.querySelector("#home-button-categorias");
+    //const homeButton = document.querySelector("#home-button-categorias");
+
+    document.getElementById('home-button-categorias').addEventListener('click', function() {
+        /*emit redirigir el servidor a index*/ 
+        socketCategoriesClient.emit('requestDisplayChange', { targetPage: '/' });
+        
+        // Redirigir a la página de juegos
+        window.location.href = 'index.html';
+    });
 
     function navigateAndSignalDisplay(event, clientTarget, serverTarget) {
         if (event) {
@@ -203,3 +211,11 @@ document.addEventListener('DOMContentLoaded', () => {
       }
 
 }); 
+
+// FUNCION PARA ABRIR LAS VENTANAS DE LOS JUEGOS
+function loadJuegos() {
+
+    // console.log("Botón de mando pulsado");
+    socket.emit("abrir-juegos"); 
+    window.location.href = 'pantalla-carga.html';
+  }

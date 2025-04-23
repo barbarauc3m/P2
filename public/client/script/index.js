@@ -62,7 +62,7 @@ if (verMasLink) {
     
     // console.log('Click en "ver más"');
 
-    // eemite el cambio de pantalla al servidor
+    // emite el cambio de pantalla al servidor
     socket.emit('requestDisplayChange', {
       targetPage: '/display/categories',
       userId: usuarioActual // envía el username del usuario logueado
@@ -74,7 +74,7 @@ if (verMasLink) {
     console.error("No se encontró el enlace 'ver-mas-categorias'");
 }
 
-// FUNCION PARA CARGAR EL JUEGO SELECCIONADO
+// FUNCION PARA ABRIR LAS VENTANAS DE LOS JUEGOS
 function loadJuegos() {
 
   // console.log("Botón de mando pulsado");

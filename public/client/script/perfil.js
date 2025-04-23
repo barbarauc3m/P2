@@ -328,3 +328,11 @@ document.addEventListener("DOMContentLoaded", () => {
     });
   }
 });
+
+// FUNCION PARA ABRIR LAS VENTANAS DE LOS JUEGOS
+function loadJuegos() {
+
+  // console.log("Botón de mando pulsado");
+  socket.emit("abrir-juegos"); 
+  window.location.href = 'pantalla-carga.html';
+}
