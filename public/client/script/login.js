@@ -1,28 +1,15 @@
-// EN: public/client/script/login.js (O donde esté el listener para #login-form-nuevo)
-
 document.addEventListener('DOMContentLoaded', () => {
-  console.log('Login script cargado.');
 
-  // Asegúrate que socket.io se carga ANTES
-  if (typeof io === 'undefined') {
-      console.error('Login script: io no definido.');
-      // return; // Considera si quieres detener todo si socket.io falta
-  }
-  // Conexión Socket.IO (puede ser necesaria para emitir tras login)
-  // Si ya tienes una conexión global en otro script, puedes reutilizarla
-  // Si no, crea una aquí:
-  const socketLogin = io();
-   socketLogin.on('connect', () => console.log('✅ Socket conectado en login.js'));
-   socketLogin.on('connect_error', (err) => console.error('❌ Error conexión socket en login.js:', err));
-
+  const socketLogin = io(); // conexión al servidor
+   socketLogin.on('connect', () => {});
 
   const loginForm = document.getElementById("login-form-nuevo");
   const loginPopup = document.getElementById("popup-login");
-  const registerPopup = document.getElementById("popup-register"); // Para poder cambiar entre popups
+  const registerPopup = document.getElementById("popup-register"); 
 
-   // --- Lógica para abrir/cerrar popups (asegúrate que esté aquí o en otro script global) ---
+   // logica abrir/cerrar popups
   const abrirRegistroLink = document.getElementById("abrir-registro");
-  const abrirLoginLink = document.getElementById("abrir-login"); // Asumo que existe en el popup de registro
+  const abrirLoginLink = document.getElementById("abrir-login"); 
 
    if (abrirRegistroLink && loginPopup && registerPopup) {
       abrirRegistroLink.addEventListener("click", function (e) {
@@ -39,27 +26,24 @@ document.addEventListener('DOMContentLoaded', () => {
       });
   }
    if (loginPopup) {
-      // Cierre por clic fuera
       loginPopup.addEventListener("click", function (e) {
-          // Si se hizo clic directamente en el overlay (fondo)
           if (e.target === loginPopup) {
                loginPopup.style.display = "none";
 
                if (socketLogin && socketLogin.connected) {
-                const usuario = localStorage.getItem("loggedInUser"); // Puede ser null
-                console.log("Emitiendo requestDisplayChange a '/' al cerrar popup.");
-                socketLogin.emit('requestDisplayChange', {
-                    targetPage: '/', // <-- Ir a la home del servidor
-                    userId: usuario // Enviar por si acaso
+                const usuario = localStorage.getItem("loggedInUser"); 
+                socketLogin.emit('requestDisplayChange', { // emito el evento al servidor
+                    targetPage: '/', 
+                    userId: usuario 
                 });
              }
           }
        });
    }
-   // --- Fin lógica abrir/cerrar popups ---
 
 
-  // --- Listener del Formulario de Login ---
+
+  // FORMULARIO LOGIN
   if (loginForm && loginPopup) {
       loginForm.addEventListener("submit", async function (e) { // async para await
           e.preventDefault();
@@ -70,16 +54,14 @@ document.addEventListener('DOMContentLoaded', () => {
           const email = emailInput.value.trim();
           const password = passwordInput.value;
 
-          // Validación básica
+          // validacion básica
           if (!email || !password) {
               alert("Por favor, introduce email y contraseña.");
               return;
           }
 
-          // Enviar credenciales al API del servidor
           try {
-              console.log(`Enviando login para email: ${email}`);
-              const response = await fetch('/api/login', { // Llama a la nueva ruta API
+              const response = await fetch('/api/login', { // llamamos a la ruta API
                   method: 'POST',
                   headers: {
                       'Content-Type': 'application/json',
@@ -87,40 +69,31 @@ document.addEventListener('DOMContentLoaded', () => {
                   body: JSON.stringify({ email: email, password: password }),
               });
 
-              const result = await response.json(); // Intenta parsear respuesta
+              const result = await response.json(); // parsear respuesta
 
               if (response.ok) { // Status 200 OK
-                  // --- LOGIN EXITOSO (Respuesta del Servidor) ---
+                  // LOGIN EXITOSO
                   console.log('Login exitoso:', result.message);
                   alert(result.message || "Inicio de sesión exitoso.");
 
-                  // 1. Guardar estado en localStorage
+                  // guardar loggedInUser en localStorage
                   localStorage.setItem("isLoggedIn", "true");
-                  localStorage.setItem("loggedInUser", result.username); // Guarda el username recibido
-                  console.log(`Guardado en localStorage: isLoggedIn=true, loggedInUser=${result.username}`);
+                  localStorage.setItem("loggedInUser", result.username); 
+                  // console.log(`Guardado en localStorage: isLoggedIn=true, loggedInUser=${result.username}`);
 
-                  // 2. Ocultar popup y resetear form
+                  // ocultar popup y resetear form
                   loginPopup.style.display = "none";
                   loginForm.reset();
 
-                  // 3. Actualizar icono de perfil (si existe en esta página)
-                  const perfilButtonImg = document.querySelector("#perfil-boton img");
-                  if (perfilButtonImg && result.foto) {
-                       perfilButtonImg.src = result.foto; // Usa la foto de la respuesta
-                       console.log('Icono de perfil actualizado.');
-                  }
-
-                  // 4. Notificar al servidor para que cambie su pantalla a perfil
-                  console.log(`⚡ Emitiendo 'requestDisplayChange' para mostrar perfil del servidor.`);
                   socketLogin.emit('requestDisplayChange', {
                       targetPage: '/display/profile',
-                      userId: result.username // Envía el username del usuario logueado
+                      userId: result.username 
                   });
 
               } else {
-                  // --- LOGIN FALLIDO (Respuesta del Servidor) ---
+                  // LOGIN FALLIDO
                   console.warn('Login fallido:', result.message);
-                  alert(`Error: ${result.message || response.statusText}`); // Muestra el error del servidor
+                  alert(`Error: ${result.message || response.statusText}`); 
               }
 
           } catch (error) {
@@ -133,8 +106,9 @@ document.addEventListener('DOMContentLoaded', () => {
   }
 
 
-   const perfilButton = document.getElementById('perfil-boton');
-   if (perfilButton) {
+    // BOTON LOGIN EN EL NAV
+    const perfilButton = document.getElementById('perfil-boton');
+    if (perfilButton) {
        perfilButton.addEventListener('click', () => {
            const isLoggedIn = localStorage.getItem("isLoggedIn") === "true";
            const loggedInUser = localStorage.getItem("loggedInUser");

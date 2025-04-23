@@ -1,24 +1,31 @@
-const socket = io();
+const socket = io(); // conexion al servidor
 const usuarioActual = localStorage.getItem('loggedInUser');
 
-// 1. Cada vez que el usuario elige un nivel de suciedad:
+
+// 1. nivel de suciedad
 document.querySelectorAll('.suciedad .dropdown-menu input[type=checkbox]')
   .forEach(chk => chk.addEventListener('change', e => {
     if (!e.target.checked) return;
     const valor = e.target.parentElement.textContent.trim();
     console.log(valor);
-    socket.emit('updatePersonalizadoOption', { category: 'suciedad', value: valor });
+    socket.emit('updatePersonalizadoOption', { 
+      category: 'suciedad', 
+      value: valor 
+    }); // emite el evento al servidor
   }));
 
-// 2. Temperatura (rango):
+// 2. temperatura
 const tempSlider = document.getElementById('temperatura');
 tempSlider.addEventListener('input', () => {
   const v = `${tempSlider.value}°C`;
 
-  socket.emit('updatePersonalizadoOption', { category: 'temperatura', value: v });
+  socket.emit('updatePersonalizadoOption', { 
+    category: 'temperatura', 
+    value: v 
+  }); //emite server
 });
 
-// 3. Centrifugado:
+// 3. Centrifugado
 document.querySelectorAll('.centrifugado .dropdown-menu input[type=checkbox]')
   .forEach(chk => chk.addEventListener('change', e => {
     if (!e.target.checked) return;
@@ -28,21 +35,27 @@ document.querySelectorAll('.centrifugado .dropdown-menu input[type=checkbox]')
     });
   }));
 
-// 4. Duración:
+// 4. Duración
 const durSlider = document.getElementById('duracion');
 durSlider.addEventListener('input', () => {
   const v = `${durSlider.value} min`;
-  socket.emit('updatePersonalizadoOption', { category: 'duracion', value: v });
+  socket.emit('updatePersonalizadoOption', { 
+    category: 'duracion', 
+    value: v 
+  });
 });
 
-// 5. Detergente:
+// 5. Detergente
 const detSlider = document.getElementById('detergente');
 detSlider.addEventListener('input', () => {
   const v = `${detSlider.value} ml`;
-  socket.emit('updatePersonalizadoOption', { category: 'detergente', value: v });
+  socket.emit('updatePersonalizadoOption', { 
+    category: 'detergente', 
+    value: v 
+  });
 });
 
-// 6. Tejido:
+// 6. Tejido
 document.querySelectorAll('.tejido .dropdown-menu input[type=checkbox]')
   .forEach(chk => chk.addEventListener('change', e => {
     if (!e.target.checked) return;
@@ -53,38 +66,7 @@ document.querySelectorAll('.tejido .dropdown-menu input[type=checkbox]')
   }));
 
 document.addEventListener("DOMContentLoaded", function () {
-    const favButton = document.getElementById("favButton");
-    const favKey = "lavadoPersonalizadoFavorito";
-
     socket.emit('requestDisplayChange', { targetPage: '/display/lavado-personalizado' });
-
-    // Actualizar icono según estado
-    function actualizarIconoFavorito(esFavorito) {
-        if (esFavorito) {
-            favButton.src = "../../../images/cora_relleno.svg";
-        } else {
-            favButton.src = "../../../images/cora_blanco.svg";
-        }
-    }
-
-
-    // Manejar clic en botón de favoritos
-    favButton.addEventListener("click", function () {
-        if (!usuarioActual) {
-            alert("Debes iniciar sesión para guardar favoritos.");
-            return;
-        }
-
-        if (usuarioActual) {
-            const esFavorito = localStorage.getItem(favKey) === "true";
-            localStorage.setItem(favKey, !esFavorito);
-            actualizarIconoFavorito(!esFavorito);
-        }
-    
-    });
-
-
-
 
     document.querySelector(".button-save").addEventListener("click", () => {
         const usuario = localStorage.getItem("loggedInUser");
@@ -96,6 +78,7 @@ document.addEventListener("DOMContentLoaded", function () {
             return checks.map(c => c.parentElement.textContent.trim());
           };
           
+          // obtener los valores seleccionados
           const nivelSuciedad = obtenerSeleccionado("suciedad");
           const centrifugado = obtenerSeleccionado("centrifugado");
           const tejido = obtenerSeleccionado("tejido");
@@ -104,13 +87,13 @@ document.addEventListener("DOMContentLoaded", function () {
           const duracion = document.getElementById("duracion").value;
           const detergente = document.getElementById("detergente").value;
           
-        const esFavorito = document.getElementById("favButton").classList.contains("activo");
       
         if (!nivelSuciedad.length || !centrifugado.length || !tejido.length) {
             alert("Por favor selecciona al menos una opción en cada campo.");
             return;
           }
           
+          // guardar el lavado personalizado
           const lavadoPersonalizado = {
             usuario, 
             nivelSuciedad: nivelSuciedad[0],
@@ -119,11 +102,10 @@ document.addEventListener("DOMContentLoaded", function () {
             duracion: `${duracion} min`,
             detergente: `${detergente} ml`,
             tejido,
-            favorito: esFavorito
           };
 
       
-        // Enviar al backend
+        // GUARDAR  
         fetch('/guardar-lavado-personalizado', {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
@@ -131,11 +113,10 @@ document.addEventListener("DOMContentLoaded", function () {
           })
           .then(res => res.text())
           .then(msg => {
-            // primero notificamos al display
-            socket.emit('personalizadoSaved');
+            socket.emit('personalizadoSaved'); // emite al servidor
             setTimeout(() => {
               window.location.href = "/index.html";
-            }, 500);
+            }, 500); // esperamos para redirigir un pelin
             
           })
           .catch(err => {
@@ -150,8 +131,8 @@ document.addEventListener("DOMContentLoaded", function () {
     const backBtn = document.getElementById("back-button");
     backBtn.addEventListener("click", e => {
       e.preventDefault();  
-      socket.emit("requestDisplayChange", { targetPage: "/" }); 
-      window.location.href = "/index.html";                 // o simplemente "/"
+      socket.emit("requestDisplayChange", { targetPage: "/" });  // pa atras
+      window.location.href = "/index.html";                
     });
 
       

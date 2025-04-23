@@ -3,12 +3,11 @@ document.addEventListener("DOMContentLoaded", () => {
     if (!usuario) return alert("Debes iniciar sesión.");
 
 
-    socketFavsPage = io(); // Inicializar conexión
-    socketFavsPage.on('connect', () => console.log('📱✅ Socket conectado en lavados-favs.js:', socketFavsPage.id));
-    socketFavsPage.on('connect_error', (err) => console.error('📱❌ Error conexión socket en lavados-favs.js:', err));
-    socketFavsPage.on('disconnect', () => console.log('📱 Socket desconectado en lavados-favs.js'));
+    socketFavsPage = io(); // conexión
+    socketFavsPage.on('connect', () => {});
 
 
+    // funcion para el id
     function sanitizeId(text) {
       if (!text) return `item-${Math.random().toString(36).substr(2, 9)}`;
       return text.toString().toLowerCase()
@@ -28,7 +27,7 @@ document.addEventListener("DOMContentLoaded", () => {
           const div = document.createElement("div");
           div.className = "lavado-card";
 
-          const tipoFav = 'favorito'; // Definir tipo
+          const tipoFav = 'favorito'; // definir tipo
           const uniqueIdFav = sanitizeId(`${lavado.nombre || 'fav'}-${tipoFav}`); // Usar tipo, NO index
           div.dataset.categoryId = uniqueIdFav;
 
@@ -51,29 +50,29 @@ document.addEventListener("DOMContentLoaded", () => {
         
           contenedor.appendChild(div);
 
+          // HOVER COMO LOS OTROS
           if (socketFavsPage) {
             div.addEventListener('mouseenter', () => {
-                console.log(`📱 Hover EMITIDO sobre: ${uniqueIdFav}`);
+                // console.log(`Hover EMITIDO sobre: ${uniqueIdFav}`);
                 socketFavsPage.emit('hoverCategory', { categoryId: uniqueIdFav });
             });
             div.addEventListener('mouseleave', () => {
-                console.log(`📱 fuera  EMITIDO sobre: ${uniqueIdFav}`);
+                // console.log(`fuera  EMITIDO sobre: ${uniqueIdFav}`);
                 socketFavsPage.emit('unhoverCategory', { categoryId: uniqueIdFav });
             });
         }
         });
 
-        // Esperar un tick para que los botones estén ya en el DOM
-        setTimeout(() => {
-            document.querySelectorAll(".lavado-button .button").forEach(boton => {
-            boton.addEventListener("click", () => {
-                const card = boton.closest(".lavado-card");
-                const nombre = card.querySelector(".fav-title strong")?.textContent.trim() || "";
-                const descripcion = card.querySelector(".fav-subtitle")?.textContent.trim() || "";
-                const items = card.querySelectorAll("ul li");
-                const imagen = card.querySelector("img.icon")?.getAttribute("src") || "";
-        
-                const lavado = {
+        // Botón EMPEZAR para lavados favoritos
+        document.querySelectorAll(".lavado-button .button").forEach(boton => {
+          boton.addEventListener("click", () => {
+              const card = boton.closest(".lavado-card");
+              const nombre = card.querySelector(".fav-title strong")?.textContent.trim() || "";
+              const descripcion = card.querySelector(".fav-subtitle")?.textContent.trim() || "";
+              const items = card.querySelectorAll("ul li");
+              const imagen = card.querySelector("img.icon")?.getAttribute("src") || "";
+      
+              const lavado = {
                 nombre,
                 descripcion,
                 temperatura: items[0]?.textContent.split(":")[1]?.trim() || "",
@@ -83,18 +82,25 @@ document.addEventListener("DOMContentLoaded", () => {
                 fechaInicio: new Date().toLocaleString("es-ES", {
                     dateStyle: "short",
                     timeStyle: "short"
-                }),
-                imagen
-                };
-        
-                localStorage.setItem("lavadoSeleccionado", JSON.stringify(lavado));
-                window.location.href = "empezar-lavado.html";
-            });
-            });
-        }, 0);
+              }),
+              imagen
+              };
+      
+              localStorage.setItem("lavadoSeleccionado", JSON.stringify(lavado));
+
+              // Emitir evento para cambiar pantalla en el servidor
+              if (socketFavsPage && socketFavsPage.connected) {
+                socketFavsPage.emit('requestDisplayChange', {
+                  targetPage: '/display/empezar-lavado'
+                });
+              }
+              window.location.href = "empezar-lavado.html";
+          });
+        });
+
         
   
-        // Quitar de favoritos con verificación
+        // logica para actualizar favoritos
         contenedor.querySelectorAll(".heart").forEach(icon => {
           icon.addEventListener("click", () => {
             const idx = parseInt(icon.getAttribute("data-index"));
@@ -110,10 +116,10 @@ document.addEventListener("DOMContentLoaded", () => {
             })
               .then(res => res.text())
               .then(msg => {
-                alert("✅ Favorito eliminado.");
+                alert("Favorito eliminado.");
                 location.reload();
               })
-              .catch(() => alert("❌ Error al quitar favorito."));
+              .catch(() => alert("Error al quitar favorito."));
           });
         });
       });
@@ -129,8 +135,8 @@ document.addEventListener("DOMContentLoaded", () => {
         const div = document.createElement("div");
         div.className = "lavado-card";
 
-        const tipoPers = 'personalizado'; // Definir tipo
-        const uniqueIdPers = sanitizeId(`${lavado.nombre || 'pers'}-${tipoPers}`); // Usar tipo, NO index
+        const tipoPers = 'personalizado'; 
+        const uniqueIdPers = sanitizeId(`${lavado.nombre || 'pers'}-${tipoPers}`);
         div.dataset.categoryId = uniqueIdPers;
 
         div.innerHTML = `
@@ -166,9 +172,8 @@ document.addEventListener("DOMContentLoaded", () => {
             }
     });
 
-    // Activar botón "EMPEZAR" para lavados personalizados
-    setTimeout(() => {
-        document.querySelectorAll("#personalizados-container .lavado-button .button").forEach(boton => {
+    // EMPEZAR LAVADO PERSONALIZADO
+      document.querySelectorAll("#personalizados-container .lavado-button .button").forEach(boton => {
         boton.addEventListener("click", () => {
             const card = boton.closest(".lavado-card");
             const nombre = card.querySelector(".fav-title strong")?.textContent.trim() || "";
@@ -191,48 +196,49 @@ document.addEventListener("DOMContentLoaded", () => {
             };
     
             localStorage.setItem("lavadoSeleccionado", JSON.stringify(lavado));
+
+            // emitir cambiar pantalla
+            if (socketFavsPage && socketFavsPage.connected) {
+              socketFavsPage.emit('requestDisplayChange', {
+                targetPage: '/display/empezar-lavado'
+              });
+            }
+
             window.location.href = "empezar-lavado.html";
         });
-        });
-    }, 0);
-    
+      });
+
+
+
     });
 
 
-    const backButtonFavs = document.getElementById('back-button-favs'); // <-- NECESITAS ESTE ID EN TU HTML
-    const homeButtonFavs = document.getElementById('home-button-favs'); // <-- NECESITAS ESTE ID EN TU HTML
+    // logica para ir atras
+    const backButtonFavs = document.getElementById('back-button-favs'); 
+    const homeButtonFavs = document.getElementById('home-button-favs'); 
 
-    // Función para volver al Perfil
+    // FUNCION PARA VOLVER A PERFIL
     function navigateToProfile(event) {
         event.preventDefault();
-        console.log('📱 Botón Atrás (a Perfil) presionado.');
         if (socketFavsPage && socketFavsPage.connected) {
             socketFavsPage.emit('requestDisplayChange', { targetPage: '/display/profile', userId: usuario });
-            window.location.href = 'perfil.html'; // Volver a perfil cliente
-        } else {
-            console.error("Socket no conectado al intentar volver a perfil.");
-            alert("Error de conexión.");
-            // Fallback: navegar solo cliente
-            // window.location.href = 'perfil.html';
+            window.location.href = 'perfil.html'; // volver a perfil user
         }
     }
 
-    // Función para volver a Home
+    // FUNCION PARA VOLVER A HOME
     function navigateToHome(event) {
-         event.preventDefault(); // Si es un enlace
-         console.log('📱 Botón Home presionado.');
+         event.preventDefault(); 
          if (socketFavsPage && socketFavsPage.connected) {
              socketFavsPage.emit('requestDisplayChange', { targetPage: '/', userId: usuario });
-             window.location.href = '/mobile'; // Volver a home cliente
+             window.location.href = '/mobile'; 
          } else {
              console.error("Socket no conectado al intentar volver a home.");
              alert("Error de conexión.");
-             // Fallback:
-             // window.location.href = '/mobile';
          }
     }
 
-    // Añadir listeners a los botones de salida
+    // listener para los botones
     if (backButtonFavs) {
         backButtonFavs.addEventListener('click', navigateToProfile);
     } else {

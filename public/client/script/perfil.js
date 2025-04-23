@@ -1,18 +1,17 @@
-// =========================
-// FUNCIONES GLOBALES DE PERFIL
-// =========================
-
-// Abre el modal de edición
+// FUNCION PARA ABRIR EL POPUP DE EDICION DEL PERFIL
 function openModal() {
   document.getElementById('profile-modal').classList.add('popup-animado');
   document.getElementById('profile-modal').style.display = 'flex';
 }
+
+// FUNCION PARA CERRAR EL POPUP DE EDICION DEL PERFIL
 function closeModal() {
   document.getElementById('profile-modal').style.display = 'none';
 }
 
 
-// Rellena el formulario del modal con los datos del usuario
+// FUNCION PARA MOSTAR EL PERFIL DEL USUARIO
+// rellena los datos del usuario
 function mostrarPerfil() {
   const username = localStorage.getItem('loggedInUser');
   if (!username) {
@@ -34,7 +33,7 @@ function mostrarPerfil() {
       document.getElementById('edit-username').value = userData.username;
       document.getElementById('edit-email').value    = userData.email;
 
-      // CONTRASEÑA (no la rellenas; sólo dejas el placeholder)
+      // CONTRASEÑA
       document.getElementById('edit-password').value = 'userData.password';
     })
     .catch(err => {
@@ -45,7 +44,7 @@ function mostrarPerfil() {
 
 
 
-// Previsualiza la imagen seleccionada en el input
+// FUNCION PARA PREVISUALIZAR LA FOTO DE PERFIL
 function previewImagePerfil(event) {
   const reader = new FileReader();
   reader.onload = () => {
@@ -58,14 +57,14 @@ function previewImagePerfil(event) {
   }
 }
 
-// Dispara el selector de archivo
+// FUNCION PARA SUBIR UNA FOTO PARA EL PERFIL
 function subirFoto(event) {
   event.preventDefault();
   event.stopPropagation();
   document.getElementById('profile-edit-foto-input').click();
 }
 
-// Elimina la foto y actualiza localStorage
+// FUNCION PARA BORRAR LA IMAGEN DE PERFIL Y PONER LA DEFAULT
 function eliminarFotoPerfil() {
   if (!confirm("¿Estás seguro de que quieres eliminar tu foto de perfil?")) return;
   const defaultImg = '../../images/persona_os.svg';
@@ -82,20 +81,20 @@ function eliminarFotoPerfil() {
   }
 }
 
-// Valida y guarda cambios en localStorage
+// FUNCION PARA GUARDAR Y VALIDAR LOS CAMBIOS DEL PERFIL
 async function guardarCambiosPerfil() {
   const oldUsername = localStorage.getItem('loggedInUser');
   if (!oldUsername) {
     return alert("Inicia sesión de nuevo para editar tu perfil.");
   }
 
-  // Recoge valores del formulario
+  // recogemos los valores del formulario
   const newUsername = document.getElementById('edit-username').value.trim();
   const newEmail    = document.getElementById('edit-email').value.trim();
   const newPassword = document.getElementById('edit-password').value;
   const newFoto     = document.getElementById('profile-edit-foto').src;
 
-  // Validaciones idénticas a las tuyas
+  // validaciones
   if (!newUsername || !newEmail || !newPassword) {
     return alert("Rellena todos los campos.");
   }
@@ -109,7 +108,7 @@ async function guardarCambiosPerfil() {
   }
 
   try {
-    // Llamada a tu API REST
+    // llamamos a la API para guardar los cambios
     const res = await fetch(`/api/users/${oldUsername}`, {
       method: 'PUT',
       headers: { 'Content-Type': 'application/json' },
@@ -126,13 +125,13 @@ async function guardarCambiosPerfil() {
     }
     const result = await res.json();
 
-    // Éxito: actualiza localStorage si cambió el username
+    // actualizamso el localStorage uwu que casi la cago
     if (newUsername !== oldUsername) {
       localStorage.setItem('loggedInUser', newUsername);
     }
     alert("Perfil actualizado con éxito.");
 
-    // Refresca el avatar en la página
+    // nueva fotillo, si hay
     document.getElementById('perfil-imagen').src = newFoto;
     closeModal();
   } catch (err) {
@@ -150,12 +149,10 @@ document.getElementById('profile-form')
 
 
 
-// =========================
-// LÓGICA PRINCIPAL AL CARGAR DOM
-// =========================
 document.addEventListener("DOMContentLoaded", () => {
   const usuario = localStorage.getItem("loggedInUser");
   const perfilImg = document.getElementById("perfil-imagen");
+  // datillos del usuario
   if (usuario) {
     fetch(`/api/users/${usuario}`)
       .then(res => {
@@ -163,24 +160,20 @@ document.addEventListener("DOMContentLoaded", () => {
         return res.json();
       })
       .then(userData => {
-        // Pintamos su foto en el avatar principal:
-        perfilImg.src = userData.foto;
+        perfilImg.src = userData.foto; // foto
       })
       .catch(err => {
         console.error("Error cargando foto de perfil:", err);
-        // dejamos la imagen por defecto si falla
       });
-    // también ponemos el nombre junto al avatar
-    document.querySelector(".username").textContent = usuario;
+    document.querySelector(".username").textContent = usuario; // username
   }
 
-  // — Socket de navegación
+  // SOCKET
   const socketPerfil = io();
-  socketPerfil.on('connect',       () => console.log('📱✅ Socket conectado en perfil.js'));
-  socketPerfil.on('connect_error', err => console.error('📱❌ Error socket en perfil.js:', err));
-  socketPerfil.on('disconnect',     () => console.log('📱 Socket desconectado'));
+  socketPerfil.on('connect',       () => {});
+  socketPerfil.on('disconnect',     () => {});
 
-  // — Dropdown de perfil
+  // dropdown de editar perfil
   const btnDropdown    = document.getElementById("profile-dropdown-btn");
   const menuDropdown   = document.getElementById("profile-dropdown-menu");
   btnDropdown.addEventListener("click", e => {
@@ -193,32 +186,32 @@ document.addEventListener("DOMContentLoaded", () => {
     }
   });
 
-  // — Opciones del dropdown
+  // editar perfil
   document.getElementById("dropdown-edit-profile")
     .addEventListener("click", () => {
       mostrarPerfil();
       openModal();
       menuDropdown.style.display = "none";
     });
+
+  // cerrar sesion
   document.getElementById("dropdown-logout")
     .addEventListener("click", () => {
       localStorage.removeItem("loggedInUser");
       window.location.href = "/index.html";
     });
 
-  // — Control del modal
+  // cerrar popup si se hace click fuera
   document.getElementById("profile-modal")
     .addEventListener("click", e => {
       if (e.target.id === "profile-modal") closeModal();
     });
 
-  // — Preview de imagen al cambiar input
+  // preview de imagen al cambiar input
   document.getElementById("profile-edit-foto-input")
     .addEventListener("change", previewImagePerfil);
 
-  // =========================
   // LAVADOS COMPLETADOS
-  // =========================
   fetch(`/lavados/${usuario}`)
     .then(res => res.json())
     .then(lavados => {
@@ -245,6 +238,7 @@ document.addEventListener("DOMContentLoaded", () => {
       document.querySelector(".completados").textContent = lavados.length;
 
       const categorias = document.querySelectorAll(".categoria");
+      // para las transiciones de las categorias
       categorias.forEach((el, idx) => {
         el.addEventListener("mouseenter", () => {
           categorias.forEach((item, j) => {
@@ -262,9 +256,8 @@ document.addEventListener("DOMContentLoaded", () => {
       });
     });
 
-  // =========================
-  // LAVADOS FAVORITOS
-  // =========================
+
+   // LAVADOS FAVORITOS
   fetch(`/api/users/${usuario}/favoritos`)
     .then(res => res.json())
     .then(favoritos => {
@@ -296,7 +289,7 @@ document.addEventListener("DOMContentLoaded", () => {
       `;
       favBox.appendChild(favDiv);
 
-      // "Ver más programas"
+      // ver mas
       const verMasProgramasBtn = document.getElementById('ver-mas-programas');
       if (verMasProgramasBtn) {
         verMasProgramasBtn.addEventListener('click', event => {

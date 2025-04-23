@@ -1,40 +1,33 @@
-const socket = io(); // Conecta al servidor
+const socket = io(); // conectar
+socket.on('connect', () => {});
+
+
 const categorias = document.querySelectorAll(".categoria");
 
+// FUNCION PARA LAS TRANSICIONES DE CATEGORIAS
 function handleHover(indexHovered) {
   categorias.forEach((el, idx) => {
     el.classList.remove("mover-izquierda", "mover-derecha");
 
     if (indexHovered === 0) {
-      // Si es la primera, mueve las siguientes a la derecha
+      // si es la primera, mueve las siguientes a la derecha
       if (idx > indexHovered) {
         el.classList.add("mover-derecha");
       }
     } else if (indexHovered === 1) {
-      // Si es la del centro, solo mueve la de la derecha
+      // si es la del centro, solo mueve la de la derecha
       if (idx > indexHovered) {
         el.classList.add("mover-derecha");
       }
       // La primera (índice 0) se queda sin moverse
     } else if (indexHovered === 2) {
-      // Si es la última, mueve las anteriores a la izquierda
+      // si es la última, mueve las anteriores a la izquierda
       if (idx < indexHovered) {
         el.classList.add("mover-izquierda");
       }
     }
   });
 }
-
-// Función para cargar el juego seleccionado
-function loadJuegos() {
-
-  console.log("Botón de mando pulsado");
-  socket.emit("abrir-juegos"); // Evento que el servidor recibirá
-  /*socket.emit("redirigir-a-juegos"); */// Evento que el servidor recibirá
-  // 3. Redirigir en el móvil
-  window.location.href = 'pantalla-carga.html';
-}
-
 
 function handleLeave() {
   categorias.forEach(el => {
@@ -48,15 +41,6 @@ categorias.forEach((categoria, index) => {
 });
 
 
-
-
-// Al principio de /client/script/index.js (o un archivo dedicado)
-//const socket = io(); // Conecta al servidor
-
-socket.on('connect', () => {
-    console.log('Conectado al servidor (Móvil) con ID:', socket.id);
-});
-
 // Ejemplo para enviar un evento al pulsar un botón (ajusta el selector)
 const botonLanzar = document.querySelector('.lavado-button'); // Ajusta este selector
 if (botonLanzar) {
@@ -66,41 +50,34 @@ if (botonLanzar) {
     });
 }
 
-// Ejemplo para recibir un evento desde el servidor
-socket.on('actualizarPantallaMobile', (data) => {
-    console.log('Móvil: Recibido evento desde servidor:', data);
-    // Hacer algo en la pantalla del móvil
-});
-
-socket.on('disconnect', () => {
-    console.log('Desconectado del servidor (Móvil)');
-});
-
+// links de ver mas en categorias
 const verMasLink = document.getElementById('ver-mas-categorias');
 
 if (verMasLink) {
   verMasLink.addEventListener('click', (event) => {
-    event.preventDefault(); // Evita la navegación normal del enlace
+    event.preventDefault(); 
 
-    // Obtener el usuario actual del localStorage
+    // obtenemos al usuario actual del localStorage
     const usuarioActual = localStorage.getItem('loggedInUser');
-    // Es buena idea comprobar si existe, aunque la lógica de favoritos ya lo hace
-    if (!usuarioActual) {
-        console.warn('📱 Usuario no logueado al intentar ver categorías.');
-        // Quizás mostrar un alert o simplemente no enviar el ID
-    }
+    
+    // console.log('Click en "ver más"');
 
-    console.log('📱 Click en "ver más". Solicitando cambio de display y navegando...');
-
-    // 1. Pide a la pantalla del servidor que cambie
+    // eemite el cambio de pantalla al servidor
     socket.emit('requestDisplayChange', {
       targetPage: '/display/categories',
-      userId: usuarioActual // <-- AÑADIDO
+      userId: usuarioActual // envía el username del usuario logueado
   });
 
-    // 2. Navega en el propio móvil
-    window.location.href = verMasLink.href; // Usa el href original del enlace
+    window.location.href = verMasLink.href;
   });
 } else {
     console.error("No se encontró el enlace 'ver-mas-categorias'");
+}
+
+// FUNCION PARA CARGAR EL JUEGO SELECCIONADO
+function loadJuegos() {
+
+  // console.log("Botón de mando pulsado");
+  socket.emit("abrir-juegos"); 
+  window.location.href = 'pantalla-carga.html';
 }
