@@ -1,45 +1,42 @@
-// --- script/guardar-prendas.js ---
-socket.on('connect', () => {
-  console.log('🧺 guardar-prendas conectado con ID:', socket.id);
-});
+// conectamos el socket de escaner-etiqueta y escaner-color
+socket.on('connect', () => {});
 
 
-// Variable global para guardar temporalmente el resultado del escaneo mientras el popup está abierto
-let resultadoScanActual = null;
+let resultadoScanActual = null; // varoable global para almacenar el resultado del escaneo actual
 const DARK_L_THRESHOLD = 35;  // % de Luminosidad por debajo = Oscuro
 const LIGHT_L_THRESHOLD = 75; // % de Luminosidad por encima = Claro
 
 
-// (Asegúrate de que la función auxiliar getSymbolName esté definida antes)
+// FUNCION PARA OBTENER EL NOMBRE DEL SIMBOLO
+// separa el string por espacios y returnea el primer elemento ej. lavado_40 (0.95) -> lavado_40
 function getSymbolName(detectedString) {
     if (!detectedString || typeof detectedString !== 'string' || detectedString === 'No detectado') {
         return null;
     }
-    // Extraer el nombre antes del primer espacio (ej: "lavado_40" de "lavado_40 (0.95)")
-    // O devolver el string completo si no hay espacio (por si acaso)
-    const parts = detectedString.split(' ');
+    
+    const parts = detectedString.split(' ');  
     return parts[0];
 }
 
-
+// FUNCION PARA COMPROBAR LA COMPATIBILIDAD 
 function checkCompatibility(scanResult, lavado) {
     if (!lavado) return { compatible: false, razon: "Error: No se encontró el lavado seleccionado." };
 
-    console.log("Comprobando compatibilidad:", scanResult, "con Lavado:", lavado);
+    // console.log("Comprobando compatibilidad:", scanResult, "con Lavado:", lavado);
 
-    // --- Compatibilidad de Etiqueta ---
+    // COMPATIBILIDAD ETIQUETA
     if (scanResult.type === 'etiqueta') {
         const simbolosDetectados = scanResult.data; // Ej: {'Temperatura': 'lavado_40 (0.95)', 'Delicadeza': 'lavado_delicado (0.88)', ...}
         let razonesIncompatibilidad = [];
 
-        // 1. Comprobar "No Lavar" (Sin Cambios)
+        // 1. comprobar No Lavar
         const tempSymbolName = getSymbolName(simbolosDetectados['Temperatura']);
         if (tempSymbolName === 'lavado_no') {
             razonesIncompatibilidad.push("La etiqueta indica 'No Lavar'.");
             return { compatible: false, razon: razonesIncompatibilidad.join(' ') };
         }
 
-        // 2. Comprobar Temperatura (Sin Cambios)
+        // 2. comprobar Temperatura
         const tempLavado = parseInt(lavado.temperatura);
         if (tempSymbolName && tempSymbolName.startsWith('lavado_') && !tempSymbolName.includes('mano') && tempSymbolName !== 'lavado_no' && tempSymbolName !== 'lavado_normal') {
             try {
@@ -51,13 +48,14 @@ function checkCompatibility(scanResult, lavado) {
                  console.error("Error parseando temperatura del símbolo:", tempSymbolName, e);
             }
         }
-        // Advertencia sobre lavado a mano (Sin Cambios)
-        if (tempSymbolName === 'lavado_a_mano' && lavado.nombre?.toLowerCase() !== 'lavado a mano') {
+        // Comprobar si el símbolo es lavado_a_mano y el nombre del lavado no es lavado a mano
+        if (tempSymbolName === 'lavado_a_mano') {
              console.warn("Advertencia: Etiqueta indica lavado a mano, programa seleccionado no lo es explícitamente.");
         }
 
 
-        // 3. Comprobar Lejía (Sin Cambios)
+        // 3. comprobar Lejía ***NO IMPLEMENTADO AUN EN NUESTRO MODELO, YA QUE AHORA NO HAY NIGNUNA OPCION DE METER LEJIA EN EL LAVADO***
+        // aunque no este implementado lo dejamos aqui para que se vea como se implementaria
         const lejiaSymbolName = getSymbolName(simbolosDetectados['Lejía']);
         const usaLejiaLavado = lavado.detergente?.toLowerCase().includes('lejía') || lavado.detergente?.toLowerCase().includes('bleach');
 
@@ -68,47 +66,42 @@ function checkCompatibility(scanResult, lavado) {
             console.log("Info: Etiqueta permite lejía, pero el lavado no la incluye.");
         }
 
-        // --- 4. Comprobar Delicadeza vs Centrifugado (RPM) ---
+        // 4. comprobar delicadeza vs centrifugado
         const delicadezaSymbolName = getSymbolName(simbolosDetectados['Delicadeza']);
 
-        const rpmLavadoStr = lavado.centrifugado; // Obtener el valor de RPM del objeto lavado
+        const rpmLavadoStr = lavado.centrifugado; // RPM del lavado
         let rpmLavado = NaN;
 
         if (rpmLavadoStr !== undefined && rpmLavadoStr !== null) {
-            // Intentar convertir a número (quitando "rpm" si lo tuviera)
+            // quitamos rpm al final y lo convertimos a int ej. '800 rpm' -> 800
             rpmLavado = parseInt(String(rpmLavadoStr).replace(/[^0-9]/g, ''), 10);
         }
 
-        console.log(`Check Delicadeza: Simbolo='${delicadezaSymbolName}', RPM Lavado='${rpmLavadoStr}' (parsed as ${rpmLavado})`);
+        // console.log(`Check Delicadeza: Simbolo='${delicadezaSymbolName}', RPM Lavado='${rpmLavadoStr}' (parsed as ${rpmLavado})`);
 
-        // Solo realizar el check si tenemos ambos datos: símbolo de delicadeza y un RPM válido
+        // realizamso el check si son validos los valores
         if (delicadezaSymbolName && !isNaN(rpmLavado)) {
-            const maxRpmPermitidoDelicado = 700; // Límite definido
+            const maxRpmPermitidoDelicado = 700; // para lavados delicados y muy delicados
 
             // Lista de símbolos que requieren centrifugado bajo
             const simbolosDelicados = ['lavado_delicado', 'lavado_muy_delicado', 'lavado_a_mano'];
 
             if (simbolosDelicados.includes(delicadezaSymbolName)) {
-                // Si el símbolo es delicado y las RPM superan el límite
+                // si el simbolo es delicado o muy delicado
+                // comprobamos si el RPM del lavado es mayor que el permitido
                 if (rpmLavado > maxRpmPermitidoDelicado) {
-                    // Añadir razón de incompatibilidad
+                    // dep
                     razonesIncompatibilidad.push(`Centrifugado (${rpmLavado} RPM) es demasiado alto para etiqueta '${delicadezaSymbolName}' (máx ${maxRpmPermitidoDelicado} RPM).`);
                 }
             }
-            // Si el símbolo es 'lavado_normal', no hacemos nada, es compatible con todo.
+            // lavado normal es compatible con todo
             else if (delicadezaSymbolName === 'lavado_normal') {
-                 console.log("Símbolo 'lavado_normal' detectado, compatible con cualquier RPM.");
+                 // console.log("Símbolo 'lavado_normal' detectado, compatible con cualquier RPM.");
             }
-        } else if (delicadezaSymbolName && isNaN(rpmLavado)) {
-            // Si tenemos símbolo pero no RPM, podríamos mostrar advertencia o no hacer nada
-            console.warn(`No se pudo determinar el RPM del lavado ('${rpmLavadoStr}') para comprobar compatibilidad con símbolo '${delicadezaSymbolName}'.`);
-        } else if (!delicadezaSymbolName) {
-            console.log("No se detectó símbolo de delicadeza claro para comprobar RPM.");
-        }
-        // --- Fin Sección 4 ---
+        } 
 
 
-        // Resultado final para etiqueta (Sin Cambios)
+        // RESULTADO FINAL POPUP
         if (razonesIncompatibilidad.length > 0) {
             return { compatible: false, razon: razonesIncompatibilidad.join(' ') };
         } else {
@@ -119,26 +112,30 @@ function checkCompatibility(scanResult, lavado) {
             return { compatible: true, razon: "Símbolos de etiqueta parecen compatibles." };
         }
     }
-    // --- Compatibilidad de Color (SIN CAMBIOS aquí) ---
+    // COMPATIBILIDAD DE COLOR
     else if (scanResult.type === 'color') {
-        // ... (tu lógica de color existente, sin cambios) ...
         const colorData = scanResult.data;
         const L = parseFloat(colorData.L);
         let tipoColada = 'colores';
+
+        // coger el "tipo de colada" del lavado aka que si es blancos, colores u oscuros
         if (lavado.tipoColada && ['blancos', 'colores', 'oscuros'].includes(lavado.tipoColada)) {
             tipoColada = lavado.tipoColada;
         }
-        else if (lavado.nombre === 'Lavado Ropa Blanca') tipoColada = 'blancos';
+        // para los lavados predeterminados lo cogemos del nombre del lavado
+        else if (lavado.nombre === 'Lavado Ropa Blanca') tipoColada = 'blancos'; 
         else if (lavado.nombre === 'Lavado Ropa Oscura') tipoColada = 'oscuros';
+
+        // para los lavados personalizados lo cogemos del tipo de tejido
         else if (lavado.tejido) {
             const tejidoSeleccionado = lavado.tejido.toLowerCase();
             if (tejidoSeleccionado === 'blanco') tipoColada = 'blancos';
             else if (tejidoSeleccionado === 'color') tipoColada = 'colores';
             else tipoColada = 'colores';
-        } else {
-             console.log("Usando 'colores' por defecto para tipo colada.");
-        }
-        console.log("Tipo colada final determinado:", tipoColada);
+        } 
+        // console.log("tipo colada", tipoColada);
+
+        // comprobamos la compatibilidad de kolor
         if (tipoColada === 'blancos' && L < LIGHT_L_THRESHOLD) {
              return { compatible: false, razon: `Color ${colorData.hex} (${colorData.tone}) podría desteñir en lavado de Blancos.` };
         }
@@ -150,16 +147,13 @@ function checkCompatibility(scanResult, lavado) {
         }
         return { compatible: true, razon: `Color ${colorData.hex} (${colorData.tone}) parece compatible con lavado de tipo '${tipoColada}'.` };
     }
-    // --- Tipo Desconocido (Sin Cambios) ---
-    else {
-        return { compatible: false, razon: "Tipo de escaneo desconocido." };
-    }
 }
 
-// --- Funciones del Popup ---
 
+// FUNCIONES PARA EL POPUP DE ESCNAEO
 function mostrarPopupCompatibilidad(scanResult) {
-    resultadoScanActual = scanResult; // Guarda el resultado actual para usarlo en 'añadirPrendaConfirmada'
+    resultadoScanActual = scanResult; // guarda el resultado actual para usarlo en 'añadirPrendaConfirmada'
+
     const lavado = JSON.parse(localStorage.getItem('lavadoSeleccionado'));
     const compatibilidad = checkCompatibility(scanResult, lavado);
 
@@ -168,39 +162,43 @@ function mostrarPopupCompatibilidad(scanResult) {
         console.error("Error: No se encuentra el elemento #popup-compatibilidad en el HTML.");
         return;
     }
-    const titulo = popup.querySelector(".popup-titulo"); // Asume que tienes un h2 con esta clase dentro
-    const mensaje = popup.querySelector(".popup-mensaje"); // Asume que tienes un p con esta clase
-    const razon = popup.querySelector(".popup-razon");     // Asume que tienes un p con esta clase
+    const titulo = popup.querySelector(".popup-titulo"); 
+    const mensaje = popup.querySelector(".popup-mensaje");
+    const razon = popup.querySelector(".popup-razon");
 
-    // Comprobar si los elementos existen antes de usarlos
+    // a ver si no van a existir AB
      if (!titulo || !mensaje || !razon) {
          console.error("Error: Faltan elementos .popup-titulo, .popup-mensaje o .popup-razon dentro de #popup-compatibilidad.");
          return;
      }
 
+    // si la prenda es compatible o no
+    // console.log("Compatibilidad:", compatibilidad);
     if (compatibilidad.compatible) {
-        titulo.textContent = "¡PRENDA COMPATIBLE!";
+        titulo.textContent = "¡PRENDA COMPATIBLE!"; // compatible uwu
         mensaje.textContent = "Esta prenda parece ser compatible con los ajustes del lavado seleccionado.";
         razon.textContent = `Detalle: ${compatibilidad.razon}`;
-        titulo.style.color = "#28a745"; // Verde (Bootstrap success)
+        titulo.style.color = "#28a745"; // verdecito el titulo
     } else {
-        titulo.textContent = "¡PRENDA NO COMPATIBLE!";
+        titulo.textContent = "¡PRENDA NO COMPATIBLE!"; // :(
         mensaje.textContent = "Cuidado, esta prenda podría dañarse o dañar otras con los ajustes seleccionados.";
         razon.textContent = `Razón: ${compatibilidad.razon}`;
-        titulo.style.color = "#dc3545"; // Rojo (Bootstrap danger)
+        titulo.style.color = "#dc3545"; // rojo danger
     }
 
-    popup.style.display = "flex"; // Muestra el popup
+    popup.style.display = "flex"; // muestra el popup
 }
 
+// FUNCION PARA CERRAR EL POPUP
 function cerrarPopupCompatibilidad() {
     const popup = document.getElementById("popup-compatibilidad");
     if (popup) {
-        popup.style.display = "none";
+        popup.style.display = "none"; // cerrao
     }
-    resultadoScanActual = null; // Limpia el resultado temporal
+    resultadoScanActual = null;
 }
 
+// FUNCION PARA AÑADIR UNA PRENDA AL LAVADO
 function anadirPrendaConfirmada() {
     if (!resultadoScanActual) {
         console.error("No hay resultado de escaneo para añadir.");
@@ -215,92 +213,69 @@ function anadirPrendaConfirmada() {
         return;
     }
 
-    try {
-        const lavado = JSON.parse(lavadoJSON);
+    const lavado = JSON.parse(lavadoJSON);
 
-        // Inicializa el array si no existe
-        if (!Array.isArray(lavado.prendasEscaneadas)) {
-            lavado.prendasEscaneadas = [];
-        }
-
-        // Genera ID único simple (podría mejorarse si es necesario)
-        const index = lavado.prendasEscaneadas.length + 1;
-        const nuevaPrenda = {
-            id: `prenda${index}`,
-            scanType: resultadoScanActual.type, // 'etiqueta' o 'color'
-            scanData: resultadoScanActual.data // El objeto con hex/L o los símbolos
-        };
-
-        lavado.prendasEscaneadas.push(nuevaPrenda);
-
-        // Guarda el objeto lavado ACTUALIZADO de vuelta en localStorage
-        localStorage.setItem('lavadoSeleccionado', JSON.stringify(lavado));
-
-        console.log("Prenda añadida al lavado:", nuevaPrenda);
-        console.log("Estado del lavado actualizado en localStorage:", lavado);
-        alert("Prenda añadida al lavado actual.");
-
-        // Opcional: Actualizar la UI en empezar-lavado.html para mostrar las prendas añadidas
-        socket.emit('updateServerDisplay', JSON.parse(localStorage.getItem('lavadoSeleccionado')));
-
-    } catch (e) {
-        console.error("Error al añadir prenda o actualizar localStorage:", e);
-        alert("Hubo un error al intentar añadir la prenda.");
+    // inicializamos array de prendas escaneadas 
+    if (!Array.isArray(lavado.prendasEscaneadas)) {
+        lavado.prendasEscaneadas = [];
     }
+
+    // indice para cad prenda
+    const index = lavado.prendasEscaneadas.length + 1;
+    const nuevaPrenda = {
+        id: `prenda${index}`,
+        scanType: resultadoScanActual.type, // etiqueta o color
+        scanData: resultadoScanActual.data // color hexadecimal o los símbolos de las etiquetas
+    };
+
+    lavado.prendasEscaneadas.push(nuevaPrenda);
+
+    // guardamos el lavado ACTUALIZADO de vuelta en localStorage
+    localStorage.setItem('lavadoSeleccionado', JSON.stringify(lavado));
+
+    // console.log("Prenda añadida al lavado:", nuevaPrenda);
+    alert("Prenda añadida al lavado actual.");
+
+    // MOSTRAMOS LAS PRENDAS AÑADIDAS ESTO VA FUEGO
+    socket.emit('updateServerDisplay', JSON.parse(localStorage.getItem('lavadoSeleccionado')));
+
 
     cerrarPopupCompatibilidad();
 }
 
 function cancelarAnadirPrenda() {
-    console.log("Adición de prenda cancelada.");
-    cerrarPopupCompatibilidad();
+    // console.log("prenda no <añadida");
+    cerrarPopupCompatibilidad(); m
 }
 
 
-// --- Inicialización y Listener Principal ---
 
 document.addEventListener('DOMContentLoaded', () => {
-    console.log("guardar-prendas.js cargado y DOM listo.");
-
-    // 1. Comprobar si hay un resultado de escaneo pendiente en sessionStorage
+    // comprobamos si hay algun escaneo guardado en sessionStorage
     const resultadoJSON = sessionStorage.getItem('ultimoResultadoScan');
     if (resultadoJSON) {
-        sessionStorage.removeItem('ultimoResultadoScan'); // ¡Limpia SIEMPRE después de leer!
-        try {
-            const scanResult = JSON.parse(resultadoJSON);
-            console.log("Resultado de escaneo recuperado de sessionStorage:", scanResult);
-            // Usamos un pequeño retraso para asegurar que otros scripts/elementos estén listos
-            setTimeout(() => mostrarPopupCompatibilidad(scanResult), 150);
-        } catch (e) {
-            console.error("Error al parsear resultado del scan desde sessionStorage:", e);
-        }
-    } else {
-         console.log("No se encontraron resultados de escaneo pendientes en sessionStorage.");
+        sessionStorage.removeItem('ultimoResultadoScan'); // fuera para limpiar
+        const scanResult = JSON.parse(resultadoJSON);
+        // console.log("Resultado de escaneo recuperado de sessionStorage:", scanResult);
+        setTimeout(() => mostrarPopupCompatibilidad(scanResult), 150); // esperamos un poco para mostrar el popup
     }
 
-    // 2. Añadir listeners a los botones del popup de compatibilidad
-    // Asegúrate de que estos IDs existen en tu HTML dentro del popup
+    // botones del popup de compatibilidad
     const btnAnadir = document.getElementById('btn-anadir-prenda');
     const btnCancelar = document.getElementById('btn-cancelar-prenda');
 
     if (btnAnadir) {
         btnAnadir.addEventListener('click', anadirPrendaConfirmada);
-    } else {
-        console.warn("Botón #btn-anadir-prenda no encontrado.");
     }
-
     if (btnCancelar) {
         btnCancelar.addEventListener('click', cancelarAnadirPrenda);
-    } else {
-        console.warn("Botón #btn-cancelar-prenda no encontrado.");
     }
 
 
-     // Listener para cerrar popup haciendo clic fuera (opcional pero útil)
+     // cerrar popup haciendo clic fuera 
      const popupCompatibilidad = document.getElementById("popup-compatibilidad");
      if (popupCompatibilidad) {
          popupCompatibilidad.addEventListener('click', function(event) {
-             // Si se hace clic directamente sobre el fondo del popup (no en el contenedor interno)
              if (event.target === popupCompatibilidad) {
                  cancelarAnadirPrenda();
              }
