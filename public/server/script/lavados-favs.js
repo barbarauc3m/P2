@@ -28,6 +28,8 @@ document.addEventListener('DOMContentLoaded', async () => {
     persContainer.innerHTML = '<p>Cargando personalizados...</p>';
     console.log(`🖥️ Cargando programas para ${userId}...`);
 
+
+    
     // --- Función Sanitize ID (Importante que sea la misma que usa el cliente al emitir hover) ---
     function sanitizeId(text) {
          if (!text) return `item-${Math.random().toString(36).substr(2, 9)}`;

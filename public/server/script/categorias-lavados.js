@@ -1,18 +1,16 @@
-// public/server/script/categorias-lavados.js
-const socketCategoriesServer = io();
+const socketCategoriesServer = io(); // conexion socket.io
 
 const container = document.querySelector('.categories-container');
 const overlay = document.querySelector('.focus-overlay');
-let intendedFocusId = null; // Variable para rastrear el foco deseado
-let focusTimeout = null; // Variable para manejar posibles delays rápidos
+let intendedFocusId = null; // variable para rastrear el foco deseado
 
 
+// FUNCION PARA MOSTRAR LOS FAVORITOS (corazon)
 function loadAndDisplayFavorites() {
     const userId = sessionStorage.getItem('currentDisplayUserId');
 
     if (!userId) {
         console.warn('🖥️ No hay userId en sessionStorage. No se pueden mostrar favoritos.');
-        // Podrías asegurarte que todos los corazones están vacíos
          document.querySelectorAll('.category-display .heart').forEach(heart => {
             heart.src = '/images/corazon.svg'; // Ruta absoluta
             heart.classList.remove('active'); // Si usas clase 'active'
@@ -20,7 +18,8 @@ function loadAndDisplayFavorites() {
         return;
     }
 
-    fetch('/favoritos') // Llama al mismo endpoint que usa el cliente
+    // fetch para obtener los favoritos del usuario
+    fetch(`/api/users/${userId}/favoritos`) 
         .then(res => {
             if (!res.ok) {
                 throw new Error(`Error en fetch /favoritos: ${res.statusText}`);
@@ -28,7 +27,7 @@ function loadAndDisplayFavorites() {
             return res.json();
         })
         .then(allFavoritosData => {
-            const userFavorites = allFavoritosData[userId] || [];
+            const userFavorites = allFavoritosData || [];
 
             const serverCategories = document.querySelectorAll('.category-display[data-category-id]');
 
@@ -41,131 +40,111 @@ function loadAndDisplayFavorites() {
                 const esFavorito = userFavorites.some(fav => fav.nombre === nombreLavado);
 
                 if (esFavorito) {
-                    console.log(`🖥️ Marcando "${nombreLavado}" como favorito.`);
-                    heart.src = '/images/cora_relleno.svg'; // Ruta absoluta corazón relleno
-                    heart.classList.add('active'); // Opcional: si usas CSS extra
+                    heart.src = '/images/cora_relleno.svg'; // corazón relleno
+                    heart.classList.add('active'); 
                 } else {
-                    heart.src = '/images/corazon.svg'; // Ruta absoluta corazón vacío
+                    heart.src = '/images/corazon.svg'; // corazón vacío
                     heart.classList.remove('active');
                 }
-                // Hacer visible el corazón (ya que tu CSS base lo oculta)
-                heart.style.display = 'block'; // O añade una clase para mostrarlo
+                heart.style.display = 'block';
             });
         })
         .catch(err => {
             console.error('🖥️ Error al cargar o procesar favoritos:', err);
-            // Ocultar todos los corazones o ponerlos vacíos en caso de error
             document.querySelectorAll('.category-display .heart').forEach(heart => {
-                 heart.style.display = 'none'; // Ocultar en caso de error
+                 heart.style.display = 'none'; // ocultamos en caso de error
             });
         });
 }
 
 
-
+// FUNCION EPICA PARA PONER EL FOCUS EN UNA CATEGORIA CUANDO EL USER HACE HOVER
 function applyFocus(categoryId) {
-    if (!container || !overlay) {
-        console.error('Error: Container u overlay no encontrados.');
-        return;
-    }
-    console.log(`🖥️ Aplicando foco a: ${categoryId}`);
 
-    // Activar overlay y modo focus en el contenedor
-    overlay.classList.add('active');
-    container.classList.add('container-focused');
+    // console.log(`foco a: ${categoryId}`);
 
-    // Quitar foco previo (si lo hay) - Asegura limpieza antes de añadir el nuevo
+    overlay.classList.add('active'); // modo overlay active
+    container.classList.add('container-focused'); // modo focus
+
+    // quitamos el foco previo para que no se vea feo
     const currentFocused = container.querySelector('.category-display.focused');
     if (currentFocused) {
         currentFocused.classList.remove('focused');
     }
 
-    // Aplicar foco al nuevo elemento
-    const elementToFocus = container.querySelector(`.category-display[data-category-id="${categoryId}"]`);
+    // aplicamos le foco a nuevo elemento
+    const elementToFocus = container.querySelector(`.category-display[data-category-id="${categoryId}"]`); // foco a
     if (elementToFocus) {
         elementToFocus.classList.add('focused');
-        console.log(`🖥️ Categoría ${categoryId} enfocada.`);
+        // console.log(`${categoryId} foco`);
     } else {
-        console.log(`🖥️ No se encontró categoría para enfocar: ${categoryId}`);
-        // Si no se encuentra, limpiamos el estado de foco
+        // si no hay limpiamos
         removeFocus();
     }
 }
 
-// Asegúrate que la función removeFocus sigue igual:
+// FUNCION PARA QUITAR EL FOCUS
 function removeFocus() {
     if (!container || !overlay) return;
-    console.log(`🖥️ Quitando foco (si existe).`);
-    intendedFocusId = null; // Limpiar el ID deseado
+    // console.log(`quitando foco`);
+    intendedFocusId = null;
 
-    overlay.classList.remove('active');
-    container.classList.remove('container-focused');
+    overlay.classList.remove('active'); // fuera
+    container.classList.remove('container-focused'); // fuera
 
     const focusedElement = container.querySelector('.category-display.focused');
     if (focusedElement) {
         focusedElement.classList.remove('focused');
     }
 }
-// --- MANEJO DE EVENTOS SOCKET ---
 
-// Cuando llega la orden de enfocar
+// conexiones socket para cuando llega el evento de FOCUS
 socketCategoriesServer.on('highlightCategory', (data) => {
-    console.log(`🖥️ Recibido highlightCategory para: ${data.categoryId}`);
-    // Limpiar cualquier timeout pendiente para quitar foco
-    clearTimeout(focusTimeout);
-    // Establecer cuál es el ID que queremos enfocar
-    intendedFocusId = data.categoryId;
-    // Aplicar el foco
-    applyFocus(data.categoryId);
+    // console.log(`focus para: ${data.categoryId}`);
+
+    intendedFocusId = data.categoryId; // id de la categoría que queremos focus
+    applyFocus(data.categoryId); // focus
 });
 
-// Cuando llega la orden de quitar el foco
+// conexiones socket para cuando llega el evento de UNFOCUS
 socketCategoriesServer.on('unhighlightCategory', (data) => {
-    console.log(`🖥️ Recibido unhighlightCategory para: ${data.categoryId}`);
+    // console.log(`unfocus a: ${data.categoryId}`);
 
-    // **LÓGICA SIMPLIFICADA:**
-    // Solo quitar el foco si el ID que se pide quitar ('data.categoryId')
-    // es el que actualmente se supone que debe estar enfocado ('intendedFocusId').
+    // si el id de la categoría coincide con el que tenemos en intendedFocusId fuera focus
     if (data.categoryId === intendedFocusId) {
-        console.log(`🖥️ Coincide con intendedFocusId (${intendedFocusId}). Quitando foco AHORA.`);
+        console.log(` intendedFocusId (${intendedFocusId}). Quitando foco AHORA.`);
         removeFocus(); // Llama a removeFocus directamente, sin delay.
     } else {
-        // Si no coincide, significa que el usuario ya hizo hover en OTRA categoría
-        // antes de que llegara este mensaje de 'unhighlight', por lo que
-        // ignoramos este mensaje para no quitar el foco del elemento nuevo.
-        console.log(`🖥️ Ignorando unhighlight para ${data.categoryId} (foco deseado actual: ${intendedFocusId}).`);
+        // si no coincide, significa que el usuario ya hizo hover en OTRA categoría asi que ignoramos el unfocus
+        // console.log(`Ignorando unfocus para ${data.categoryId} foco actual: ${intendedFocusId}`);
     }
 });
 
+// conexiones socket para updatear el corazon de los favs
 socketCategoriesServer.on('refreshFavorites', (data) => {
-    console.log(`🖥️ Recibido 'refreshFavorites' para usuario: ${data.userId}`);
+    // console.log(`refresh favs para usuario: ${data.userId}`);
     const currentlyDisplayedUserId = sessionStorage.getItem('currentDisplayUserId');
 
-    // Comprobar si la actualización es para el usuario que estamos mostrando
+    // comprobar si la actualización es para el usuario que estamos mostrando
     if (data.userId && data.userId === currentlyDisplayedUserId) {
-        console.log(`🖥️ La actualización de favoritos es para el usuario actual. Refrescando vista...`);
+        // console.log(`actualizando favs para ${data.userId}`);
 
-        // Opción 1: Volver a cargar TODO (más simple)
-        loadAndDisplayFavorites();
+        loadAndDisplayFavorites(); // cargamos otra ve
     } else {
-        console.log(`🖥️ Actualización de favoritos ignorada (Usuario diferente: ${data.userId} vs ${currentlyDisplayedUserId})`);
+        // console.log(`otro user ${data.userId} vs ${currentlyDisplayedUserId})`);
     }
 });
 
 socketCategoriesServer.on('connect', () => {
-    console.log('🖥️ Categorias Server Conectado:', socketCategoriesServer.id);
-    loadAndDisplayFavorites(); // Cargar favoritos al conectar
+    loadAndDisplayFavorites(); // cargar favoritos al conectar
 });
 
 socketCategoriesServer.on('disconnect', () => {
-    console.log('🖥️ Categorias Server Desconectado');
-    // Quitar foco si el cliente se desconecta
+    // quitamos foco si el cliente se desconecta
     removeFocus();
 });
 
-// Quitar foco si se hace clic en el overlay
+// quitamos foco si se hace clic en el overlay
 overlay?.addEventListener('click', () => {
     removeFocus();
-    // Opcional: podrías emitir un evento de vuelta al móvil si es necesario
-    // socketCategoriesServer.emit('focusClosedByOverlay');
 });

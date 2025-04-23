@@ -1,4 +1,3 @@
-// public/server/script/history-display.js
 
 document.addEventListener('DOMContentLoaded', async () => { // Usamos async
     console.log('🖥️ Script history-display.js cargado');

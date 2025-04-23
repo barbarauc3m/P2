@@ -1,5 +1,3 @@
-// public/server/script/empezar-lavado.js
-// Script para la página del servidor que muestra el lavado y las prendas escaneadas de forma interactiva.
 
 (() => {
   const socket = io();

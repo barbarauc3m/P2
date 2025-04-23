@@ -1,13 +1,9 @@
 // CONEXIÓN SOCKET.IO
 const socket = io();
 
-socket.on('connect', () => {
-    console.log('📱 Conectado al servidor Socket.IO');
-});
+socket.on('connect', () => {});
 
-socket.on('disconnect', () => {
-    console.log('📱 Desconectado del servidor Socket.IO');
-});
+socket.on('disconnect', () => {});
 
 // Mapeo de nombres de juego a archivos HTML
 const gamesMap = [
@@ -41,11 +37,13 @@ function loadGame(index) {
     });
 
     // 3. Redirigir en el móvil
+
     window.location.href = game.mobilePage;
 }
 
 /// Inicialización cuando el DOM está listo
 document.addEventListener("DOMContentLoaded", function() {
+    loadGame(); 
 
     //const selectedGame = localStorage.getItem("selectedGameTitle");
     const selectedGame = localStorage.removeItem("selectedGameTitle");

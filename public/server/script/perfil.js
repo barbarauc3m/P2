@@ -165,6 +165,8 @@ document.addEventListener("DOMContentLoaded", async () => {
             });
         }
 
+        
+
     } catch (error) {
         console.error("Error fatal cargando datos del perfil:", error);
         const errorMsg = '<p class="error-message">Error al cargar datos.</p>';

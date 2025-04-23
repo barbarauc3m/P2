@@ -1,6 +1,8 @@
 (() => {
     const socket = io();
   
+
+    
     socket.on('connect', () => socket.emit('registerDisplay'));
   
     // placeholder inicial
