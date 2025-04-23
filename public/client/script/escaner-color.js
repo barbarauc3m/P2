@@ -7,7 +7,7 @@ const snapButton = document.getElementById('snap');
 const resultado = document.getElementById('resultado');
 const scanText = document.querySelector('.scan-text'); 
 
-// --- Constantes para Tono ---
+// TONO
 const DARK_L_THRESHOLD = 35;  // % de Luminosidad por debajo = Oscuro
 const LIGHT_L_THRESHOLD = 75; // % de Luminosidad por encima = Claro
 
