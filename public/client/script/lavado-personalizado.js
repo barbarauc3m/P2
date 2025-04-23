@@ -135,6 +135,14 @@ document.addEventListener("DOMContentLoaded", function () {
       window.location.href = "/index.html";                
     });
 
+    const homeBtn = document.getElementById("home-button");
+    homeBtn.addEventListener("click", e => {
+      e.preventDefault();  
+      socket.emit("requestDisplayChange", { targetPage: "/" });  // pa atras
+      window.location.href = "/index.html";                
+    });
+
+
       
 });
 
