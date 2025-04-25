@@ -116,3 +116,17 @@ h1 {
     margin: 20px;
   }
   
+
+  #snap {
+    background-color: #e6ebf7;
+  border: none;
+  border-radius: 1rem;
+  padding: 2vw;
+  width: 30vw;
+  color: #5b6689;
+  font-family: 'Super Peace', sans-serif;
+  font-size: 1rem;
+  box-shadow: 0 4px 0 #d0d6e6;
+  cursor: pointer;
+  transition: transform 0.2s ease;
+  }

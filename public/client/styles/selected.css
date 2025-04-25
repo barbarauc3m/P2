@@ -6,7 +6,8 @@ button.selected {
   }
   
   a.selected {
-    color: red !important;
+    background-color: #5D6B8B !important;
+    color: #F6F9FD !important;
   }
   
   

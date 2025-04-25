@@ -25,6 +25,8 @@ const video        = document.getElementById('video');
 const canvas       = document.getElementById('canvas');
 const snapButton   = document.getElementById('snap');
 const resultOutput = document.getElementById('resultado');
+const scanText = document.querySelector('.scan-text'); 
+
 
 // FUNCION PARA CARGAR EL MODELO
 async function loadModel() {
@@ -49,19 +51,25 @@ async function loadModel() {
 
 // FUNCION PARA INICIAR LA CÁMARA
 async function startCamera() {
-  if (stream) stream.getTracks().forEach(t => t.stop());
-  try {
-    // cargamos el video en la camara trasera
-    stream = await navigator.mediaDevices.getUserMedia({ video: { facingMode:'environment' }, audio: false });
-    video.srcObject = stream;
-    await video.play(); // play el video
-    snapButton.disabled = false;
-    resultOutput.textContent = 'Cámara lista. Pulsa Capturar.';
-  } catch (e) {
-    console.error('Error accediendo a la cámara:', e);
-    resultOutput.textContent = 'Error accediendo a la cámara.';
-    snapButton.disabled = true;
-  }
+    // console.log("Iniciando cámara...");
+        // acceso a la camarita
+        const stream = await navigator.mediaDevices.getUserMedia({
+            video: { facingMode: "environment" } // environment para trasera, user para delantera
+        });
+        video.srcObject = stream;
+
+        // cargar los datos del video
+        video.onloadedmetadata = () => {
+            canvas.width = video.videoWidth;
+            canvas.height = video.videoHeight;
+            snapButton.disabled = false; // Habilitar el botón de captura
+            scanText.textContent = "¡Cámara lista! Apunta a la prenda y pulsa Capturar.";
+            // console.log(`Cámara lista. Resolución: ${video.videoWidth}x${video.videoHeight}`);
+        };
+
+        video.oncanplay = () => {
+             // console.log("vídeo reproducir");
+        };
 }
 
 // FUNCION PARA DETECTAR EL SIMBOLO
