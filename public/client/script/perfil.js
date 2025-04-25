@@ -235,13 +235,15 @@ document.addEventListener("DOMContentLoaded", () => {
         contenedor.appendChild(div);
       });
 
+      window.dispatchEvent(new CustomEvent('popupChange'));
+
       document.querySelector(".completados").textContent = lavados.length;
 
-      const categorias = document.querySelectorAll(".categoria");
+      const categoriasActualizadas = contenedor.querySelectorAll(".categoria"); 
       // para las transiciones de las categorias
-      categorias.forEach((el, idx) => {
+      categoriasActualizadas.forEach((el, idx) => {
         el.addEventListener("mouseenter", () => {
-          categorias.forEach((item, j) => {
+          categoriasActualizadas.forEach((item, j) => {
             item.classList.remove("mover-izquierda", "mover-derecha");
             if (idx === 0 && j > idx) item.classList.add("mover-derecha");
             if (idx === 1 && j > idx) item.classList.add("mover-derecha");
@@ -249,7 +251,7 @@ document.addEventListener("DOMContentLoaded", () => {
           });
         });
         el.addEventListener("mouseleave", () => {
-          categorias.forEach(item =>
+          categoriasActualizadas.forEach(item =>
             item.classList.remove("mover-izquierda", "mover-derecha")
           );
         });

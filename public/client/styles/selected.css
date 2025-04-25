@@ -1,0 +1,16 @@
+button.selected {
+    background-color: #5b6689 !important;
+    color: #d0d6e6 !important;
+    box-shadow: 10px 10px 10px #d0d6e6 !important;
+    transition: background-color 0.3s;
+  }
+  
+  a.selected {
+    color: red !important;
+  }
+  
+  
+.clickeado {
+    background-color: limegreen !important;
+    transition: background-color 0.3s;
+  }

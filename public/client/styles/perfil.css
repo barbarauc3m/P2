@@ -337,11 +337,11 @@
 }
 
 
-.categoria:hover {
+.categoria:hover,  .categoria.hover-simulado  {
   width: 26vh;
 }
 
-.categoria:hover .info {
+.categoria:hover .info,  .categoria.hover-simulado .info {
   opacity: 1;
 }
 
@@ -354,12 +354,12 @@
   margin: 0 0 0 1vh; /* separación entre texto e imagen */
 }
 
-.categoria.eco:hover {
+.categoria.eco:hover,  .categoria.eco.hover-simulado  {
   width: 26vh;
   margin-left: -16vh; /* truco: se mueve ella hacia la izquierda */
 }
 
-.categoria.eco:hover .info {
+.categoria.eco:hover .info,  .categoria.eco.hover-simulado  .info {
   opacity: 1;
 }
 
