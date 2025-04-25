@@ -242,19 +242,12 @@ h3{
   white-space: nowrap;
 }
 
-.categoria.hover-simulado {
-  width: 26vh !important;
-}
 
-.categoria.hover-simulado .info {
-  opacity: 1 !important;
-}
-
-.categoria:hover {
+.categoria:hover, .categoria.hover-simulado {
   width: 26vh;
 }
 
-.categoria:hover .info {
+.categoria:hover .info, .categoria.hover-simulado .info {
   opacity: 1;
 }
 
@@ -267,12 +260,12 @@ h3{
   margin: 0 0 0 1vh; /* separación entre texto e imagen */
 }
 
-.categoria.eco:hover {
+.categoria.eco:hover, .categoria.eco.hover-simulado {
   width: 26vh;
   margin-left: -16vh; /* truco: se mueve ella hacia la izquierda */
 }
 
-.categoria.eco:hover .info {
+.categoria.eco:hover .info, .categoria.eco.hover-simulado .info {
   opacity: 1;
 }
 
@@ -286,9 +279,16 @@ h3{
   transition: transform 0.3s ease-in-out;
 }
 
-.selected{
-  background-color: red !important;
 
+
+button.selected {
+  background-color: #5b6689 !important;
+  color: #d0d6e6 !important;
+  box-shadow: 10px 10px 10px #d0d6e6 !important; /* Asegúrate que este color es el correcto */
+}
+
+a.selected {
+  color: red !important;
 }
 
 .clickeado {

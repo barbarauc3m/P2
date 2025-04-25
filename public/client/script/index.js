@@ -2,7 +2,7 @@ const socket = io(); // conectar
 socket.on('connect', () => {});
 
 
-const categorias = document.querySelectorAll(".categoria");
+const categorias = Array.from(document.querySelectorAll(".categoria"));
 
 // FUNCION PARA LAS TRANSICIONES DE CATEGORIAS
 function handleHover(indexHovered) {

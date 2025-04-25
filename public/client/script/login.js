@@ -16,6 +16,8 @@ document.addEventListener('DOMContentLoaded', () => {
           e.preventDefault();
           loginPopup.style.display = "none";
           registerPopup.style.display = "flex";
+          window.dispatchEvent(new CustomEvent('popupChange'));
+          
       });
   }
    if (abrirLoginLink && loginPopup && registerPopup) {
@@ -23,12 +25,14 @@ document.addEventListener('DOMContentLoaded', () => {
           e.preventDefault();
           registerPopup.style.display = "none";
           loginPopup.style.display = "flex";
+          window.dispatchEvent(new CustomEvent('popupChange'));
       });
   }
    if (loginPopup) {
       loginPopup.addEventListener("click", function (e) {
           if (e.target === loginPopup) {
                loginPopup.style.display = "none";
+               window.dispatchEvent(new CustomEvent('popupChange'));
 
                if (socketLogin && socketLogin.connected) {
                 const usuario = localStorage.getItem("loggedInUser"); 
@@ -83,6 +87,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
                   // ocultar popup y resetear form
                   loginPopup.style.display = "none";
+                  window.dispatchEvent(new CustomEvent('popupChange'));
                   loginForm.reset();
 
                   socketLogin.emit('requestDisplayChange', {
@@ -122,7 +127,10 @@ document.addEventListener('DOMContentLoaded', () => {
                socketLogin.emit('requestDisplayChange', { 
                 targetPage: '/display/login', 
                 userId: null });
-               if(loginPopup) loginPopup.style.display = 'flex';
+               if(loginPopup) {
+                loginPopup.style.display = 'flex';
+                window.dispatchEvent(new CustomEvent('popupChange'));
+               }
            }
        });
    }

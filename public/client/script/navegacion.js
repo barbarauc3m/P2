@@ -13,6 +13,39 @@ document.addEventListener('DOMContentLoaded', () => {
     socketNav.on('connect_error', (err) => console.error('📱❌ Error conexión socket Nav Global:', err));
 
 
+    const categorias = Array.from(document.querySelectorAll(".categoria"));
+
+    // FUNCION PARA LAS TRANSICIONES DE CATEGORIAS
+    function handleHover(indexHovered) {
+      categorias.forEach((el, idx) => {
+        el.classList.remove("mover-izquierda", "mover-derecha");
+
+        if (indexHovered === 0) {
+          // si es la primera, mueve las siguientes a la derecha
+          if (idx > indexHovered) {
+            el.classList.add("mover-derecha");
+          }
+        } else if (indexHovered === 1) {
+          // si es la del centro, solo mueve la de la derecha
+          if (idx > indexHovered) {
+            el.classList.add("mover-derecha");
+          }
+          // La primera (índice 0) se queda sin moverse
+        } else if (indexHovered === 2) {
+          // si es la última, mueve las anteriores a la izquierda
+          if (idx < indexHovered) {
+            el.classList.add("mover-izquierda");
+          }
+        }
+      });
+    }
+
+    function handleLeave() {
+      categorias.forEach(el => {
+        el.classList.remove("mover-izquierda", "mover-derecha");
+      });
+    }
+
     // --- Listener para Botón HOME ---
     const homeButton = document.getElementById('nav-home-button');
 
@@ -86,11 +119,18 @@ window.addEventListener("pageshow", (event) => {
     let selectables = Array.from(document.querySelectorAll(".button-nav, button, a, .categoria"));
   
     function updateSelection() {
+      handleLeave();
       selectables.forEach((el, i) => {
         el.classList.remove("selected", "hover-simulado");
         if (i === currentIndex) {
           el.classList.add("selected");
           if (el.classList.contains("categoria")) {
+            // Busca el índice específico dentro de la lista de categorías
+            const categoriaIndex = categorias.indexOf(el);
+            if (categoriaIndex !== -1) {
+                // Llama a tu función de transición con el índice correcto
+                handleHover(categoriaIndex);
+            }
             el.classList.add("hover-simulado");
           }
         }
