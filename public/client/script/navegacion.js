@@ -168,7 +168,8 @@ document.addEventListener('DOMContentLoaded', () => {
               // perfil.html
               '#profile-dropdown-btn, ' +
               '#ver-mas-programas, ' +
-              '.programas .button-lav, ' +
+              '.lavado-box .button-lav, ' +          
+              '.lavado-box .button-lav-emp, ' +
               '#historial, ' +                     
               // categorias-lavados.html 
               '#back-button-categorias, ' +
@@ -195,7 +196,7 @@ document.addEventListener('DOMContentLoaded', () => {
         return isVisible && !isDisabled;
     });     
 
-      // console.log("   Seleccionables finales:", selectables);
+      console.log("   Seleccionables finales:", selectables);
 
       currentIndex = 0; // reset index
 

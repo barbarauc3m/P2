@@ -181,6 +181,7 @@ h2 {
   input[type="range"] {
     width: 100%;
     -webkit-appearance: none;
+    appearance: none;
     height: 10px;
     border-radius: 5px;
     background: #d2d4de;

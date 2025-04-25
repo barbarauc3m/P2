@@ -115,9 +115,9 @@
     font-size: 1.5vh;
   }
   
-  .lavado-box-none.none{
-    display: none;
-  }
+  .lavado-box-none.none {
+    display: none !important; /* ¡Usa display: none! */
+}
 
   .lavado-box{
     margin: 2rem 1.5rem;
@@ -206,7 +206,7 @@
   align-items: center;
  }
  
-  .button-lav {
+  .button-lav, .button-lav-emp {
     background-color: #e6ebf7;
     border: none;
     border-radius: 1rem;
@@ -217,10 +217,11 @@
     font-size: 1rem;
     box-shadow: 0 4px 0 #d0d6e6;
     cursor: pointer;
+    font-family: 'Super Cottage', sans-serif;
     transition: transform 0.2s ease;
   }
   
-  .button-lav:hover {
+  .button-lav:hover, .button-lav-emp:hover {
     transform: translateY(-2px);
   }
   
@@ -391,6 +392,15 @@
   cursor: pointer;
 }
 
+.profile-edit-btn.selected {
+  background-image: url(../../../images/editar_blanco.svg) !important;
+  background-repeat: no-repeat;
+  background-position: center;
+  padding: 4px; 
+  background-origin: content-box;
+  background-size: contain;
+  box-sizing: border-box;
+}
 #profile-edit-foto {
   width: 10vh;
   height: 10vh;

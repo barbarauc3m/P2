@@ -283,13 +283,51 @@ document.addEventListener("DOMContentLoaded", () => {
               <h3>${ultimo.nombre}</h3><br>
               <p>${ultimo.descripcion}</p>
               <div class="lavado-button">
-                <button class="button-lav">Empezar</button>
+                <button class="button-lav-emp">Empezar</button>
               </div>
             </div>
           </div>
         </div>
       `;
       favBox.appendChild(favDiv);
+
+      // añadir listener al botón de empezar
+      const nuevoBotonEmpezar = favDiv.querySelector('.button-lav-emp');
+      if (nuevoBotonEmpezar) {
+          nuevoBotonEmpezar.addEventListener('click', () => {
+              // console.log(`Click en Empezar para favorito: ${ultimo.nombre}`);
+
+              // Guarda los datos de ESTE lavado favorito para la siguiente página
+               const lavadoParaEmpezar = {
+                  nombre: ultimo.nombre,
+                  descripcion: ultimo.descripcion,
+                  temperatura: ultimo.temperatura,
+                  duracion: ultimo.duracion,
+                  centrifugado: ultimo.centrifugado,
+                  detergente: ultimo.detergente || 'N/A', 
+                  fechaInicio: new Date().toLocaleString("es-ES", {
+                      dateStyle: "short",
+                      timeStyle: "short"
+                  }),
+                  imagen: ultimo.imagen
+               };
+               localStorage.setItem("lavadoSeleccionado", JSON.stringify(lavadoParaEmpezar));
+
+              if (socketPerfil && socketPerfil.connected) {
+                   socketPerfil.emit('requestDisplayChange', {
+                       targetPage: '/display/empezar-lavado',
+                   });
+              }
+
+              // Redirigir a la página para empezar el lavado
+              window.location.href = 'empezar-lavado.html';
+          });
+      } else {
+           console.error("No se pudo encontrar el botón .button-lav recién creado.");
+      }
+
+      window.dispatchEvent(new CustomEvent('popupChange'));
+
 
       // ver mas
       const verMasProgramasBtn = document.getElementById('ver-mas-programas');
