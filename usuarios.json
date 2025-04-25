@@ -198,6 +198,20 @@
         "imagen": "../../../images/frio.svg"
       }
     ],
-    "personalizados": []
+    "personalizados": [
+      {
+        "nivelSuciedad": "Ropa a penas usada",
+        "temperatura": "40°C",
+        "centrifugado": "Alto: 1200 rpm",
+        "duracion": "25 min",
+        "detergente": "25 ml",
+        "tejido": [
+          "Mezcla"
+        ],
+        "nombre": "Lavado personalizado 1",
+        "index": 1,
+        "fechaGuardado": "2025-04-25T17:12:16.308Z"
+      }
+    ]
   }
 }
