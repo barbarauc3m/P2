@@ -170,33 +170,40 @@ document.addEventListener('DOMContentLoaded', () => {
 
       // 3. Si NINGÚN modal/dropdown relevante está visible: seleccionar elementos principales
       if (!isModalVisible) {
-          console.log("   📄 Ningún modal/dropdown relevante visible. Seleccionando elementos principales.");
-          // Query que busca elementos comunes y específicos de AMBAS páginas
-          query =
-              // --- Comunes / index.html ---
-              '.button-container > .button-nav, ' +  // Barra Nav Inferior
-              '.lavado-box .lavado-button, ' +       // Botón "Check it" (index)
-              '.categorias .categoria, ' +           // Divs de categoría (index, ¿quizás historial en perfil?)
-              '#ver-mas-categorias, ' +             // Link "ver más" categorías (index)
-              '.personalizar-container .lavado-button, ' + // Botón "Comienza" (index)
-              '.mapa-container .mapa-button, ' +      // Botón "Abrir Mapa" (index)
-              // --- Específicos perfil.html ---
-              '#profile-dropdown-btn, ' +           // Botón para abrir dropdown/editar
-              '#ver-mas-programas, ' +             // Link "ver más" programas (perfil)
-              '.programas .button-lav, ' +          // Botón "Regístralos" (perfil)
-              '#historial' +                         // Link "ver más" historial (perfil)
-              '#back-button-categorias, ' +           // Botón Volver (categorias-lavados)
+        console.log("   📄 Ningún modal/dropdown relevante visible. Seleccionando elementos principales.");
+        // Query que busca elementos comunes y específicos de AMBAS páginas
+        query =
+              // --- Comunes (Barra Nav Inferior) ---
+              '.button-container > .button-nav, ' +
+              // --- index.html ---
+              '.lavado-box .lavado-button, ' +
+              '.categorias .categoria, ' +
+              '#ver-mas-categorias, ' +
+              '.personalizar-container .lavado-button, ' +
+              '.mapa-container .mapa-button, ' +
+              // --- perfil.html ---
+              '#profile-dropdown-btn, ' +
+              '#ver-mas-programas, ' +
+              '.programas .button-lav, ' +
+              '#historial, ' +                     // <-- !!! COMA AÑADIDA !!!
+              // --- categorias-lavados.html ---
+              '#back-button-categorias, ' +
+              // --- historial.html ---
+              '#back-button-historial, ' +        // (Asegúrate que está)
+              // --- lavados-favs.html ---
+              '#back-button-favs, ' +            // (Asegúrate que está)
+              // --- Botones EMPEZAR (Común a varias páginas) ---
               '.lavado-card .button';
 
-          selectables = Array.from(document.querySelectorAll(query));
+        selectables = Array.from(document.querySelectorAll(query));
 
-          // Filtro MUY IMPORTANTE: Excluir CUALQUIER cosa dentro de un popup-overlay
-          // Esto IGNORA los popups de login/registro aunque estén en el DOM
-          selectables = selectables.filter(el => !el.closest('.popup-overlay'));
+        // Filtro MUY IMPORTANTE: Excluir CUALQUIER cosa dentro de un popup-overlay
+        // Esto IGNORA los popups de login/registro aunque estén en el DOM
+        selectables = selectables.filter(el => !el.closest('.popup-overlay'));
 
-          categorias = Array.from(document.querySelectorAll(".categoria")) // Busca todas en el DOM
-          .filter(cat => selectables.includes(cat));
-      }
+        categorias = Array.from(document.querySelectorAll(".categoria")) // Busca todas en el DOM
+        .filter(cat => selectables.includes(cat));
+    }
 
       // Filtro común FINAL: Quitar no visibles (display:none, etc.) o deshabilitados
       const initialCount = selectables.length;

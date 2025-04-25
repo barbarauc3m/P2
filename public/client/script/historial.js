@@ -48,6 +48,7 @@ document.addEventListener("DOMContentLoaded", () => {
         `;
   
         contenedor.appendChild(section);
+        window.dispatchEvent(new CustomEvent('popupChange'));
 
         // corazoncito 
         const heartIcon = section.querySelector('.heart');

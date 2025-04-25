@@ -50,6 +50,8 @@ document.addEventListener("DOMContentLoaded", () => {
         
           contenedor.appendChild(div);
 
+          window.dispatchEvent(new CustomEvent('popupChange'));
+
           // HOVER COMO LOS OTROS
           if (socketFavsPage) {
             div.addEventListener('mouseenter', () => {
@@ -156,6 +158,7 @@ document.addEventListener("DOMContentLoaded", () => {
         ${lavado.favorito ? `<img src="../../../images/corazon.svg" class="heart activo" alt="Favorito">` : ""}
         `;
         contenedor.appendChild(div);
+        window.dispatchEvent(new CustomEvent('popupChange'));
 
         if (socketFavsPage) {
           div.addEventListener('mouseenter', () => {
