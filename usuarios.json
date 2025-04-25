@@ -200,6 +200,18 @@
     ],
     "personalizados": [
       {
+        "nombre": "Lavado personalizado 2",
+        "nivelSuciedad": "Ropa a penas usada",
+        "temperatura": "80°C",
+        "centrifugado": "600 rpm",
+        "duracion": "90 min",
+        "detergente": "15 ml",
+        "tejido": "Lana",
+        "favorito": false,
+        "index": 2,
+        "fechaGuardado": "2025-04-25T19:55:18.033Z"
+      },
+      {
         "nivelSuciedad": "Ropa a penas usada",
         "temperatura": "40°C",
         "centrifugado": "Alto: 1200 rpm",
