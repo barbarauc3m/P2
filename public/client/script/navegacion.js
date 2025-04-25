@@ -25,6 +25,7 @@ document.addEventListener('DOMContentLoaded', () => {
   let currentIndex = 0;     // Índice del elemento seleccionado actualmente
   let categorias = [];
   let navDebounce = false;  // Para evitar múltiples selecciones por inclinación rápida
+  let lastHoveredCardElement = null;
 
   // Constantes de configuración (iguales)
   const NAV_TILT_THRESHOLD = 25;
@@ -88,7 +89,18 @@ document.addEventListener('DOMContentLoaded', () => {
           console.warn(`updateSelection: currentIndex (${currentIndex}) fuera de rango [0, ${selectables.length -1}]. Reseteando a 0.`);
           currentIndex = 0;
       }
-      // --- FIN GUARDIA ---
+      
+      if (lastHoveredCardElement) {
+        const previousCardId = lastHoveredCardElement.dataset.categoryId;
+        // console.log("Quitando hover simulado de:", lastHoveredCardElement);
+        lastHoveredCardElement.classList.remove('card-hover-simulado'); // Quita la clase CSS
+        if (previousCardId && socketNav && socketNav.connected) {
+             // console.log("Emitiendo unhoverCategory (nav) para:", previousCardId);
+             // Emitir evento si es necesario que el servidor sepa que ya no está seleccionada
+             socketNav.emit('unhoverCategory', { categoryId: previousCardId });
+        }
+        lastHoveredCardElement = null; // Resetea el tracker
+        }
 
       handleLeave(); // Limpia efectos de categoría si aplica
 
@@ -108,7 +120,21 @@ document.addEventListener('DOMContentLoaded', () => {
                 // Quizás solo quieres el estilo simulado?
                 el.classList.add("hover-simulado");
                 // No llames a handleHover porque no tiene sentido para un solo elemento
-            }
+            } else if (el.matches('.lavado-card .button')) { // Comprueba si es un botón EMPEZAR
+                    const parentCard = el.closest('.lavado-card'); // Encuentra la tarjeta padre
+                    if (parentCard) {
+                        // console.log("Aplicando hover simulado a tarjeta:", parentCard);
+                        parentCard.classList.add('card-hover-simulado'); // <-- Aplica la clase CSS!
+                        lastHoveredCardElement = parentCard; // Guarda referencia para quitarla después
+
+                        const categoryId = parentCard.dataset.categoryId; // Obtiene el ID de la tarjeta
+                        if (categoryId && socketNav && socketNav.connected) {
+                             // console.log("Emitiendo hoverCategory (nav) para:", categoryId);
+                             // Emitir evento socket si es necesario
+                             socketNav.emit('hoverCategory', { categoryId: categoryId });
+                        }
+                    }
+                }
           }
       });
 
@@ -158,7 +184,9 @@ document.addEventListener('DOMContentLoaded', () => {
               '#profile-dropdown-btn, ' +           // Botón para abrir dropdown/editar
               '#ver-mas-programas, ' +             // Link "ver más" programas (perfil)
               '.programas .button-lav, ' +          // Botón "Regístralos" (perfil)
-              '#historial';                         // Link "ver más" historial (perfil)
+              '#historial' +                         // Link "ver más" historial (perfil)
+              '#back-button-categorias, ' +           // Botón Volver (categorias-lavados)
+              '.lavado-card .button';
 
           selectables = Array.from(document.querySelectorAll(query));
 

@@ -91,7 +91,7 @@ body {
     font-size: 1.5vh;
   }
 
-  .lavado-card:hover {
+  .lavado-card:hover, .lavado-card.card-hover-simulado  {
     max-height: 45vh; 
   }
   
@@ -102,7 +102,7 @@ body {
     margin-top: 1vh;
   }
   
-  .lavado-card:hover .lavado-button {
+  .lavado-card:hover .lavado-button, .lavado-card.card-hover-simulado .lavado-button{
     opacity: 1;
     pointer-events: auto;
   }
@@ -131,7 +131,7 @@ body {
     padding-top: 2vh;
   }
 
-  .button {
+  .button, .button.selected {
   cursor: pointer;
   position: relative;
   padding: 1vh 2vh;
@@ -145,7 +145,7 @@ body {
   overflow: hidden;
 }
 
-.button::before {
+.button::before, .button.selected::before {
   content: '';
   position: absolute;
   inset: 0;
@@ -159,17 +159,17 @@ body {
   transition: all 0.6s cubic-bezier(0.23, 1, 0.320, 1);
 }
 
-.button:hover::before {
+.button:hover::before, .button.selected:hover::before {
   scale: 3;
 }
 
-.button:hover {
+.button:hover, .button.selected {
   color: #EDF2FB;
   scale: 1.1;
   box-shadow: 0 0px 20px #4A556F ;
 }
 
-.button:active {
+.button:active, .button.selected:active {
   scale: 1;
 }
 
