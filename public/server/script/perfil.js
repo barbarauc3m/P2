@@ -1,19 +1,16 @@
 // public/server/script/perfil.js
 document.addEventListener("DOMContentLoaded", async () => {
-    console.log("🖥️ Script perfil-display.js cargado (para pantalla servidor).");
-
     const userId = sessionStorage.getItem('currentDisplayUserId');
-
     const usernameElement = document.querySelector(".username");
     const photoElement = document.getElementById("profile-page-photo");
-    const historialContainer = document.querySelector(".categoria-list"); // Contenedor historial
+    const historialContainer = document.querySelector(".categoria-list"); 
     const historialCountElement = document.querySelector(".completados");
-    const favoritosContainer = document.getElementById("perfil-favoritos-lista"); // Contenedor lista favoritos
+    const favoritosContainer = document.getElementById("perfil-favoritos-lista"); 
     const favoritosCountElement = document.querySelector(".favoritos");
-    const personalizadosContainer = document.getElementById("perfil-personalizados-lista"); // Contenedor lista personalizados
+    const personalizadosContainer = document.getElementById("perfil-personalizados-lista"); 
     const personalizadosCountElement = document.getElementById("personalizados-count");
 
-    // Verificar elementos esenciales
+    // verify
     if (!userId || !usernameElement || !photoElement || !historialContainer || !historialCountElement || !favoritosContainer || !favoritosCountElement || !personalizadosContainer || !personalizadosCountElement) {
         console.error("Error: Faltan elementos HTML necesarios o userId en perfil-display.html");
         document.body.innerHTML = "<h1>Error</h1><p>No se pudo cargar el perfil correctamente.</p>";
@@ -21,14 +18,12 @@ document.addEventListener("DOMContentLoaded", async () => {
     }
 
     usernameElement.textContent = userId;
-    console.log(`🖥️ Cargando datos de perfil para: ${userId}`);
 
-    // Mensajes iniciales de carga
     historialContainer.innerHTML = '<p class="loading-message">Cargando...</p>';
     favoritosContainer.innerHTML = '<p class="loading-message">Cargando...</p>';
     personalizadosContainer.innerHTML = '<p class="loading-message">Cargando...</p>';
 
-    // --- Fetch de TODOS los datos en paralelo ---
+    // Fetch de TODOS los datos en paralelo
     try {
         const [userData, historial, favoritos, personalizados] = await Promise.all([
             fetch(`/api/users/${userId}`).then(res => res.ok ? res.json() : Promise.resolve({ username: userId, foto: null, error: true })),
@@ -37,36 +32,27 @@ document.addEventListener("DOMContentLoaded", async () => {
             fetch(`/api/users/${userId}/personalizados`).then(res => res.ok ? res.json().catch(() => []) : Promise.resolve([]))
         ]);
 
-        console.log("Datos recibidos:", { userData, historial, favoritos, personalizados });
-
-        // --- Mostrar Datos Básicos del Usuario ---
+        // DATOS DEL USUARIO
         if (userData && !userData.error) {
             usernameElement.textContent = userData.username || userId;
-            photoElement.src = userData.foto || '/images/persona_os.svg'; // Usa foto de API o default
+            photoElement.src = userData.foto || '/images/persona_os.svg';
         } else {
-             usernameElement.textContent = userId; // Fallback
+             usernameElement.textContent = userId;
              photoElement.src = '/images/persona_os.svg';
         }
 
-        // --- Mostrar Historial (Máximo 4 - Estilo Tarjeta) ---
+        // MOSTRAR HISORIAL 2 max
         historialContainer.innerHTML = ""; // Limpiar
         historialCountElement.textContent = historial.length;
         if (historial.length === 0) {
             historialContainer.innerHTML = '<p class="empty-message">Sin historial reciente.</p>';
         } else {
-            // Usar una clase contenedora si quieres aplicar grid/flex (opcional, depende de tu HTML/CSS)
-            // historialContainer.classList.add('categories-container'); // Por ejemplo
             historial.slice(0, 2).forEach(lavado => {
                 const section = document.createElement("section");
-                // *** Aplicar la clase de estilo de tarjeta ***
                 section.className = "category-display";
-                // No necesitamos data-category-id aquí si no hay hover interactivo
 
-                // Corregir ruta de imagen si es necesario
                 let imagenHistorial = lavado.imagen;
-                if (imagenHistorial.startsWith('.')) imagenHistorial = '/images/' + imagenHistorial.split('/').pop();
 
-                // *** Generar HTML con estructura similar a categorias-lavados ***
                 section.innerHTML = `
                 <div class="lavado-sombra">
                     <div class="sombra sombra-50"></div>
@@ -87,16 +73,15 @@ document.addEventListener("DOMContentLoaded", async () => {
             });
         }
 
-        // --- Mostrar Favoritos (Máximo 4 - Estilo Tarjeta) ---
-        favoritosContainer.innerHTML = ""; // Limpiar
+        // MOSTRAR FAVS 2 max
+        favoritosContainer.innerHTML = ""; 
         favoritosCountElement.textContent = favoritos.length;
         if (favoritos.length === 0) {
             favoritosContainer.innerHTML = '<p class="empty-message">Sin favoritos.</p>';
         } else {
-            // favoritosContainer.classList.add('categories-container'); // Opcional
             favoritos.slice(0, 2).forEach(lavado => {
                 const section = document.createElement("section");
-                section.className = "category-display-fav"; // Misma clase = mismo estilo base
+                section.className = "category-display-fav"; 
 
                 let imagenFavorito = lavado.imagen || '/images/default-wash.png';
                  if (imagenFavorito.startsWith('.')) imagenFavorito = '/images/' + imagenFavorito.split('/').pop();
@@ -128,16 +113,15 @@ document.addEventListener("DOMContentLoaded", async () => {
             });
         }
 
-        // --- Mostrar Personalizados (Máximo 4 - Estilo Tarjeta) ---
-        personalizadosContainer.innerHTML = ""; // Limpiar
+        // MOSTRAR PERSONALIZADOS 2 mac
+        personalizadosContainer.innerHTML = "";
         personalizadosCountElement.textContent = personalizados.length;
         if (personalizados.length === 0) {
             personalizadosContainer.innerHTML = '<p class="empty-message">Sin personalizados.</p>';
         } else {
-            // personalizadosContainer.classList.add('categories-container'); // Opcional
             personalizados.slice(0, 2).forEach(lavado => {
                 const section = document.createElement("section");
-                section.className = "category-display-fav"; // Misma clase
+                section.className = "category-display-fav"; 
 
                 section.innerHTML = `
                 <div class="lavado-sombra">
@@ -178,10 +162,10 @@ document.addEventListener("DOMContentLoaded", async () => {
         if (personalizadosCountElement) personalizadosCountElement.textContent = 'E';
     }
 
-    // --- Funciones de Fecha (necesarias si las usas en el HTML generado, como en historial) ---
+    // FUNCIONES PARA PONER LA FECHA BONITA
     function parseFecha(fechaStr) {
         try { // Añadir try-catch robusto
-            if (!fechaStr || typeof fechaStr !== 'string') return new Date(NaN); // Devuelve fecha inválida
+            if (!fechaStr || typeof fechaStr !== 'string') return new Date(NaN); 
             const parts = fechaStr.split(', ');
             if (parts.length !== 2) return new Date(NaN);
             const [fecha, hora] = parts;
@@ -195,7 +179,7 @@ document.addEventListener("DOMContentLoaded", async () => {
             return new Date(añoReal, mes - 1, dia, horas, minutos);
         } catch (e) {
             console.error("Error en parseFecha con:", fechaStr, e);
-            return new Date(NaN); // Devuelve fecha inválida en cualquier error
+            return new Date(NaN); 
         }
     }
 
@@ -206,47 +190,23 @@ document.addEventListener("DOMContentLoaded", async () => {
         return `${dias[fecha.getDay()]}, ${fecha.getDate()} ${meses[fecha.getMonth()]}`;
     }
 
+    // logica de sockets
     const socketDisplayManager = io();
 
-    socketDisplayManager.on('connect', () => {
-      console.log('🖥️ Display Manager Conectado:', socketDisplayManager.id, 'en', window.location.pathname);
-    });
-
-    socketDisplayManager.on('connect_error', (err) => {
-        console.error('🖥️❌ Error conexión Socket en Display Manager:', err);
-    });
+    socketDisplayManager.on('connect', () => {});
 
     socketDisplayManager.on('changeDisplay', (data) => {
-      // Comprobar si data y targetPage existen
-      if (!data || !data.targetPage) {
-          console.warn("🖥️ Recibido 'changeDisplay' sin targetPage:", data);
-          return;
-      }
+      // console.log(`Recibido 'changeDisplay' para: ${data.targetPage} (Usuario: ${data.userId})`);
 
-      console.log(`🖥️ Recibido 'changeDisplay' para: ${data.targetPage} (Usuario: ${data.userId})`);
-
-      // Guarda el userId si viene (útil para la página destino)
-      if (data.userId !== undefined) { // Comprobar si la propiedad existe
+      if (data.userId !== undefined) { // guarda userid
           sessionStorage.setItem('currentDisplayUserId', data.userId);
-          console.log(`🖥️ Guardado userId en sessionStorage: ${data.userId}`);
-      } else {
-          // Si no viene explícitamente, no lo borres, podría ser necesario
-          // sessionStorage.removeItem('currentDisplayUserId');
-          console.log(`🖥️ No se recibió userId en este evento 'changeDisplay'.`);
       }
 
-      // Navegar SOLO si la página destino es DIFERENTE a la actual
+      // navegamos SOLO si la página destino es DIFERENTE a la actual
       if (window.location.pathname !== data.targetPage) {
-        console.log(`🖥️ Navegando a ${data.targetPage}`);
-        window.location.href = data.targetPage; // Cambia la página actual del navegador
-      } else {
-        console.log(`🖥️ Ya estamos en ${data.targetPage}, no se navega.`);
-        // Podrías añadir lógica aquí para recargar datos si es necesario
-        // location.reload(); // O forzar recarga si es la misma página
+      window.location.href = data.targetPage; // Cambia la página actual del navegador
       }
     });
 
 
-
-
-}); // Fin DOMContentLoaded
+}); 
