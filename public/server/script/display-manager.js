@@ -61,7 +61,7 @@ socketDisplayManager.on('moverCienteAlMenu', () => {
 // redirigir a juegos
 socketDisplayManager.on("redirigir-a-juegos", () => {  
   // console.log("redirigiendo a juegos");
-  window.location.href = "/juegos-server.html"; 
+  window.location.href = "/pantalla-carga-server.html"; 
 });
 
 // FUNCION PARA CREAR EL CONTENEDOR DEL JUEGO
