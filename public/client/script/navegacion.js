@@ -307,6 +307,9 @@ document.addEventListener('DOMContentLoaded', () => {
       homeButton.addEventListener('click', (event) => {
           event.preventDefault();
           // Tu lógica de home... (emitir socket, redirigir)
+          socketNav.emit('requestDisplayChange', {
+            targetPage: "/",
+          });
           console.log('Home presionado');
           window.location.href = 'index.html'; 
       });

@@ -34,6 +34,15 @@ html, body {
     margin-bottom: 10vh; /* NUEVOOOOOOOOOOO*/
 }
 
+#boton-voz-personalizado{
+  background-color: transparent;
+  border: none;
+  cursor: pointer;
+  color: white;
+  font-family: 'Super Cottage', sans-serif;
+}
+
+
 /* Botón de cerrar */
 .close-btn {
     position: absolute;
@@ -64,8 +73,8 @@ h2 {
 .top-bar {
     display: flex;
     align-items: center;
+    justify-content: space-between;
     padding: 16px;
-    margin-left: 2vw;
     font-weight: bold;
     font-size: 20px;
     margin-top: 50px;
