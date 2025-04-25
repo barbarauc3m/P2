@@ -127,6 +127,9 @@ app.get('/escaner-color.html', (req, res) => {
 app.get('/juegos-server.html', (req, res) => {
   res.sendFile(path.join(__dirname, 'public/server/juegos-server.html'));
 });
+app.get('/pantalla-carga-server.html', (req, res) => {
+  res.sendFile(path.join(__dirname, 'public/server/pantalla-carga-server.html'));
+});
 
 app.get('/juego1.html', (req, res) => {
   res.sendFile(path.join(__dirname, 'public/server/juego1.html'));
@@ -171,6 +174,7 @@ app.get('/display/historial', (req, res) => {
 app.get('/display/lavado-personalizado', (req, res) => {
   res.sendFile(path.join(__dirname, 'public/server/lavado-personalizado.html'));
 });
+
 
 
 
