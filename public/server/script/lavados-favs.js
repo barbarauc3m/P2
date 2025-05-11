@@ -149,7 +149,6 @@ document.addEventListener('DOMContentLoaded', async () => {
 
     overlay?.addEventListener('click', removeFocus);
     socketMyPrograms.on('disconnect', () => {
-         console.log('🖥️ Socket my-programs desconectado');
          removeFocus();
     });
 

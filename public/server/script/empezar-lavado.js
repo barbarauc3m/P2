@@ -29,7 +29,6 @@
 
   // Muestra popup cuando el lavado inicia
   socket.on('showWashStartedPopup', (washInfo) => {
-    console.log('🟢 Lavado iniciado:', washInfo.nombre);
     showWashStartedPopup(washInfo);
   });
 
@@ -128,7 +127,7 @@ function displayEscaneos(prendas) {
   function showWashStartedPopup(info) {
   const popup = document.getElementById("wash-started-popup");
   document.getElementById("started-wash-name").textContent = info.nombre;
-  popup.style.display = "flex";           // o 'block', según tu CSS
+  popup.style.display = "flex";           
   setTimeout(() => {
     popup.style.display = "none";
      // Al cerrar el popup, redirigimos al inicio
@@ -162,7 +161,6 @@ window.addEventListener('load', () => {
     }
   });
 
-  // En public/server/script/empezar-lavado.js, justo después de tus window.addEventListener('storage', …)
     window.addEventListener("storage", (e) => {
     if (e.key === "lavadoIniciado" && e.newValue) {
       const info = JSON.parse(e.newValue);

@@ -31,7 +31,7 @@ const io = new Server(server);
 
 
 // rutas para carpetas del proyecto
-app.use(express.static(path.join(__dirname, 'public')));
+app.use(express.static(path.join(__dirname, 'src', 'public')));
 
 app.use('/images', express.static(path.join(__dirname, 'images')));
 

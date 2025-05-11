@@ -136,7 +136,6 @@ document.addEventListener('DOMContentLoaded', () => {
 
   // FUNCION PARA REINICIAR SELECCIONABLES (para cuando carga el historial o asi)
   function reiniciarSelectables() {
-      console.log("🔄 Reiniciando selectables...");
 
       let query = '';
       let isModalVisible = false; 
@@ -229,7 +228,6 @@ document.addEventListener('DOMContentLoaded', () => {
 
   // FUNCION PARA PONER UN LAVADO PERSONALIZADO CUANDO EL USER AGITA EL MOVIL
   function handleShake() {
-      console.log("🌀 Agitación detectada.");
        let targetUrl = "lavado-personalizado.html"; 
 
        if ("vibrate" in navigator) navigator.vibrate(200);

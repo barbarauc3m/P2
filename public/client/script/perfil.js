@@ -1,3 +1,5 @@
+let socketPerfil;
+
 // FUNCION PARA ABRIR EL POPUP DE EDICION DEL PERFIL
 function openModal() {
   document.getElementById('profile-modal').classList.add('popup-animado');
@@ -169,7 +171,7 @@ document.addEventListener("DOMContentLoaded", () => {
   }
 
   // SOCKET
-  const socketPerfil = io();
+  socketPerfil = io();
   socketPerfil.on('connect',       () => {});
   socketPerfil.on('disconnect',     () => {});
 
@@ -373,6 +375,6 @@ document.addEventListener("DOMContentLoaded", () => {
 function loadJuegos() {
 
   // console.log("Botón de mando pulsado");
-  socket.emit("abrir-juegos"); 
+  socketPerfil.emit("abrir-juegos"); 
   window.location.href = 'pantalla-carga.html';
 }

@@ -659,5 +659,412 @@
       "imagen": "../../../images/rapido.svg",
       "usuario": "albauwu"
     }
+  ],
+  "María": [
+    {
+      "nombre": "Lavado Eco",
+      "descripcion": "Ideal para ahorrar energía y agua.",
+      "temperatura": "40ºC",
+      "duracion": "1h",
+      "centrifugado": "800 rpm",
+      "detergente": "35 ml",
+      "fechaInicio": "2/5/25, 14:30",
+      "imagen": "../../../images/eco.svg",
+      "usuario": "María"
+    }
+  ],
+  "Abulo": [
+    {
+      "nombre": "Lavado Ropa Blanca",
+      "descripcion": "Ideal para camisas, toallas, sábanas, ropa blanca, etc.",
+      "temperatura": "30ºC",
+      "duracion": "1h",
+      "centrifugado": "1200 rpm",
+      "detergente": "55 ml",
+      "fechaInicio": "2/5/25, 14:41",
+      "imagen": "../../../images/ropa_blanca.svg",
+      "prendasEscaneadas": [
+        {
+          "id": "prenda1",
+          "scanType": "color",
+          "scanData": {
+            "hex": "#f0f0f0",
+            "L": "94",
+            "tone": "Tono Claro",
+            "fullPalette": [
+              {
+                "hex": "#f0f0f0",
+                "red": 240,
+                "green": 240,
+                "blue": 240,
+                "area": 0.000671717566195423,
+                "hue": 0,
+                "saturation": 0,
+                "lightness": 0.9411764705882353,
+                "intensity": 0
+              },
+              {
+                "hex": "#5f5f5f",
+                "red": 95,
+                "green": 95,
+                "blue": 95,
+                "area": 0.0030695930641255957,
+                "hue": 0,
+                "saturation": 0,
+                "lightness": 0.37254901960784315,
+                "intensity": 0
+              },
+              {
+                "hex": "#8e8e8e",
+                "red": 142,
+                "green": 142,
+                "blue": 142,
+                "area": 0.12257283449191596,
+                "hue": 0,
+                "saturation": 0,
+                "lightness": 0.5568627450980392,
+                "intensity": 0
+              },
+              {
+                "hex": "#bfbfbf",
+                "red": 191,
+                "green": 191,
+                "blue": 191,
+                "area": 0.8736858548777631,
+                "hue": 0,
+                "saturation": 0,
+                "lightness": 0.7490196078431373,
+                "intensity": 0
+              }
+            ]
+          }
+        }
+      ],
+      "usuario": "Abulo"
+    }
+  ],
+  "natalata": [
+    {
+      "nombre": "Lavado Frío",
+      "descripcion": "Ideal para lana, seda, ropa interior, etc.",
+      "temperatura": "20ºC",
+      "duracion": "40 min",
+      "centrifugado": "600 rpm",
+      "detergente": "30 ml",
+      "fechaInicio": "3/5/25, 20:41",
+      "imagen": "../../../images/frio.svg",
+      "prendasEscaneadas": [
+        {
+          "id": "prenda1",
+          "scanType": "etiqueta",
+          "scanData": {
+            "Temperatura": "lavado_70 (0.68)",
+            "Delicadeza": "lavado_a_mano (0.62)",
+            "Lejía": "lejia_si (0.69)"
+          }
+        }
+      ],
+      "usuario": "natalata"
+    }
+  ],
+  "Esteban": [
+    {
+      "nombre": "Lavado Ropa Blanca",
+      "descripcion": "Ideal para camisas, toallas, sábanas, ropa blanca, etc.",
+      "temperatura": "30ºC",
+      "duracion": "1h",
+      "centrifugado": "1200 rpm",
+      "detergente": "55 ml",
+      "fechaInicio": "6/5/25, 14:59",
+      "imagen": "../../../images/ropa_blanca.svg",
+      "prendasEscaneadas": [
+        {
+          "id": "prenda1",
+          "scanType": "color",
+          "scanData": {
+            "hex": "#848389",
+            "L": "53",
+            "tone": "Tono Medio",
+            "fullPalette": [
+              {
+                "hex": "#848389",
+                "red": 132,
+                "green": 131,
+                "blue": 137,
+                "area": 0.011950324142779037,
+                "hue": 0.6944444444444451,
+                "saturation": 0.02479338842975209,
+                "lightness": 0.5254901960784313,
+                "intensity": 0.02352941176470591
+              },
+              {
+                "hex": "#c8c9cd",
+                "red": 200,
+                "green": 201,
+                "blue": 205,
+                "area": 0.0772787627899711,
+                "hue": 0.6333333333333335,
+                "saturation": 0.04761904761904772,
+                "lightness": 0.7941176470588236,
+                "intensity": 0.019607843137254936
+              },
+              {
+                "hex": "#393436",
+                "red": 57,
+                "green": 52,
+                "blue": 54,
+                "area": 0.31962040146840587,
+                "hue": 0.9333333333333335,
+                "saturation": 0.04587155963302755,
+                "lightness": 0.21372549019607845,
+                "intensity": 0.019607843137254916
+              },
+              {
+                "hex": "#ffffff",
+                "red": 255,
+                "green": 255,
+                "blue": 255,
+                "area": 0.591150511598844,
+                "hue": 0,
+                "saturation": 0,
+                "lightness": 1,
+                "intensity": 0
+              }
+            ]
+          }
+        }
+      ],
+      "usuario": "Esteban"
+    }
+  ],
+  "Miren": [
+    {
+      "nombre": "Lavado Rápido",
+      "descripcion": "Ideal para ropa poco sucia o uso diario.",
+      "temperatura": "30ºC",
+      "duracion": "30 min",
+      "centrifugado": "1200 rpm",
+      "detergente": "50 ml",
+      "fechaInicio": "8/5/25, 23:24",
+      "imagen": "../../../images/rapido.svg",
+      "usuario": "Miren"
+    }
+  ],
+  "yaiza": [
+    {
+      "nombre": "Lavado Edredones",
+      "descripcion": "Ideal para edredones.",
+      "temperatura": "30ºC",
+      "duracion": "2 h 30 min",
+      "centrifugado": "800 rpm",
+      "detergente": "45 ml",
+      "fechaInicio": "8/5/25, 23:47",
+      "imagen": "../../../images/edredon.svg",
+      "prendasEscaneadas": [
+        {
+          "id": "prenda1",
+          "scanType": "color",
+          "scanData": {
+            "hex": "#aa877c",
+            "L": "58",
+            "tone": "Tono Medio",
+            "fullPalette": [
+              {
+                "hex": "#aa877c",
+                "red": 170,
+                "green": 135,
+                "blue": 124,
+                "area": 0.10894321643364836,
+                "hue": 0.03985507246376813,
+                "saturation": 0.2129629629629629,
+                "lightness": 0.5764705882352941,
+                "intensity": 0.18039215686274507
+              },
+              {
+                "hex": "#2b190f",
+                "red": 43,
+                "green": 25,
+                "blue": 15,
+                "area": 0.000015621338748730765,
+                "hue": 0.059523809523809514,
+                "saturation": 0.4827586206896552,
+                "lightness": 0.11372549019607844,
+                "intensity": 0.10980392156862749
+              },
+              {
+                "hex": "#e7d9ce",
+                "red": 231,
+                "green": 217,
+                "blue": 206,
+                "area": 0.41143481996407094,
+                "hue": 0.07333333333333326,
+                "saturation": 0.34246575342465735,
+                "lightness": 0.8568627450980393,
+                "intensity": 0.09803921568627441
+              },
+              {
+                "hex": "#5b483f",
+                "red": 91,
+                "green": 72,
+                "blue": 63,
+                "area": 0.479606342263532,
+                "hue": 0.05357142857142855,
+                "saturation": 0.1818181818181818,
+                "lightness": 0.3019607843137255,
+                "intensity": 0.10980392156862745
+              }
+            ]
+          }
+        }
+      ],
+      "usuario": "yaiza"
+    },
+    {
+      "nombre": "Lavado Edredones",
+      "descripcion": "Ideal para edredones.",
+      "temperatura": "30ºC",
+      "duracion": "2 h 30 min",
+      "centrifugado": "800 rpm",
+      "detergente": "45 ml",
+      "fechaInicio": "8/5/25, 23:47",
+      "imagen": "../../../images/edredon.svg",
+      "prendasEscaneadas": [
+        {
+          "id": "prenda1",
+          "scanType": "color",
+          "scanData": {
+            "hex": "#aa877c",
+            "L": "58",
+            "tone": "Tono Medio",
+            "fullPalette": [
+              {
+                "hex": "#aa877c",
+                "red": 170,
+                "green": 135,
+                "blue": 124,
+                "area": 0.10894321643364836,
+                "hue": 0.03985507246376813,
+                "saturation": 0.2129629629629629,
+                "lightness": 0.5764705882352941,
+                "intensity": 0.18039215686274507
+              },
+              {
+                "hex": "#2b190f",
+                "red": 43,
+                "green": 25,
+                "blue": 15,
+                "area": 0.000015621338748730765,
+                "hue": 0.059523809523809514,
+                "saturation": 0.4827586206896552,
+                "lightness": 0.11372549019607844,
+                "intensity": 0.10980392156862749
+              },
+              {
+                "hex": "#e7d9ce",
+                "red": 231,
+                "green": 217,
+                "blue": 206,
+                "area": 0.41143481996407094,
+                "hue": 0.07333333333333326,
+                "saturation": 0.34246575342465735,
+                "lightness": 0.8568627450980393,
+                "intensity": 0.09803921568627441
+              },
+              {
+                "hex": "#5b483f",
+                "red": 91,
+                "green": 72,
+                "blue": 63,
+                "area": 0.479606342263532,
+                "hue": 0.05357142857142855,
+                "saturation": 0.1818181818181818,
+                "lightness": 0.3019607843137255,
+                "intensity": 0.10980392156862745
+              }
+            ]
+          }
+        }
+      ],
+      "usuario": "yaiza"
+    },
+    {
+      "nombre": "Lavado Ropa Blanca",
+      "descripcion": "Ideal para camisas, toallas, sábanas, ropa blanca, etc.",
+      "temperatura": "30ºC",
+      "duracion": "1h",
+      "centrifugado": "1200 rpm",
+      "detergente": "55 ml",
+      "fechaInicio": "8/5/25, 23:44",
+      "imagen": "../../../images/ropa_blanca.svg",
+      "prendasEscaneadas": [
+        {
+          "id": "prenda1",
+          "scanType": "color",
+          "scanData": {
+            "hex": "#ff9ac4",
+            "L": "80",
+            "tone": "Tono Claro",
+            "fullPalette": [
+              {
+                "hex": "#ff9ac4",
+                "red": 255,
+                "green": 154,
+                "blue": 196,
+                "area": 0.026603139889088495,
+                "hue": 0.9306930693069306,
+                "saturation": 1,
+                "lightness": 0.8019607843137255,
+                "intensity": 0.39607843137254894
+              },
+              {
+                "hex": "#a13d5a",
+                "red": 161,
+                "green": 61,
+                "blue": 90,
+                "area": 0.1141919862532219,
+                "hue": 0.9516666666666667,
+                "saturation": 0.45045045045045035,
+                "lightness": 0.43529411764705883,
+                "intensity": 0.392156862745098
+              },
+              {
+                "hex": "#dc6586",
+                "red": 220,
+                "green": 101,
+                "blue": 134,
+                "area": 0.4472779817230337,
+                "hue": 0.9537815126050421,
+                "saturation": 0.6296296296296297,
+                "lightness": 0.6294117647058823,
+                "intensity": 0.4666666666666667
+              },
+              {
+                "hex": "#410d1c",
+                "red": 65,
+                "green": 13,
+                "blue": 28,
+                "area": 0.4118878387877841,
+                "hue": 0.951923076923077,
+                "saturation": 0.6666666666666667,
+                "lightness": 0.15294117647058822,
+                "intensity": 0.203921568627451
+              },
+              {
+                "hex": "#fff2ff",
+                "red": 255,
+                "green": 242,
+                "blue": 255,
+                "area": 0.000039053346871826916,
+                "hue": 0.8333333333333334,
+                "saturation": 1,
+                "lightness": 0.9745098039215686,
+                "intensity": 0.050980392156862786
+              }
+            ]
+          }
+        }
+      ],
+      "usuario": "yaiza"
+    }
   ]
 }

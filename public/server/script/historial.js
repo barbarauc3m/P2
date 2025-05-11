@@ -84,7 +84,7 @@ document.addEventListener('DOMContentLoaded', async () => { // Usamos async
     // El contenedor que tiene los .category-display
     const containerForFocus = historyContainer; // Usamos el contenedor del historial
 
-    socketHistoryDisplay.on('connect', () => console.log('🖥️ Socket history-display conectado.'));
+    socketHistoryDisplay.on('connect', () => {});
 
     function applyFocus(categoryId) {
         if (!overlay || !containerForFocus) return;
